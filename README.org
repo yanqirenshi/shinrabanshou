@@ -1,5 +1,35 @@
 * Shinrabanshou 
 
+Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase を目指しています。
+
+外部のDBを利用すれば良いのでしょうが、セットアップや利用方法などに悩まされます。
+- とりあえず使えること。
+- シンプルであること。
+- AICD(?) とか難しいことは考えないこと。
+- セットアップにストレスを覚えないこと。
+- 利用するこにストレスを覚えないこと。
+
+永続化ライブラリは cl-prevalence を利用します。
+
+
+名前の由来
+----------
+日本語の森羅万象が由来です。
+- 森羅 : 数多く並びつらなること。また，そのもの。
+- 万象 : さまざまの形。あらゆる事物。
+
+命名のキルラキルに影響を受けたんでしょうね。
+あと、ヒンドゥー語から引っ張ってくるのにも疲れたんでしょうね。
+
+
+Graph database について
+-----------------------
+以下のようなものを参考にしています。
+- [[http://en.wikipedia.org/wiki/Graph_database][Graph database(Wikipedia)]]
+- [[http://www.neo4j.org/][Neo4j]]
+- [[http://franz.com/agraph/allegrograph/][AllegroGraph]]
+
+
 ** Usage
 
 ** Dependencies

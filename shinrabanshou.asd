@@ -1,9 +1,7 @@
 #|
   This file is a part of shinrabanshou project.
   Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-|#
 
-#|
   Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
 |#
 
@@ -19,7 +17,10 @@
   :depends-on (:cl-prevalence)
   :components ((:module "src"
                 :components
-                ((:file "shinrabanshou"))))
+                ((:file "package" )
+                 (:file "utility"       :depends-on ("package"))
+                 (:file "class"         :depends-on ("utility"))
+                 (:file "shinrabanshou" :depends-on ("class")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames

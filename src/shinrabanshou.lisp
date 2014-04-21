@@ -1,61 +1,19 @@
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-
-森羅万象
-- 森羅 : 数多く並びつらなること。また，そのもの。
-- 万象 : さまざまの形。あらゆる事物。
-
-命名のキルラキルに影響を受けたんでしょうね。
-あと、ヒンドゥー語から引っ張ってくるのにも疲れたんでしょうね。
-|#
-
-(in-package :cl-user)
-(defpackage shinrabanshou
-  (:use :cl  :cl-prevalence)
-  (:nicknames :shinra))
 (in-package :shinrabanshou)
 
-;;; class
-(defclass shinra ()
-  ((id :accessor id
-       :initarg :id
-       :initform nil
-       :documentation "一意のキーという訳です。
-基本連番で良いかな。と。
-が、node と edge では別の name-space なので番号は被ります。
-shinra としての一意という訳ではないので node と edge に実装するほうが良いのかもしれませんね。")
-   (property :accessor property
-             :initarg  :property
-             :initform (make-hash-table)
-             :documentation "まぁ、値ですわ。"))
-  (:documentation "森羅 : 数多く並びつらなること。また，そのもの。
-この世を構成するもの。的な意味で Node と Edge の親クラスとしては良い感じかな。と。
-まぁ分かり難いっちゃぁそうなんですが、ヒンドゥー語からチョイスするよりは日本人には優しいかな。と。
-shinra で構成される物が banshou である。と。
-そう言った感じなんじゃなかろうか。と。
-"))
 
-
-(defclass banshou (prevalence-system) ()
-  (:documentation "万象 : さまざまの形。あらゆる事物。"))
-
-(defclass node (shinra) ())
-
-(defclass edge (shinra)
-  ((node-id-from :accessor node-id-from
-                 :initarg :node-id-from
-                 :initform nil
-                 :documentation "")
-   (node-id-to :accessor node-id-to
-               :initarg :node-id-to
-               :initform nil
-               :documentation "")))
-
-
+;;;;;
+;;;;; system
+;;;;;
 (defvar *datastore* #P"/home/atman/appl/shinra/")
-(defvar *system* (make-prevalence-system *datastore* :prevalence-system-class 'banshou))
+(defvar *system* nil)
 
+(defun start ()
+  (make-prevalence-system *datastore* :prevalence-system-class 'banshou))
+
+
+;;;;;
+;;;;; operator
+;;;;;
 (defun system-init (system)
   (when system
     (setf (get-root-object system :nodes) (make-hash-table))
