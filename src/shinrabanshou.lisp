@@ -5,10 +5,11 @@
 ;;;;; system
 ;;;;;
 (defvar *datastore* #P"/home/atman/appl/shinra/")
-(defvar *system* nil)
+(defvar *banshou* nil)
 
 (defun start ()
-  (make-prevalence-system *datastore* :prevalence-system-class 'banshou))
+  (setf *banshou*
+        (make-prevalence-system *datastore* :prevalence-system-class 'banshou)))
 
 
 ;;;;;
@@ -36,8 +37,8 @@
 
 
 ;; ex) (make-node :properties '((:id . 1) (:name . "hanage")))
-(defun make-node (&key (properties nil))
-  (properties-set (make-instance 'node) properties))
+;; (defun make-node (&key (properties nil))
+;;   (properties-set (make-instance 'node) properties))
 
 (defmethod get-node ((system banshou) id)
   (gethash id (get-root-object *system* :nodes)))
@@ -63,3 +64,35 @@
     (unless from (error "from が存在しないよ。id=~a" from-id))
     (unless to   (error "to が存在しないよ。id=~a"   to-id))
     (add-edge system from to)))
+
+
+
+
+;;;
+;;; node operator
+;;;
+;;; なんかこれで出来るんわ確認したんじゃけど、いまいち使い方がわかっちょらんのよね。
+;;; index-on とか使わんとイケんのんかねぇ。
+;;;
+;;; これで作ると、find-object-with-id で取得出来るね。
+;;; でも、class を指定せんといけんけぇ、それはそれで不便じゃねぇ。
+;;; あ、っとこの前に tx-create-id-counter しとかんとイケんかったけぇ。覚えときんさいよ。
+;;;
+(defun make-node (&rest slots)
+  (let ((slots-and-values (pairify slots)))
+    (execute-transaction
+     (tx-create-object *banshou* 'node slots-and-values))))
+
+(defun find-node (slot value)
+  (find-object-with-slot *banshou* 'node slot value))
+
+(defun delete-node (node)
+  (execute-transaction
+   (tx-delete-object *banshou* 'node (get-id node))))
+
+
+(defun make-edge (&rest slots)
+  (let ((slots-and-values (pairify slots)))
+    (execute-transaction
+     (tx-create-object *banshou* 'edge slots-and-values))))
+

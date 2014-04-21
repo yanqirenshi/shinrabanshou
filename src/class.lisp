@@ -53,18 +53,18 @@ shinra で構成される物が banshou である。と。
 ;;;;;
 ;;;;; Test
 ;;;;;
-(defun pairify (list)
-  (when list (concatenate 'list
-                          (list (subseq list 0 2))
-                          (pairify (rest (rest list))))))
+;; (defun pairify (list)
+;;   (when list (concatenate 'list
+;;                           (list (subseq list 0 2))
+;;                           (pairify (rest (rest list))))))
 
 
-(defun make-node-test (&rest slots)
-  "なんか動かない。。。。"
-  (let ((slots-and-values (pairify slots)))
-    (execute-transaction
-     ;; ここが。。。。
-     (tx-create-object *system* 'node slots-and-values))))
+;; (defun make-node-test (&rest slots)
+;;   "なんか動かない。。。。"
+;;   (let ((slots-and-values (pairify slots)))
+;;     (execute-transaction
+;;      ;; ここが。。。。
+;;      (tx-create-object *system* 'node slots-and-values))))
 
 
 
