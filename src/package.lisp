@@ -16,7 +16,14 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
 (in-package :cl-user)
 (defpackage shinrabanshou
   (:use :cl  :cl-prevalence)
-  (:nicknames :shinra))
+  (:nicknames :shinra)
+  (:export #:node
+           #:edge
+           #:banshou
+           #:find-node
+           #:delete-node
+           #:make-node
+           #:make-edge))
 (in-package :shinrabanshou)
 
 

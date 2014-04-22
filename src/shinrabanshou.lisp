@@ -71,6 +71,13 @@
 ;;;
 ;;; node operator
 ;;;
+
+(defun pairify (list)
+  (when list (concatenate 'list
+                          (list (subseq list 0 2))
+                          (pairify (rest (rest list))))))
+
+
 ;;; なんかこれで出来るんわ確認したんじゃけど、いまいち使い方がわかっちょらんのよね。
 ;;; index-on とか使わんとイケんのんかねぇ。
 ;;;
@@ -78,21 +85,21 @@
 ;;; でも、class を指定せんといけんけぇ、それはそれで不便じゃねぇ。
 ;;; あ、っとこの前に tx-create-id-counter しとかんとイケんかったけぇ。覚えときんさいよ。
 ;;;
-(defun make-node (&rest slots)
+(defun make-node (system &rest slots)
   (let ((slots-and-values (pairify slots)))
     (execute-transaction
-     (tx-create-object *banshou* 'node slots-and-values))))
+     (tx-create-object system 'node slots-and-values))))
 
-(defun find-node (slot value)
-  (find-object-with-slot *banshou* 'node slot value))
+(defun find-node (system slot value)
+  (find-object-with-slot system 'node slot value))
 
-(defun delete-node (node)
+(defun delete-node (system node)
   (execute-transaction
-   (tx-delete-object *banshou* 'node (get-id node))))
+   (tx-delete-object system 'node (get-id node))))
 
 
-(defun make-edge (&rest slots)
+(defun make-edge (system &rest slots)
   (let ((slots-and-values (pairify slots)))
     (execute-transaction
-     (tx-create-object *banshou* 'edge slots-and-values))))
+     (tx-create-object system 'edge slots-and-values))))
 
