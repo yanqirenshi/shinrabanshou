@@ -28,14 +28,14 @@ shinra で構成される物が banshou である。と。
 
 
 (defclass edge (shinra)
-  ((from :accessor from
-         :initarg :from
-         :initform nil
-         :documentation "")
-   (to :accessor to
-       :initarg :to
-       :initform nil
-       :documentation ""))
+  ((from-node :accessor from-node
+              :initarg :from-node
+              :initform nil
+              :documentation "")
+   (to-node :accessor to-node
+            :initarg :to-node
+            :initform nil
+            :documentation ""))
   (:documentation ""))
 
 
