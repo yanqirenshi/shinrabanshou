@@ -22,8 +22,9 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:node
            ;;
            #:edge
-           #:from-node
-           #:to-node
+           #:get-from-node
+           #:get-to-node
+           #:get-edge-type
            ;;
            #:banshou
            ::

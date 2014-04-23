@@ -28,14 +28,18 @@ shinra で構成される物が banshou である。と。
 
 
 (defclass edge (shinra)
-  ((from-node :accessor from-node
-              :initarg :from-node
-              :initform nil
-              :documentation "")
-   (to-node :accessor to-node
-            :initarg :to-node
-            :initform nil
-            :documentation ""))
+  ((from :accessor get-from-node-id
+         :initarg :from
+         :initform nil
+         :documentation "")
+   (to :accessor get-to-node-id
+       :initarg :to
+       :initform nil
+       :documentation "")
+   (type :accessor get-edge-type
+         :initarg :type
+         :initform nil
+         :documentation ""))
   (:documentation ""))
 
 
@@ -45,26 +49,3 @@ shinra で構成される物が banshou である。と。
 (defclass banshou (prevalence-system)
   ()
   (:documentation "万象：起きたこと、起きていること、その記憶。"))
-
-
-
-
-
-;;;;;
-;;;;; Test
-;;;;;
-;; (defun pairify (list)
-;;   (when list (concatenate 'list
-;;                           (list (subseq list 0 2))
-;;                           (pairify (rest (rest list))))))
-
-
-;; (defun make-node-test (&rest slots)
-;;   "なんか動かない。。。。"
-;;   (let ((slots-and-values (pairify slots)))
-;;     (execute-transaction
-;;      ;; ここが。。。。
-;;      (tx-create-object *system* 'node slots-and-values))))
-
-
-
