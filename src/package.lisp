@@ -27,7 +27,7 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:get-edge-type
            ;;
            #:banshou
-           ::
+           ;;
            #:get-at-id
            #:find-node
            #:delete-node

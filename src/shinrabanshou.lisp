@@ -56,14 +56,29 @@
 ;;; でも、class を指定せんといけんけぇ、それはそれで不便じゃねぇ。
 ;;; あ、っとこの前に tx-create-id-counter しとかんとイケんかったけぇ。覚えときんさいよ。
 ;;;
-(defgeneric make-shinra (banshou class-symbol slots-and-values) (:documentation ""))
-(defgeneric find-node (banshou slot value) (:documentation ""))
-(defgeneric delete-node ( banshou node) (:documentation ""))
-(defgeneric get-at-id (banshou id) (:documentation ""))
-(defgeneric make-node (banshou &rest slots) (:documentation ""))
-(defgeneric make-edge (banshou from to type &rest slots) (:documentation ""))
-(defgeneric get-from-node (banshou edge) (:documentation ""))
-(defgeneric get-to-node (banshou edge) (:documentation ""))
+(defgeneric make-shinra (banshou class-symbol slots-and-values)
+  (:documentation ""))
+
+(defgeneric find-node (banshou slot value)
+  (:documentation ""))
+
+(defgeneric delete-node ( banshou node)
+  (:documentation ""))
+
+(defgeneric get-at-id (banshou id)
+  (:documentation ""))
+
+(defgeneric make-node (banshou &rest slots)
+  (:documentation ""))
+
+(defgeneric make-edge (banshou from to type &rest slots)
+  (:documentation ""))
+
+(defgeneric get-from-node (banshou edge)
+  (:documentation ""))
+
+(defgeneric get-to-node (banshou edge)
+  (:documentation ""))
 
 
 (defmethod make-shinra ((banshou banshou) class-symbol slots-and-values)
