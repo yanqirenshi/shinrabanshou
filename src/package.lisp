@@ -26,6 +26,8 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:to-node
            ;;
            #:banshou
+           ::
+           #:get-at-id
            #:find-node
            #:delete-node
            #:make-node
