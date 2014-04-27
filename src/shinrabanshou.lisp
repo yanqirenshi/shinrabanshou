@@ -4,12 +4,12 @@
 ;;;;;
 ;;;;; system
 ;;;;;
-(defvar *datastore* #P"/home/atman/appl/shinra/")
-(defvar *banshou* nil)
-
-(defun start ()
-  (setf *banshou*
-        (make-prevalence-system *datastore* :prevalence-system-class 'banshou)))
+(defgeneric make-banshou (class-symbol data-stor) (:documentation ""))
+(defmethod make-banshou ((class-symbol symbol) data-stor)
+  (let ((sys (make-prevalence-system data-stor :prevalence-system-class class-symbol)))
+    (when (null (get-root-object sys :id-counter))
+      (execute-transaction (tx-create-id-counter sys)))
+    sys))
 
 
 ;;;

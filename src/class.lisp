@@ -2,7 +2,7 @@
 
 #|
 
-森羅
+森羅万象 を 構成する クラス。
 
 object-with-id を継承しているのは id を持つから。
 基本連番で良いかな。と。
@@ -10,8 +10,41 @@ object-with-id を継承しているのは id を持つから。
 shinra としての一意という訳ではないので node と edge に実装するほうが良いのかもしれませんね。
 
 |#
+
+
+;;;;;
+;;;;; utility class
+;;;;;
+(defclass footprint ()
+  ((user-code :accessor get-user-code :initarg :user-code :initform nil)
+   (timestamp :accessor get-timestamp :initarg :timestamp :initform nil)))
+
+(defun make-footprint (user-code &key (timestamp (get-universal-time)))
+  (make-instance 'footprint :user-code user-code :timestamp timestamp))
+
+
+(defclass mutable ()
+  ((create-time :documentation ""
+                :accessor get-create-time :initarg :create-time :initform nil)))
+
+(defclass immutable (mutable)
+  ((update-time :documentation ""
+                :accessor get-update-time :initarg :update-time :initform nil)))
+
+(defclass password (immutable)
+  ((spell       :documentation ""
+                :accessor get-spell       :initarg :spell       :initform nil)))
+
+;;;;;
+;;;;;
+;;;;; 森羅
+;;;;;
+;;;;;
 (defclass shinra (object-with-id)
-  ()
+  ((create-time :documentation ""
+                :accessor get-create-time :initarg :create-time :initform nil)
+   (update-time :documentation ""
+                :accessor get-update-time :initarg :update-time :initform nil))
   (:documentation "森羅 : 数多く並びつらなること。また，そのもの。
 この世を構成するもの。的な意味で Node と Edge の親クラスとしては良い感じかな。と。
 まぁ分かり難いっちゃぁそうなんですが、ヒンドゥー語からチョイスするよりは日本人には優しいかな。と。
@@ -44,7 +77,9 @@ shinra で構成される物が banshou である。と。
 
 
 ;;;;;
+;;;;;
 ;;;;; 万象
+;;;;;
 ;;;;;
 (defclass banshou (prevalence-system)
   ()
@@ -52,3 +87,38 @@ shinra で構成される物が banshou である。と。
 cl-prevalence の prevalence-system を継承しています。
 まぁ、今んところそのままで名前を変えただけですが。
 こう言うのってわかりニクイんですけど、何か好きなんですよね。"))
+
+
+
+
+;;;;;
+;;;;; shinra resource
+;;;;;
+(defclass resource (node)
+  ((buddha :documentation ""
+           :accessor get-buddha
+           :initarg :buddha
+           :initform nil)
+   (nirvana :documentation ""
+            :accessor get-nirvana
+            :initarg :nirvana
+            :initform nil)))
+
+
+(defclass user (resource)
+  ((code :documentation ""
+         :accessor get-code
+         :initarg :code
+         :initform nil)
+   (name :documentation ""
+         :accessor get-name
+         :initarg :name
+         :initform nil)
+   (note :documentation ""
+         :accessor get-note
+         :initarg :note
+         :initform nil)
+   (password :documentation ""
+             :accessor get-password
+             :initarg :password
+             :initform nil)))

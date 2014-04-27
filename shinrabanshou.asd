@@ -20,6 +20,7 @@
                 ((:file "package" )
                  (:file "utility"       :depends-on ("package"))
                  (:file "class"         :depends-on ("utility"))
+                 (:file "user"          :depends-on ("class"))
                  (:file "shinrabanshou" :depends-on ("class")))))
   :description ""
   :long-description

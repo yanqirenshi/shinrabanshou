@@ -27,6 +27,27 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:get-edge-type
            ;;
            #:banshou
+           #:make-banshou
+           ;;
+           #:footprint
+           #:get-user-code
+           #:get-timestamp
+           #:make-footprint
+           ;;
+           #:password
+           #:get-spell
+           #:get-create-time
+           #:get-update-time
+           ;;
+           #:resource
+           #:get-buddha
+           #:get-nirvana
+           ;;
+           #:user
+           #:get-code
+           #:get-name
+           #:get-note
+           #:get-password
            ;;
            #:get-at-id
            #:find-node
