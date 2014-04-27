@@ -12,37 +12,9 @@
         (make-prevalence-system *datastore* :prevalence-system-class 'banshou)))
 
 
-;;;;;
-;;;;; operator
-;;;;;
-(defun system-init (system)
-  (when system
-    (setf (get-root-object system :nodes) (make-hash-table))
-    (setf (get-root-object system :edges) (make-hash-table))
-    (setf (get-root-object system :node-id-counter) 0)
-    (setf (get-root-object system :edge-id-counter) 0)
-    system))
-
-(defgeneric property-set (shinra key val) (:documentation ""))
-(defmethod property-set ((obj shinra) key val)
-  (setf (gethash key (property obj)) val))
-
-(defgeneric properties-set (shinra properties) (:documentation ""))
-(defmethod properties-set ((obj shinra) properties)
-  (mapcar #'(lambda (x)
-              (property-set obj (car x) (cdr x)))
-          properties)
-  obj)
-
-(defgeneric property-get (shinra key) (:documentation ""))
-(defmethod property-get ((obj shinra) key)
-  (gethash key (property obj)))
-
-
 ;;;
 ;;; node operator
 ;;;
-
 (defun pairify (list)
   (when list (concatenate 'list
                           (list (subseq list 0 2))
