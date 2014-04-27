@@ -28,3 +28,23 @@
              'name name
              'note note))
 
+
+;; (defun gen-password (&key (length 8) (use-chars *password-characters*))
+;;   (let ((out ""))
+;;     (dotimes (i length)
+;;       (let ((col (random (length use-chars))))
+;;         (setf out
+;;               (concatenate 'string out (subseq use-chars col (+ 1 col))))))
+;;     out))
+
+
+;; (defmethod life? ((rsc resource) &key (time (get-universal-time)))
+;;   (let ((from (get-timestamp (get-buddha  rsc)))
+;; 	(to   (get-timestamp (get-nirvana rsc))))
+;;     (cond ((and (null to) (<= from time)) t)
+;; 	  ((and (not (null to)) 
+;; 		(and (<= from time)) (<= time to))
+;; 	   t)
+;; 	  (t nil))))
+
+
