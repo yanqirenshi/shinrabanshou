@@ -101,7 +101,10 @@
   (make-shinra system class-symbol (pairify slots)))
 
 
-;; edge
+;;;;;
+;;;;; edge @ class
+;;;;;
+;; 作る。
 (defgeneric make-edge (banshou class-symbol from to type &rest slots)
   (:documentation ""))
 (defmethod make-edge ((system banshou) (class-symbol symbol) (from node) (to node) type &rest slots)
@@ -118,14 +121,12 @@
                                      (list 'type type)))))
 
 
-;;; edge operator
-(defgeneric get-from-node (banshou edge)
-  (:documentation ""))
+;; operator
+(defgeneric get-from-node (banshou edge) (:documentation ""))
 (defmethod get-from-node ((system banshou) (edge edge))
   (get-at-id system (get-from-node-id edge)))
 
 
-(defgeneric get-to-node (banshou edge)
-  (:documentation ""))
+(defgeneric get-to-node (banshou edge) (:documentation ""))
 (defmethod get-to-node ((system banshou) (edge edge))
   (get-at-id system (get-to-node-id edge)))

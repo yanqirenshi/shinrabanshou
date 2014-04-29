@@ -22,7 +22,8 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                          (:file "class"    :depends-on ("utility"))
                          (:file "banshou"  :depends-on ("class"))
                          (:file "shinra"   :depends-on ("class"))
-                         (:file "user"     :depends-on ("class")))))
+                         (:file "user"     :depends-on ("class"))
+                         (:file "deccot"   :depends-on ("class")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames

@@ -42,12 +42,14 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:resource
            #:get-buddha
            #:get-nirvana
-           ;;
+           ;;;;; user
            #:user
-           #:get-code
-           #:get-name
-           #:get-note
-           #:get-password
+           #:master-user
+           ;; accessor
+           #:get-code #:get-name #:get-note #:get-password #:get-user
+           ;;;;; deccot
+           #:deccot
+           #:add-deccot
            ;;
            #:get-at-id
            #:find-node
