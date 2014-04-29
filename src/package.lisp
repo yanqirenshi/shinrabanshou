@@ -57,3 +57,10 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
 (in-package :shinrabanshou)
 
 
+
+(defvar *master-user-code* "@master")
+(defvar *master-user-name* "森羅万象 Master User")
+(defvar *master-user-password* "zaq12wsx")
+(defvar *master-user-note* "Created by shinrabanshou")
+(defvar *password-characters* "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-=!@#$%^&*()_+|[]{};:,./<>?")
+

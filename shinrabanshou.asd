@@ -1,8 +1,8 @@
 #|
-  This file is a part of shinrabanshou project.
-  Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 
-  Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
+Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
 |#
 
 (in-package :cl-user)
@@ -16,12 +16,13 @@
   :license "LLGPL"
   :depends-on (:cl-prevalence)
   :components ((:module "src"
-                :components
-                ((:file "package" )
-                 (:file "utility"       :depends-on ("package"))
-                 (:file "class"         :depends-on ("utility"))
-                 (:file "user"          :depends-on ("class"))
-                 (:file "shinrabanshou" :depends-on ("class")))))
+                        :components
+                        ((:file "package" )
+                         (:file "utility"  :depends-on ("package"))
+                         (:file "class"    :depends-on ("utility"))
+                         (:file "banshou"  :depends-on ("class"))
+                         (:file "shinra"   :depends-on ("class"))
+                         (:file "user"     :depends-on ("class")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames
