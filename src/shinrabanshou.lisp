@@ -11,6 +11,19 @@
       (execute-transaction (tx-create-id-counter sys)))
     sys))
 
+(defun class-id-ndexp (symbol)
+  (cl-ppcre:scan "^(\\S)+-ID-INDEX"
+                 (symbol-name symbol)))
+
+(defmethod class-id-list ((sys banshou))
+  (remove-if (complement #'class-id-ndexp)
+             (alexandria:hash-table-keys
+              (cl-prevalence::get-root-objects sys))))
+
+(defmethod get-object-list ((sys banshou) (class-symbol symbol))
+  (get-root-object sys
+                   (cl-prevalence::get-objects-root-name class-symbol)))
+
 
 ;;;
 ;;; node operator

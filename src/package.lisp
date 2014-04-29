@@ -15,7 +15,7 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
 
 (in-package :cl-user)
 (defpackage shinrabanshou
-  (:use :cl  :cl-prevalence)
+  (:use :cl :alexandria :cl-ppcre :cl-prevalence )
   (:nicknames :shinra)
   (:export #:property
            ;;

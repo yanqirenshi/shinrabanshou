@@ -102,7 +102,12 @@ cl-prevalence の prevalence-system を継承しています。
    (nirvana :documentation ""
             :accessor get-nirvana
             :initarg :nirvana
-            :initform nil)))
+            :initform nil)
+   (note :documentation ""
+         :accessor get-note
+         :initarg :note
+         :initform nil)))
+
 
 
 (defclass user (resource)
@@ -114,11 +119,19 @@ cl-prevalence の prevalence-system を継承しています。
          :accessor get-name
          :initarg :name
          :initform nil)
-   (note :documentation ""
-         :accessor get-note
-         :initarg :note
-         :initform nil)
    (password :documentation ""
              :accessor get-password
              :initarg :password
              :initform nil)))
+
+
+
+(defclass deccot (resource)
+  ((code :documentation ""
+         :accessor get-code
+         :initarg :code
+         :initform nil)
+   (name :documentation ""
+         :accessor get-name
+         :initarg :name
+         :initform nil)))
