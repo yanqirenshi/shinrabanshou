@@ -2,6 +2,21 @@
 
 
 ;;;;;
+;;;;; resource
+;;;;;
+(defmethod lifep ((rsc resource) &key (time (get-universal-time)))
+  (let ((from (get-buddha  rsc)) (to   (get-nirvana rsc)))
+    (cond ((and (null to)
+                (<= (get-timestamp from) time))
+           t)
+          ((and (not (null to))
+                (and (<= (get-timestamp from) time)
+                     (<= (get-timestamp time) to)))
+           t)
+          (t nil))))
+
+
+;;;;;
 ;;;;; 述語
 ;;;;;
 ;; 述語: node
@@ -57,17 +72,6 @@
 
 
 
-(defgeneric get-at-id (banshou id)
-  (:documentation ""))
-(defmethod get-at-id ((system banshou) id)
-  (car
-   (remove nil
-           ;; TODO: ここでは node edge の二つしか調べとらんけど、node edge の二つのサブクラスも含めて調べんといけんねぇ。
-           ;; TODO: make-node, make-edge んときに クラスをどっかに保持しとこぉか。
-           (list (find-object-with-id system 'node id)
-                 (find-object-with-id system 'edge id)))))
-
-
 ;;;;;
 ;;;;; 作る系の基礎
 ;;;;;
@@ -104,12 +108,11 @@
         ((null type)          (error "type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")))
   (unless (edgep class-symbol)
     (error "このクラスは edge のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-  (make-shinra system class-symbol
-               (pairify (concatenate 'list
-                                     slots
-                                     (list 'from (get-id from))
-                                     (list 'to   (get-id to))
-                                     (list 'type type)))))
+  (let ((param (list 'from (get-id from) 'to (get-id to) 'type type)))
+    (make-shinra system class-symbol
+                 (pairify (if (null slots)
+                              (concatenate 'list slots param)
+                              param)))))
 
 
 ;; operator

@@ -138,11 +138,7 @@ cl-prevalence の prevalence-system を継承しています。
 
 
 (defclass deccot (resource)
-  ((code :documentation ""
-         :accessor get-code
-         :initarg :code
-         :initform nil)
-   (name :documentation ""
+  ((name :documentation ""
          :accessor get-name
          :initarg :name
          :initform nil)))

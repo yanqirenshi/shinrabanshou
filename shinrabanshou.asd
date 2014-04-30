@@ -18,12 +18,14 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
   :components ((:module "src"
                         :components
                         ((:file "package" )
-                         (:file "utility"  :depends-on ("package"))
-                         (:file "class"    :depends-on ("utility"))
-                         (:file "banshou"  :depends-on ("class"))
-                         (:file "shinra"   :depends-on ("class"))
-                         (:file "user"     :depends-on ("class"))
-                         (:file "deccot"   :depends-on ("class")))))
+                         (:file "utility"      :depends-on ("package"))
+                         (:file "class"        :depends-on ("utility"))
+                         (:file "password"     :depends-on ("class"))
+                         (:file "mail-address" :depends-on ("class"))
+                         (:file "banshou"      :depends-on ("class"))
+                         (:file "shinra"       :depends-on ("class"))
+                         (:file "user"         :depends-on ("class"))
+                         (:file "deccot"       :depends-on ("class")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames
