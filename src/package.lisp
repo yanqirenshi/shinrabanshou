@@ -19,38 +19,23 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
   (:nicknames :shinra)
   (:export #:property
            ;;
-           #:node
            ;;
-           #:edge
-           #:get-from-node
-           #:get-to-node
-           #:get-edge-type
-           ;;
+           #:footprint   #:get-user-code  #:get-timestamp
+           #:password    #:get-spell #:get-create-time #:get-update-time
            #:banshou
-           #:make-banshou
-           ;;
-           #:footprint
-           #:get-user-code
-           #:get-timestamp
-           #:make-footprint
-           ;;
-           #:password
-           #:get-spell
-           #:get-create-time
-           #:get-update-time
-           ;;
-           #:resource
-           #:get-buddha
-           #:get-nirvana
-           ;;;;; user
-           #:user
+           #:node
+           #:edge        #:get-from-node #:get-to-node #:get-edge-type
+           #:resource    #:get-buddha #:get-nirvana
+           #:user        #:get-code #:get-name #:get-note #:get-password #:get-user
            #:master-user
-           ;; accessor
-           #:get-code #:get-name #:get-note #:get-password #:get-user
-           ;;;;; deccot
            #:deccot
+           ;; banshou
+           #:make-banshou
+           ;; footpring
+           #:make-footprint
+           ;; deccot
            #:add-deccot
-           ;;
+           ;; banshou
            #:get-at-id
            #:find-node
            #:delete-node

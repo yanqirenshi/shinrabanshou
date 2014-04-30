@@ -27,6 +27,7 @@ gremlin を参考にしよう。
 
 
 ;; make
+(defgeneric make-deccot (banshou user &key name password note timestamp))
 (defmethod make-deccot ((sys banshou)
                         (creater user)
                         &key
@@ -67,6 +68,7 @@ gremlin を参考にしよう。
 ;; (print-deccot-lit *sys*)
 (defun gen-list-sep (len) (make-string len :initial-element #\-))
 
+(defgeneric print-deccot-lit (banshou &key stream))
 (defmethod print-deccot-lit ((sys banshou) &key (stream t))
   (let ((fmt "| ~4a | ~5a |  ~a ~%"))
     (format stream fmt "stat" "id" "name")

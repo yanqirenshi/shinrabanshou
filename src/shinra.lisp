@@ -4,6 +4,7 @@
 ;;;;;
 ;;;;; resource
 ;;;;;
+(defgeneric lifep (resource &key time))
 (defmethod lifep ((rsc resource) &key (time (get-universal-time)))
   (let ((from (get-buddha  rsc)) (to   (get-nirvana rsc)))
     (cond ((and (null to)

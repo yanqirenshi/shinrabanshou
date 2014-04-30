@@ -18,6 +18,19 @@
     sys))
 
 
+
+;;;;;
+;;;;; Permission
+;;;;;
+(defgeneric chek-permission (banshou user &rest param) )
+(defmethod chek-permission ((sys banshou) (user user) &rest param)
+  (list sys user param))
+
+
+
+;;;;;
+;;;;; getter
+;;;;;
 (defun class-id-indexp (symbol)
   (scan "^(\\S)+-ID-INDEX$"
         (symbol-name symbol)))
@@ -103,7 +116,7 @@
                       root
                       (length (get-root-object sys root))))
           (root-list sys))
-  *sys*)
+  sys)
 
 
 

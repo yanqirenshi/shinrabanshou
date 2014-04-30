@@ -133,7 +133,15 @@ cl-prevalence の prevalence-system を継承しています。
    (password :documentation ""
              :accessor get-password
              :initarg :password
-             :initform nil)))
+             :initform nil)
+   (forces   :documentation ""
+             :accessor get-forces
+             :initarg :forces
+             :initform nil))
+  (:documentation ""))
+
+
+
 
 
 
@@ -141,4 +149,8 @@ cl-prevalence の prevalence-system を継承しています。
   ((name :documentation ""
          :accessor get-name
          :initarg :name
-         :initform nil)))
+         :initform nil)
+   (forces   :documentation ""
+             :accessor get-forces
+             :initarg :forces
+             :initform nil)))
