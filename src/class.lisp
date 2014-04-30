@@ -35,6 +35,17 @@ shinra としての一意という訳ではないので node と edge に実装�
   ((spell       :documentation ""
                 :accessor get-spell       :initarg :spell       :initform nil)))
 
+
+;; <参考>
+;; http://ja.wikipedia.org/wiki/%E3%83%A1%E3%83%BC%E3%83%AB%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9
+(defclass mail-address ()
+  ((local       :documentation ""
+                :accessor get-local       :initarg :local       :initform nil)
+   (domain      :documentation ""
+                :accessor get-domain       :initarg :domain       :initform nil)))
+
+
+
 ;;;;;
 ;;;;;
 ;;;;; 森羅

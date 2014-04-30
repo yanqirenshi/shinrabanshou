@@ -1,15 +1,6 @@
 (in-package :shinrabanshou)
 
 
-;;;
-;;; node operator
-;;;
-(defun pairify (list)
-  (when list (concatenate 'list
-                          (list (subseq list 0 2))
-                          (pairify (rest (rest list))))))
-
-
 ;;;;;
 ;;;;; 述語
 ;;;;;
