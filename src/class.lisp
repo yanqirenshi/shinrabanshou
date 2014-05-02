@@ -121,6 +121,20 @@ cl-prevalence の prevalence-system を継承しています。
 
 
 
+(defclass force (resource)
+  ((name :documentation ""
+         :accessor get-name
+         :initarg :name
+         :initform nil)
+   (password :documentation ""
+             :accessor get-password
+             :initarg :password
+             :initform nil))
+  (:documentation ""))
+
+
+
+
 (defclass user (resource)
   ((code :documentation ""
          :accessor get-code
@@ -139,8 +153,6 @@ cl-prevalence の prevalence-system を継承しています。
              :initarg :forces
              :initform nil))
   (:documentation ""))
-
-
 
 
 
