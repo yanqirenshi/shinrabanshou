@@ -1,6 +1,6 @@
 #|
-  This file is a part of shinrabanshou project.
-  Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 |#
 
 (in-package :cl-user)
@@ -12,8 +12,8 @@
   :author "Satoshi Iwasaki"
   :license "LLGPL"
   :depends-on (:shinrabanshou
-               :cl-test-more)
+               :fiveam)
   :components ((:module "t"
-                :components
-                ((:file "shinrabanshou"))))
+                        :components
+                        ((:file "shinrabanshou"))))
   :perform (load-op :after (op c) (asdf:clear-system c)))

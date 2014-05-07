@@ -17,7 +17,8 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
   :depends-on (:cl-prevalence)
   :components ((:module "src"
                         :components
-                        ((:file "package" )
+                        ((:file "+cl-prevalence")
+                         (:file "package"      :depends-on ("+cl-prevalence"))
                          (:file "utility"      :depends-on ("package"))
                          (:file "class"        :depends-on ("utility"))
                          (:file "password"     :depends-on ("class"))
