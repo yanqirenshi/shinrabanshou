@@ -6,30 +6,44 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 (in-package :cl-user)
 (defpackage shinrabanshou-test
   (:use :cl
+        ;;:cl-prevalence
         :shinrabanshou
-        :fiveam))
+        :fiveam)
+  (:nicknames :shinra-test))
 (in-package :shinrabanshou-test)
 
-;;(plan nil)
+;; とりあえず万象を作成。
+;; TODO: ディレクトリは自動判断したいね。
+;; TODO: ディレクトリのファイルは事前に全部削除する。
+;; (defvar *sys-stor* "/home/atman/prj/shinrabanshou/t/data")
+;; (defvar *sys* (make-banshou 'banshou *sys-stor*))
 
-;; blah blah blah.
 
-;;(finalize)
+;; (defclass test-node (node)
+;;   ((code :accessor get-code :initform nil :initarg :code)
+;;    (name :accessor get-name :initform nil :initarg :name)))
 
-(defclass test-node (node)
-  ((code :accessor get-code :initform nil :initarg :code)
-   (name :accessor get-name :initform nil :initarg :name)))
+;; (defvar *node1* (make-node *sys* 'test-node))
+;; (defvar *node2* (make-node *sys* 'test-node))
+;; (defvar *node3* (make-node *sys* 'test-node))
 
-(test cl-prevalence::slot-index-xxx-add
-  ""
-  (let ((node1  (make-instance 'test-node :id 1))
-        (node2  (make-instance 'test-node :id 2))
-        (node3  (make-instance 'test-node :id 3))
-        (edge1  (make-instance 'edge      :id 4))
-        (edge2  (make-instance 'edge      :id 5))
-        (index-from  (make-hash-table :test 'equalp)))
-    (list node1 node2 node3 edge1 edge2 index)
-    ;; make-banshou. includeing index-on edge-from edge-to.
-    ;; make-node node1 node2 node3
-    ;; make-edge edge1 edge2
-    ))
+;; (defvar *edge1* (make-edge *sys* 'edge *node1* *node2* :TEST))
+;; (defvar *edge2* (make-edge *sys* 'edge *node1* *node3* :TEST))
+
+;; (test cl-prevalence::slot-index-xxx-add
+;;   ""
+;;   (let* ((sys *sys*)
+;;       (index (cl-prevalence:get-root-object sys :EDGE-FROM-INDEX))
+;;       (index-inner (gethash (cl-prevalence:get-id *node1*) index)))
+;;     (is (hash-table-p index))
+;;     (is (hash-table-p index-inner))
+;;     (is (= (hash-table-count index-inner) 2))
+;;     (is (equalp (alexandria:hash-table-keys index-inner)
+;;              (list (cl-prevalence:get-id *edge2*)
+;;                    (cl-prevalence:get-id *edge1*))))
+;;     (is (eq *edge1* (gethash (cl-prevalence:get-id *edge1*) index-inner)))
+;;     (is (eq *edge2* (gethash (cl-prevalence:get-id *edge2*) index-inner)))
+
+;;     ))
+
+;; (run!)

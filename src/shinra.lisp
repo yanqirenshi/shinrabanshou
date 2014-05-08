@@ -24,7 +24,7 @@
 (defgeneric nodep (obj) (:documentation "symbolで指定された class が node のサブクラスかどうかを返す。
 でも、こんなんでエエんじゃろうか。。。。
 ほかにスマートな方法がありそうなんじゃけど。。。"))
-(defmethod nodep (obj) nil)
+(defmethod nodep (obj) (declare (ignore obj)) nil)
 (defmethod nodep ((node node)) t)
 (defmethod nodep ((class-symbol symbol))
   (handler-case
@@ -36,7 +36,7 @@
 (defgeneric edgep (obj) (:documentation "symbolで指定された class が edge のサブクラスかどうかを返す。
 でも、こんなんでエエんじゃろうか。。。。
 ほかにスマートな方法がありそうなんじゃけど。。。"))
-(defmethod edgep (obj) nil)
+(defmethod edgep (obj) (declare (ignore obj)) nil)
 (defmethod edgep ((edge edge)) t)
 (defmethod edgep ((class-symbol symbol))
   (handler-case
