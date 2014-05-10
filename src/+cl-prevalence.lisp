@@ -71,3 +71,43 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
       ;; スロット・インデックスからオブジェクトを削除します。
       ;;
       (slot-index-xxx-remove index object slot))))
+
+
+
+
+;;;;;
+;;;;; find-object-with-slot
+;;;;;
+;; default code
+;; (defmethod find-object-with-slot ((system prevalence-system) class slot value &optional (test #'equalp))
+;;   "Find and return the object in system of class with slot equal to value, null if not found"
+;;   (let* ((index-name (get-objects-slot-index-name class slot))
+;;       (index (get-root-object system index-name)))
+;;     (if index
+;;         (find-object-with-id system class (gethash value index))
+;;      (find value (find-all-objects system class)
+;;            :key #'(lambda (object) (slot-value object slot)) :test test))))
+
+(defmethod find-object-with-slot-core ((system prevalence-system) class index)
+  ;; TODO: index が null のケース
+  ;; TODO: index が zero件 のケース
+  (let* ((ids (alexandria:hash-table-values  index))
+         (len (length ids)))
+    (cond ((= len 0) nil)
+          ((= len 1) (find-object-with-id system class (first ids)))
+          (t (mapcar #'(lambda (id)
+                         (find-object-with-id system class id))
+                     ids)))))
+
+(defmethod find-object-with-slot ((system prevalence-system) class slot value &optional (test #'equalp))
+  "Find and return the object in system of class with slot equal to value, null if not found"
+  (let* ((index-name (get-objects-slot-index-name class slot))
+         (index      (get-root-object system index-name)))
+    (if index
+        ;; index が存在した場合は index で検索する。
+        (find-object-with-slot-core system class (gethash value index))
+        ;; index が存在しない場合は 。。。
+        (find value (find-all-objects system class)
+              :key #'(lambda (object) (slot-value object slot)) :test test))))
+
+

@@ -6,7 +6,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 (in-package :cl-user)
 (defpackage shinrabanshou-test
   (:use :cl
-        ;;:cl-prevalence
+        :cl-prevalence
         :shinrabanshou
         :fiveam)
   (:nicknames :shinra-test))
@@ -18,21 +18,21 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 (in-suite test-shinrabanshou)
 
 (defvar *sys*      nil)
-(defvar *sys-stor* nil)
-(defvar *node1* nil)
-(defvar *node2* nil)
-(defvar *node3* nil)
-(defvar *edge1* nil)
-(defvar *edge2* nil)
-
-;; TODO: ディレクトリは自動判断したいね。
-;; (setf *sys-stor* "/home/atman/prj/shinrabanshou/t/data/")
-;; (setf *sys-stor* "/Users/yanqirenshi/prj/shinrabanshou/t/data/")
+(defvar *sys-stor* nil "TODO: ディレクトリは自動判断したいね。")
+(defvar *node1*    nil)
+(defvar *node2*    nil)
+(defvar *node3*    nil)
+(defvar *edge1*    nil)
+(defvar *edge2*    nil)
 
 (defun clean-data-sotr (data-stor)
   (when (probe-file data-stor)
     (dolist (pathname (directory (merge-pathnames "*.xml" data-stor)))
       (delete-file pathname))))
+
+(defclass test-node (node)
+  ((code  :accessor get-code  :initform nil :initarg :code)
+   (title :accessor get-title :initform nil :initarg :title)))
 
 (test test-managed-prevalence-start
   (progn
@@ -48,31 +48,31 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
     (setf *node2* (make-node *sys* 'test-node))
     (setf *node3* (make-node *sys* 'test-node))
     (setf *edge1* (make-edge *sys* 'edge *node1* *node2* :TEST))
-    (setf *edge2* (make-edge *sys* 'edge *node1* *node3* :TEST))
-    ))
+    (setf *edge2* (make-edge *sys* 'edge *node1* *node3* :TEST))))
 
 
-
-(defclass test-node (node)
-  ((code :accessor get-code :initform nil :initarg :code)
-   (name :accessor get-name :initform nil :initarg :name)))
 
 
 
 (test cl-prevalence::slot-index-xxx-add
   ""
   (let* ((sys *sys*)
-         (index (cl-prevalence:get-root-object sys :EDGE-FROM-INDEX))
-         (index-inner (gethash (cl-prevalence:get-id *node1*) index)))
+         (index       (get-root-object sys :EDGE-FROM-INDEX))
+         (index-inner (gethash (get-id *node1*) index)))
+    ;; 普通にインデックスが出来ているか。
     (is (hash-table-p index))
     (is (hash-table-p index-inner))
+    ;; index-inner は 複数出来ているはずなので、その件数を確認する。ここでは2件の予定
     (is (= (hash-table-count index-inner) 2))
     (is (equalp (alexandria:hash-table-keys index-inner)
-                (list (cl-prevalence:get-id *edge2*)
-                      (cl-prevalence:get-id *edge1*))))
-    (is (eq *edge1* (gethash (cl-prevalence:get-id *edge1*) index-inner)))
-    (is (eq *edge2* (gethash (cl-prevalence:get-id *edge2*) index-inner)))
-
+                (list (get-id *edge2*) (get-id *edge1*))))
+    (is (eq (get-id *edge1*)
+            (gethash (get-id *edge1*) index-inner)))
+    (is (eq (get-id *edge2*)
+            (gethash (get-id *edge2*) index-inner)))
+    ;; 実際に取得してみる。
+    (let ((edges (find-object-with-slot *sys* 'edge 'from (get-id *node1*))))
+      (is (eq 2 (length edges))))
     ))
 
 ;;(run!)
