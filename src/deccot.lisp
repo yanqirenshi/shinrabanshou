@@ -4,6 +4,7 @@
 ;;;;;
 ;;;;; deccot
 ;;;;;
+(defgeneric get-owner-edge-at-deccot (banshou deccot))
 (defmethod get-owner-edge-at-deccot ((sys banshou) (deccot deccot))
   "TODO:もっと効率的なコードがかけるんじゃろうけど。"
   (car
