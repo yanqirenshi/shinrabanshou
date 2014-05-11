@@ -73,6 +73,16 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
     ;; 実際に取得してみる。
     (let ((edges (find-object-with-slot *sys* 'edge 'from (get-id *node1*))))
       (is (eq 2 (length edges))))
+
+    ;;; indexが作成されている場合
+    ;; 検索結果: 0件/10件
+    ;; 検索結果: 1件/10件
+    ;; 検索結果: 2件/10件
+
+    ;;; indexが作成されていない場合
+    ;; 検索結果: 0件/10件
+    ;; 検索結果: 1件/10件
+    ;; 検索結果: 2件/10件
     ))
 
 ;;(run!)

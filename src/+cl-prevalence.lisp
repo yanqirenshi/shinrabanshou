@@ -22,7 +22,9 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
 |#
 
 
-;;
+;;;;;
+;;;;; add slot-index
+;;;;;
 (defun slot-index-xxx-add (index object slot)
   (let ((id-map (gethash (slot-value object slot) index))
         (id     (get-id object)))
@@ -36,6 +38,19 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
       ;; 存在しない場合は追加する。
       (setf (gethash id id-map) (get-id object)))))
 
+
+(defun add-object-to-slot-index (system class slot object)
+  "スロット・インデックスにオブジェクトを登録します。"
+  (let* ((index-name (get-objects-slot-index-name class slot))
+         (index (get-root-object system index-name)))
+    (when (and index  (slot-boundp object slot))
+      ;; 登録は実質こちらでやってます。
+      (slot-index-xxx-add index object slot))))
+
+
+;;;;;
+;;;;; remove slot-index
+;;;;;
 (defun slot-index-xxx-remove (index object slot)
   (let ((id-map (gethash (slot-value object slot) index))
         (id     (get-id object)))
@@ -49,27 +64,12 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
         (remhash (slot-value object slot) index)))))
 
 
-;;
-(defun add-object-to-slot-index (system class slot object)
-  "Add an index entry using this slot to this object"
-  (let* ((index-name (get-objects-slot-index-name class slot))
-         (index (get-root-object system index-name)))
-    (when (and index  (slot-boundp object slot))
-      ;;
-      ;; スロット・インデックスにオブジェクトを登録します。
-      ;;
-      (slot-index-xxx-add index object slot))))
-
-
-;;
 (defun remove-object-from-slot-index (system class slot object)
-  "Remove the index entry using this slot to this object"
+  "スロット・インデックスからオブジェクトを削除します。"
   (let* ((index-name (get-objects-slot-index-name class slot))
          (index (get-root-object system index-name)))
     (when (and index (slot-boundp object slot))
-      ;;
-      ;; スロット・インデックスからオブジェクトを削除します。
-      ;;
+      ;; 削除は実質こちらでやってます。
       (slot-index-xxx-remove index object slot))))
 
 
@@ -78,36 +78,38 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
 ;;;;;
 ;;;;; find-object-with-slot
 ;;;;;
-;; default code
-;; (defmethod find-object-with-slot ((system prevalence-system) class slot value &optional (test #'equalp))
-;;   "Find and return the object in system of class with slot equal to value, null if not found"
-;;   (let* ((index-name (get-objects-slot-index-name class slot))
-;;       (index (get-root-object system index-name)))
-;;     (if index
-;;         (find-object-with-id system class (gethash value index))
-;;      (find value (find-all-objects system class)
-;;            :key #'(lambda (object) (slot-value object slot)) :test test))))
+(defmethod find-object-with-slot-use-index ((system prevalence-system) class index)
+  (when index
+    (let* ((ids (alexandria:hash-table-values  index))
+           (len (length ids)))
+      (cond ((= len 0) nil)
+            ((= len 1) (list (find-object-with-id system class (first ids))))
+            (t (mapcar #'(lambda (id)
+                           (find-object-with-id system class id))
+                       ids))))))
 
-(defmethod find-object-with-slot-core ((system prevalence-system) class index)
-  ;; TODO: index が null のケース
-  ;; TODO: index が zero件 のケース
-  (let* ((ids (alexandria:hash-table-values  index))
-         (len (length ids)))
-    (cond ((= len 0) nil)
-          ((= len 1) (find-object-with-id system class (first ids)))
-          (t (mapcar #'(lambda (id)
-                         (find-object-with-id system class id))
-                     ids)))))
+(defmethod find-object-with-slot-full-scan ((system prevalence-system) class slot value test)
+  "オブジェクトを全件検索します。
+TODO: 今は一つの値しか返しませんが、本当は複数返したいんです。
+"
+  (find value (find-all-objects system class)
+        :key #'(lambda (object) (slot-value object slot)) :test test))
+
 
 (defmethod find-object-with-slot ((system prevalence-system) class slot value &optional (test #'equalp))
-  "Find and return the object in system of class with slot equal to value, null if not found"
+  "Find and return the object in system of class with slot equal to value, null if not found
+オブジェクトのスロットの値を検索して、ヒツトしたものを返します。
+対象のスロットにインデックスが貼られている場合はインデックスを利用して検索します。
+インデックスが存在しない場合は 全件検索します。
+
+返す値はリスト形式で返します。なもんで、存在しない場合は nil を返します。
+"
   (let* ((index-name (get-objects-slot-index-name class slot))
          (index      (get-root-object system index-name)))
     (if index
         ;; index が存在した場合は index で検索する。
-        (find-object-with-slot-core system class (gethash value index))
-        ;; index が存在しない場合は 。。。
-        (find value (find-all-objects system class)
-              :key #'(lambda (object) (slot-value object slot)) :test test))))
+        (find-object-with-slot-use-index system class (gethash value index))
+        ;; index が存在しない場合は全部検索します。
+        (find-object-with-slot-full-scan system class slot value test))))
 
 
