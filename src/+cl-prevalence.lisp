@@ -78,6 +78,7 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
 ;;;;;
 ;;;;; find-object-with-slot
 ;;;;;
+(defgeneric find-object-with-slot-use-index (system class index))
 (defmethod find-object-with-slot-use-index ((system prevalence-system) class index)
   (when index
     (let* ((ids (alexandria:hash-table-values  index))
@@ -88,6 +89,7 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
                            (find-object-with-id system class id))
                        ids))))))
 
+(defgeneric find-object-with-slot-full-scan (system class slot value test))
 (defmethod find-object-with-slot-full-scan ((system prevalence-system) class slot value test)
   "オブジェクトを全件検索します。
 TODO: 今は一つの値しか返しませんが、本当は複数返したいんです。
