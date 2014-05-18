@@ -92,10 +92,10 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
 (defgeneric find-object-with-slot-full-scan (system class slot value test))
 (defmethod find-object-with-slot-full-scan ((system prevalence-system) class slot value test)
   "オブジェクトを全件検索します。
-TODO: 今は一つの値しか返しませんが、本当は複数返したいんです。
-"
-  (find value (find-all-objects system class)
-        :key #'(lambda (object) (slot-value object slot)) :test test))
+TODO: 元々は一つの値しとらんかったけぇ、全部返すように変更したんじゃけどテストをまだしとらんのんよ。"
+  (remove-if #'(lambda (object)
+                 (not (funcall test value (slot-value object slot))))
+             (find-all-objects system class)))
 
 
 (defmethod find-object-with-slot ((system prevalence-system) class slot value &optional (test #'equalp))
