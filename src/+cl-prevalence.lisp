@@ -1,24 +1,6 @@
 (in-package :cl-prevalence)
 #|
-
 http://www20380ui.sakura.ne.jp/wiki/cl/prevalence/index.php/Article:Object-index
-
-なんか目的があいまいになってきたね。
-
-以下のような関係が発生したときに、Edge の from/to にインデックスを貼ると問題が発生します。
-<ケース>
-1: N1 f--- E1 ---t N2
-2: N1 f--- E2 ---t N3
-
-現在の cl-prevalence のスロットインデックスは 単一キーしか対応しとらんのよ。
-じゃけぇ上のケースじゃと 2: の追加で 1: の分が消えてしまうんよね。
-
-"from が N1 のもの" ってすると 2: しか出てこんのんよ。
-これじゃぁイケんいね。
-
-key: N1,  val: E1, E2  にならんにゃぁイケんけぇ。
-key: N1,  val: E1      じゃぁ話しにならんけぇ。
-
 |#
 
 
@@ -48,6 +30,7 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
       (slot-index-xxx-add index object slot))))
 
 
+
 ;;;;;
 ;;;;; remove slot-index
 ;;;;;
@@ -60,6 +43,7 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
       (when (gethash id id-map)
         (remhash id id-map))
       ;; id-map が空になったら、index から削除する。
+      ;; TODO: これ、削除する必要あるの？
       (when (= (hash-table-size id-map) 0)
         (remhash (slot-value object slot) index)))))
 
@@ -91,8 +75,7 @@ key: N1,  val: E1      じゃぁ話しにならんけぇ。
 
 (defgeneric find-object-with-slot-full-scan (system class slot value test))
 (defmethod find-object-with-slot-full-scan ((system prevalence-system) class slot value test)
-  "オブジェクトを全件検索します。
-TODO: 元々は一つの値しとらんかったけぇ、全部返すように変更したんじゃけどテストをまだしとらんのんよ。"
+  "オブジェクトを全件検索します。"
   (remove-if #'(lambda (object)
                  (not (funcall test value (slot-value object slot))))
              (find-all-objects system class)))

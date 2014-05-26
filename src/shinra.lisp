@@ -4,7 +4,8 @@
 ;;;;;
 ;;;;; resource
 ;;;;;
-(defgeneric lifep (resource &key time))
+(defgeneric lifep (resource &key time)
+  (:documentation"リソースが生きているかを返します。"))
 (defmethod lifep ((rsc resource) &key (time (get-universal-time)))
   (let ((from (get-buddha  rsc)) (to   (get-nirvana rsc)))
     (cond ((and (null to)
@@ -17,10 +18,10 @@
           (t nil))))
 
 
+
 ;;;;;
 ;;;;; 述語
 ;;;;;
-;; 述語: node
 (defgeneric nodep (obj) (:documentation "symbolで指定された class が node のサブクラスかどうかを返す。
 でも、こんなんでエエんじゃろうか。。。。
 ほかにスマートな方法がありそうなんじゃけど。。。"))
@@ -32,7 +33,6 @@
     (error () nil)))
 
 
-;; 述語: edge
 (defgeneric edgep (obj) (:documentation "symbolで指定された class が edge のサブクラスかどうかを返す。
 でも、こんなんでエエんじゃろうか。。。。
 ほかにスマートな方法がありそうなんじゃけど。。。"))
@@ -45,28 +45,21 @@
 
 
 
-
-;;; なんかこれで出来るんわ確認したんじゃけど、いまいち使い方がわかっちょらんのよね。
-;;; index-on とか使わんとイケんのんかねぇ。
-;;;
-;;; これで作ると、find-object-with-id で取得出来るね。
-;;; でも、class を指定せんといけんけぇ、それはそれで不便じゃねぇ。
-;;; あ、っとこの前に tx-create-id-counter しとかんとイケんかったけぇ。覚えときんさいよ。
-;;;
-;;; なんか 余分な関数が多いね。整理する必要がある思うんじゃけど。
-;;; shinra はあくまで基礎部分じゃけぇ、これ自身で使えんでもエエんよね。
-;;; 汎用的な Graph Database じゃなくて、Common Lisp 上で拡張しながら利用する Graph Database なんよ。
-;;; まぁ、考えならがらかいとるけぇ、明日には別のこと言うとるかもしれんのんじゃけどね。
-;;;
+;;;;;
+;;;;; 検索
+;;;;;
 (defgeneric find-node (banshou slot value)
-  (:documentation ""))
+  (:documentation "Nodeを検索します。"))
 (defmethod find-node ((system banshou) slot value)
   (find-object-with-slot system 'node slot value))
 
 
 
+;;;;;
+;;;;; 削除
+;;;;;
 (defgeneric delete-node ( banshou node)
-  (:documentation ""))
+  (:documentation "Nodeを削除します。"))
 (defmethod delete-node ((system banshou) (node node))
   (execute-transaction
    (tx-delete-object system 'node (get-id node))))
@@ -97,10 +90,7 @@
   (make-shinra system class-symbol (pairify slots)))
 
 
-;;;;;
-;;;;; edge @ class
-;;;;;
-;; 作る。
+;; edge
 (defgeneric make-edge (banshou class-symbol from to type &rest slots)
   (:documentation ""))
 (defmethod make-edge ((system banshou) (class-symbol symbol) (from node) (to node) type &rest slots)
@@ -116,7 +106,7 @@
                               param)))))
 
 
-;; operator
+;; edge operator
 (defgeneric get-from-node (banshou edge) (:documentation ""))
 (defmethod get-from-node ((system banshou) (edge edge))
   (get-at-id system (get-from-node-id edge)))

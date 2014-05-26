@@ -27,6 +27,8 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:edge        #:get-from-node #:get-to-node #:get-edge-type
            #:resource    #:get-buddha #:get-nirvana
            #:lifep
+           #:nodep
+           #:edgep
            #:user        #:get-code #:get-name #:get-note #:get-password #:get-user
            #:master-user
            #:deccot
