@@ -14,19 +14,18 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
   :version "0.1"
   :author "Satoshi Iwasaki"
   :license "LLGPL"
-  :depends-on (:cl-prevalence)
+  :depends-on (:alexandria :cl-ppcre :cl+ :upanishad)
   :components ((:module "src"
                         :components
-                        ((:file "+cl-prevalence")
-                         (:file "package"      :depends-on ("+cl-prevalence"))
+                        ((:file "package")
                          (:file "utility"      :depends-on ("package"))
                          (:file "class"        :depends-on ("utility"))
                          (:file "password"     :depends-on ("class"))
                          (:file "mail-address" :depends-on ("class"))
-                         (:file "banshou"      :depends-on ("class"))
                          (:file "shinra"       :depends-on ("class"))
-                         (:file "user"         :depends-on ("class"))
-                         (:file "deccot"       :depends-on ("class")))))
+                         (:file "user"         :depends-on ("shinra"))
+                         (:file "banshou"      :depends-on ("user"))
+                         (:file "deccot"       :depends-on ("user")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames

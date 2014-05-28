@@ -6,7 +6,7 @@
 ;;;;;
 (defgeneric make-banshou (class-symbol data-stor) (:documentation ""))
 (defmethod make-banshou ((class-symbol symbol) data-stor)
-  (let ((sys (make-prevalence-system data-stor :prevalence-system-class class-symbol)))
+  (let ((sys (make-pool data-stor :pool-class class-symbol)))
     ;; id-counter が生成されていない場合は生成する。
     (when (null (get-root-object sys :id-counter))
       (execute-transaction (tx-create-id-counter sys)))
@@ -44,16 +44,16 @@
 (defmethod class-id-list ((sys banshou))
   (remove-if (complement #'class-id-indexp)
              (hash-table-keys
-              (cl-prevalence::get-root-objects sys))))
+              (upanishad::get-root-objects sys))))
 
 (defgeneric root-list (banshou))
 (defmethod root-list ((sys banshou))
   (remove-if (complement #'class-id-rootp)
              (hash-table-keys
-              (cl-prevalence::get-root-objects sys))))
+              (upanishad::get-root-objects sys))))
 
 (defun object-root-name (symbol)
-  (cl-prevalence::get-objects-root-name symbol))
+  (upanishad::get-objects-root-name symbol))
 
 
 (defgeneric get-object-list (banshou symbol))

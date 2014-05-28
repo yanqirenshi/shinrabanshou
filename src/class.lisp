@@ -51,7 +51,7 @@ shinra としての一意という訳ではないので node と edge に実装�
 ;;;;; 森羅
 ;;;;;
 ;;;;;
-(defclass shinra (object-with-id)
+(defclass shinra (atman)
   ((create-time :documentation ""
                 :accessor get-create-time :initarg :create-time :initform nil)
    (update-time :documentation ""
@@ -92,7 +92,7 @@ shinra で構成される物が banshou である。と。
 ;;;;; 万象
 ;;;;;
 ;;;;;
-(defclass banshou (prevalence-system)
+(defclass banshou (pool)
   ()
   (:documentation "万象：起きたこと、起きていること、その記憶。
 cl-prevalence の prevalence-system を継承しています。
