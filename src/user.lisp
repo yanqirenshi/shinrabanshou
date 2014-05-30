@@ -24,22 +24,24 @@
          (error "code が文字列の場合、0バイトの文字列は許しとらんのんよ。code=~a, name=~a" code name))
         ((get-user sys code)
          (error "このユーザーはもう存在するけぇ。作れるわけがなかろぉ。user-code=~a" code)))
-  (make-node sys 'user
-             'create-time (make-footprint nil :timestamp timestamp)
-             'update-time nil
-             'buddha (make-footprint nil :timestamp timestamp)
-             'nirvana nil
-             'code code
-             'password password
-             'name name
-             'note note))
+  (values (make-node sys 'user
+                     'create-time (make-footprint nil :timestamp timestamp)
+                     'update-time nil
+                     'buddha (make-footprint nil :timestamp timestamp)
+                     'nirvana nil
+                     'code code
+                     'password password
+                     'name name
+                     'note note)
+          password))
+
 
 ;;;;;
 ;;;;; master user
 ;;;;;
 (defgeneric master-user (banshou) (:documentation ""))
-(defmethod master-user ((sys banshou)) (get-user sys *master-user-code*))
-
+(defmethod master-user ((sys banshou))
+  (first (get-user sys *master-user-code*)))
 
 (defgeneric make-master-user (banshou &key code name password note timestamp)
   (:documentation ""))

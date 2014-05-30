@@ -31,6 +31,8 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:edgep
            #:user        #:get-code #:get-name #:get-note #:get-password #:get-user
            #:master-user
+           #:make-user
+           #:note
            #:deccot
            ;; banshou
            #:make-banshou
