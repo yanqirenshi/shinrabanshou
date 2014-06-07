@@ -75,10 +75,18 @@ shinra で構成される物が banshou である。と。
          :initarg :from
          :initform nil
          :documentation "")
+   (from-class :accessor get-from-node-class
+               :initarg :from-class
+               :initform nil
+               :documentation "")
    (to :accessor get-to-node-id
        :initarg :to
        :initform nil
        :documentation "")
+   (to-class :accessor get-to-node-class
+             :initarg :to-class
+             :initform nil
+             :documentation "")
    (type :accessor get-edge-type
          :initarg :type
          :initform nil

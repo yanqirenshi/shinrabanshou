@@ -6,7 +6,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 (in-package :cl-user)
 (defpackage shinrabanshou-test
   (:use :cl
-        :cl-prevalence
+        :upanishad
         :shinrabanshou
         :fiveam)
   (:nicknames :shinra-test))
@@ -17,72 +17,108 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 
 (in-suite test-shinrabanshou)
 
-(defvar *sys*      nil)
-(defvar *sys-stor* nil "TODO: ディレクトリは自動判断したいね。")
-(defvar *node1*    nil)
-(defvar *node2*    nil)
-(defvar *node3*    nil)
-(defvar *edge1*    nil)
-(defvar *edge2*    nil)
+
+(defvar *pool*      nil)
+(defvar *pool-stor* (concatenate 'string
+                                 (namestring (user-homedir-pathname))
+                                 "tmp/shinra/")
+  "TODO: ディレクトリがなかったら作ろうか。。。。")
 
 (defun clean-data-sotr (data-stor)
   (when (probe-file data-stor)
     (dolist (pathname (directory (merge-pathnames "*.xml" data-stor)))
       (delete-file pathname))))
 
-(defclass test-node (node)
-  ((code  :accessor get-code  :initform nil :initarg :code)
-   (title :accessor get-title :initform nil :initarg :title)))
 
-(test test-managed-prevalence-start
-  (progn
+(test test-basic
+  (let ((node-note-1 "n-note-1")
+        (node-note-2 "n-note-2")
+        (node-note-3 "n-note-3")
+        (edge-type   :test-r)
+        (pool-stor *pool-stor*)
+        (pool nil))
     ;; こりゃなんで？
-    (unless *sys-stor* (error "*sys-stor*がnilのままです。"))
+    (unless pool-stor (error "*pool-stor*がnilのままです。"))
     ;; delete file
-    (clean-data-sotr *sys-stor*)
+    (clean-data-sotr pool-stor)
     ;; create system
-    (setf *sys* (make-banshou 'banshou *sys-stor*))
-    (is-true *sys*)
-    ;; preset data
-    (setf *node1* (make-node *sys* 'test-node))
-    (setf *node2* (make-node *sys* 'test-node))
-    (setf *node3* (make-node *sys* 'test-node))
-    (setf *edge1* (make-edge *sys* 'edge *node1* *node2* :TEST))
-    (setf *edge2* (make-edge *sys* 'edge *node1* *node3* :TEST))))
+    (setf pool (make-banshou 'banshou pool-stor))
+    (is-true pool)
+    ;;
+    (let* ((node1 (make-node pool 'resource 'note node-note-1))
+           (node2 (make-node pool 'resource 'note node-note-2))
+           (node3 (make-node pool 'resource 'note node-note-3))
+           (edge1 (make-edge pool 'edge node1 node2 edge-type))
+           (edge2 (make-edge pool 'edge node1 node3 edge-type)))
+      ;;; check node
+      (is-true (eq node1 (find-object-with-id pool 'resource (get-id node1))))
+      (is-true (eq node2 (find-object-with-id pool 'resource (get-id node2))))
+      (is-true (find-object-with-slot pool 'resource 'note node-note-1))
+      (is-true (find-object-with-slot pool 'resource 'note node-note-2))
+      ;;; check edge
+      (is-true (= 2 (length (get-root-object pool :EDGE-ROOT))))
+      (is-true (= 2 (length (find-object-with-slot pool 'edge 'shinra::type :test-r))))
+      (is-true (= 2 (length (find-object-with-slot pool 'edge 'shinra::from (get-id node1)))))
+      (is-true (eq edge1 (find-object-with-id pool 'edge (get-id edge1))))
+      (is-true (eq edge2 (find-object-with-id pool 'edge (get-id edge2))))
+      ;;
+      (let ((tmp-edge-1 (find-object-with-id pool 'edge (get-id edge1)))
+            (tmp-edge-2 (find-object-with-id pool 'edge (get-id edge2))))
+        ;; check id. from and to node.
+        (is-true (= (get-id node1) (get-from-node-id tmp-edge-1)))
+        (is-true (= (get-id node2) (get-to-node-id   tmp-edge-1)))
+        (is-true (= (get-id node1) (get-from-node-id tmp-edge-2)))
+        (is-true (= (get-id node3) (get-to-node-id   tmp-edge-2)))
+        ;; check class. from and to node.
+        (is-true (eq (class-name (class-of node1))
+                     (get-from-node-class tmp-edge-1)))
+        (is-true (eq (class-name (class-of node2))
+                     (get-to-node-class tmp-edge-1)))
+        (is-true (eq (class-name (class-of node1))
+                     (get-from-node-class tmp-edge-2)))
+        (is-true (eq (class-name (class-of node3))
+                     (get-to-node-class tmp-edge-2)))
+        (is-true (eq node1 (find-object-with-id pool (get-from-node-class tmp-edge-1) (get-id node1))))
+        (is-true (eq node2 (find-object-with-id pool (get-to-node-class tmp-edge-1)   (get-id node2))))
+        (is-true (eq node1 (find-object-with-id pool (get-from-node-class tmp-edge-2) (get-id node1))))
+        (is-true (eq node3 (find-object-with-id pool (get-to-node-class tmp-edge-2)   (get-id node3))))
+        )
+      ;;;
+      ;;;
+      (clean-data-sotr pool-stor))))
 
 
-
-
-
-(test cl-prevalence::slot-index-xxx-add
-  ""
-  (let* ((sys *sys*)
-         (index       (get-root-object sys :EDGE-FROM-INDEX))
-         (index-inner (gethash (get-id *node1*) index)))
-    ;; 普通にインデックスが出来ているか。
-    (is (hash-table-p index))
-    (is (hash-table-p index-inner))
-    ;; index-inner は 複数出来ているはずなので、その件数を確認する。ここでは2件の予定
-    (is (= (hash-table-count index-inner) 2))
-    (is (equalp (alexandria:hash-table-keys index-inner)
-                (list (get-id *edge2*) (get-id *edge1*))))
-    (is (eq (get-id *edge1*)
-            (gethash (get-id *edge1*) index-inner)))
-    (is (eq (get-id *edge2*)
-            (gethash (get-id *edge2*) index-inner)))
-    ;; 実際に取得してみる。
-    (let ((edges (find-object-with-slot *sys* 'edge 'from (get-id *node1*))))
-      (is (eq 2 (length edges))))
-
-    ;;; indexが作成されている場合
-    ;; 検索結果: 0件/10件
-    ;; 検索結果: 1件/10件
-    ;; 検索結果: 2件/10件
-
-    ;;; indexが作成されていない場合
-    ;; 検索結果: 0件/10件
-    ;; 検索結果: 1件/10件
-    ;; 検索結果: 2件/10件
-    ))
-
-;;(run!)
+(test test-get-r-xxx
+  (let ((node-note-1 "n-note-1")
+        (node-note-2 "n-note-2")
+        (node-note-3 "n-note-3")
+        (edge-type   :test-r)
+        (pool-stor *pool-stor*)
+        (pool nil))
+    ;; こりゃなんで？
+    (unless pool-stor (error "*pool-stor*がnilのままです。"))
+    ;; delete file
+    (clean-data-sotr pool-stor)
+    ;; create system
+    (setf pool (make-banshou 'banshou pool-stor))
+    (is-true pool)
+    ;;
+    (let* ((node1 (make-node pool 'resource 'note node-note-1))
+           (node2 (make-node pool 'resource 'note node-note-2))
+           (node3 (make-node pool 'resource 'note node-note-3))
+           (edge1 (make-edge pool 'edge node1 node2 edge-type))
+           (edge2 (make-edge pool 'edge node1 node3 edge-type)))
+      (is-true (= 2 (length (get-r-edge pool 'edge :from node1))))
+      (is-true (= 0 (length (get-r-edge pool 'edge :to   node1))))
+      (is-true (= 1 (length (get-r-edge pool 'edge :to   node2))))
+      (is-true (= 1 (length (get-r-edge pool 'edge :to   node3))))
+      (is-true (= 0 (length (get-r-edge pool 'edge :from node2))))
+      (is-true (= 0 (length (get-r-edge pool 'edge :from node3))))
+      (is-true (equalp (get-r-edge pool 'edge :from node1)
+                       (list edge2 edge1)))
+      (is-true (equalp (get-r-node pool 'edge :from node1)
+                       (list node3 node2)))
+      (is-true (equalp (get-r pool 'edge :from node1)
+                       (list (list :edge edge2 :node node3)
+                             (list :edge edge1 :node node2))))
+      )))

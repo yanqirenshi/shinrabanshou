@@ -24,7 +24,11 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:password    #:get-spell #:get-create-time #:get-update-time
            #:banshou
            #:node
-           #:edge        #:get-from-node #:get-to-node #:get-edge-type
+           #:edge
+           #:get-from-node    #:get-to-node
+           #:get-from-node-id #:get-from-node-class
+           #:get-to-node-id   #:get-to-node-class
+           #:get-edge-type
            #:resource    #:get-buddha #:get-nirvana
            #:lifep
            #:nodep
@@ -45,7 +49,9 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:find-node
            #:delete-node
            #:make-node
-           #:make-edge))
+           #:make-edge
+           #:get-r #:get-r-edge #:get-r-node
+           ))
 (in-package :shinrabanshou)
 
 

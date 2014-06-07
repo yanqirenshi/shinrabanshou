@@ -99,7 +99,11 @@
         ((null type)          (error "type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")))
   (unless (edgep class-symbol)
     (error "このクラスは edge のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-  (let ((param (list 'from (get-id from) 'to (get-id to) 'type type)))
+  (let ((param (list 'from       (get-id from)
+                     'from-class (class-name (class-of from))
+                     'to         (get-id to)
+                     'to-class   (class-name (class-of to))
+                     'type      type)))
     (make-shinra system class-symbol
                  (pairify (if (null slots)
                               (concatenate 'list slots param)
@@ -115,3 +119,27 @@
 (defgeneric get-to-node (banshou edge) (:documentation ""))
 (defmethod get-to-node ((system banshou) (edge edge))
   (get-at-id system (get-to-node-id edge)))
+
+
+(defmethod get-r-edge ((pool banshou) (class-symbol symbol) start (node node))
+  (let ((start-slot (cond ((eq start :from) 'from)
+                          ((eq start :to  ) 'to))))
+    (find-object-with-slot pool class-symbol
+                           start-slot (get-id node))))
+
+
+(defmethod get-r ((pool banshou) (class-symbol symbol) start (node node))
+  (let ((start-symbol (cond ((eq start :from) '(get-to-node-class   get-to-node-id))
+                            ((eq start :to  ) '(get-from-node-class get-from-node-id)))))
+    (mapcar #'(lambda (edge)
+                (list :edge edge
+                      :node (find-object-with-id pool
+                                                 (funcall (first  start-symbol) edge)
+                                                 (funcall (second start-symbol) edge))))
+            (get-r-edge pool class-symbol start node))))
+
+
+(defmethod get-r-node ((pool banshou) (class-symbol symbol) start (node node))
+  (mapcar #'(lambda (data)
+              (getf data :node))
+          (get-r pool class-symbol start node)))
