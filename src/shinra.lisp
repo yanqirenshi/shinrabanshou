@@ -121,14 +121,14 @@
   (get-at-id system (get-to-node-id edge)))
 
 
-(defmethod get-r-edge ((pool banshou) (class-symbol symbol) start (node node))
+(defmethod find-r-edge ((pool banshou) (class-symbol symbol) start (node node))
   (let ((start-slot (cond ((eq start :from) 'from)
                           ((eq start :to  ) 'to))))
     (find-object-with-slot pool class-symbol
                            start-slot (get-id node))))
 
 
-(defmethod get-r ((pool banshou) (class-symbol symbol) start (node node))
+(defmethod find-r ((pool banshou) (class-symbol symbol) start (node node))
   (let ((start-symbol (cond ((eq start :from) '(get-to-node-class   get-to-node-id))
                             ((eq start :to  ) '(get-from-node-class get-from-node-id)))))
     (mapcar #'(lambda (edge)
@@ -139,7 +139,7 @@
             (get-r-edge pool class-symbol start node))))
 
 
-(defmethod get-r-node ((pool banshou) (class-symbol symbol) start (node node))
+(defmethod find-r-node ((pool banshou) (class-symbol symbol) start (node node))
   (mapcar #'(lambda (data)
               (getf data :node))
           (get-r pool class-symbol start node)))

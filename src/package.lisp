@@ -50,7 +50,7 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:delete-node
            #:make-node
            #:make-edge
-           #:get-r #:get-r-edge #:get-r-node
+           #:find-r #:find-r-edge #:find-r-node
            ))
 (in-package :shinrabanshou)
 
