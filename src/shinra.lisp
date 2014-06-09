@@ -136,10 +136,10 @@
                       :node (find-object-with-id pool
                                                  (funcall (first  start-symbol) edge)
                                                  (funcall (second start-symbol) edge))))
-            (get-r-edge pool class-symbol start node))))
+            (find-r-edge pool class-symbol start node))))
 
 
 (defmethod find-r-node ((pool banshou) (class-symbol symbol) start (node node))
   (mapcar #'(lambda (data)
               (getf data :node))
-          (get-r pool class-symbol start node)))
+          (find-r pool class-symbol start node)))
