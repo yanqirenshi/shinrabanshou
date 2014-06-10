@@ -1,4 +1,4 @@
-* Shinrabanshou 
+* 森羅万象(shinrabanshou) 
 
 Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase を目指しています。
 
@@ -9,23 +9,36 @@ Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase
 - セットアップにストレスを覚えないこと。
 - 利用するこにストレスを覚えないこと。
 
-永続化ライブラリは cl-prevalence を利用します。
+永続化ライブラリは [[https://github.com/yanqirenshi/upanishad][upanishad]] を利用します。
 
 
 ** Usage
-
 なんかまだ使いかた出来とらんけぇ、作りながら整理しとるところじゃけぇ。
 
+#+BEGIN_SRC lisp
+(in-package :shinrabanshou)
 (asdf:load-system :shinrabanshou)
-(setf *datastore* #P"my-prevalence-snapshot-directory")
-(start)
+(defvar *pool* nil)
+(setf *pool* (make-banshou 'banshou pool-stor))
+
+(shinra-test::run!)
+#+END_SRC
 
 
 ** Dependencies
-
+| library    | description                            |
+|------------+----------------------------------------|
+| alexandria | ユーティリティ                         |
+| cl-ppcre   | 正規表現ライブラリ                     |
+| cl+        | ユーティリティ                         |
+| upanishad  | オブジェクトDB(cl-prevalence クローン) |
 
 
 ** Installation
+#+BEGIN_SRC lisp
+(asdf:load-system :shinrabanshou)
+(asdf:load-system :shinrabanshou-test)
+#+END_SRC
 
 
 ** Author
