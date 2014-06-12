@@ -23,6 +23,7 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:footprint   #:get-user-code  #:get-timestamp
            #:password    #:get-spell #:get-create-time #:get-update-time
            #:banshou
+           #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
            #:node
            #:edge
            #:get-from-node    #:get-to-node
