@@ -1,5 +1,7 @@
 * 森羅万象(shinrabanshou) 
 
+Common Lisp On-Memory Objective Graph Database.
+
 Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase を目指しています。
 
 外部のDBを利用すれば良いのでしょうが、セットアップや利用方法などに悩まされます。

@@ -45,14 +45,24 @@
 
 
 
-;;;;;
-;;;;; 検索
-;;;;;
-(defgeneric find-node (banshou slot value)
-  (:documentation "Nodeを検索します。"))
-(defmethod find-node ((system banshou) slot value)
-  (find-object-with-slot system 'node slot value))
+(defmethod existp ((pool banshou) (node node))
+  (not (null (get-object-with-id pool (class-name (class-of node)) (get-id node)))))
 
+
+(defmethod existp ((pool banshou) (edge edge))
+  (let ((exist (get-object-with-id pool (class-name (class-of edge)) (get-id edge))))
+    (when (not (null exist))
+      (if
+       ;; これ以降は不要なチェックみたいになっとるけど。。。。
+       ;; これ以降のチェックがNGの場合は 例外発生させてもエエレベルなんよね。やっぱそうしよ。
+       (and (= (get-from-node-id edge) (get-from-node-id exist))
+            (= (get-to-node-id edge) (get-to-node-id exist))
+            (eq (get-from-node-class edge) (get-from-node-class exist))
+            (eq (get-to-node-class edge) (get-to-node-class exist))
+            (eq (get-edge-type edge) (get-edge-type exist)))
+       t
+       (error "id(~a) はおおとるんじゃけど、なんか内容が一致せんけぇ。おかしいじゃろう。 "
+              (get-id edge))))))
 
 
 ;;;;;
@@ -70,30 +80,62 @@
 ;;;;; 作る系の基礎
 ;;;;;
 ;; shinra
-(defgeneric make-shinra (banshou class-symbol slots-and-values)
+(defgeneric tx-make-shinra (banshou class-symbol slots-and-values)
   (:documentation ""))
-(defmethod make-shinra ((banshou banshou) class-symbol slots-and-values)
+(defmethod tx-make-shinra ((banshou banshou) class-symbol slots-and-values)
   ;; TODO: class-symbol は standard-class かどうかを調べる必要があるね。
   ;; TODO: class-symbol は shinra のサブクラスかどうかをチェックする必要があるね。
   ;; TODO: 全体的にタイプチェックについて調べる必要があるね。
+  (tx-create-object banshou class-symbol slots-and-values))
+
+
+;; 推奨しない。 いずれは廃棄予定。
+(defgeneric make-shinra (banshou class-symbol slots-and-values)
+  (:documentation ""))
+(defmethod make-shinra ((banshou banshou) class-symbol slots-and-values)
   (execute-transaction
-   (tx-create-object banshou class-symbol slots-and-values)))
+   (tx-make-shinra banshou class-symbol slots-and-values)))
 
 
 
-;; node
+;;;;;
+;;;;; Node
+;;;;;
+(defgeneric tx-make-node (banshou class-symbol &rest slots)
+  (:documentation ""))
+(defmethod tx-make-node ((system banshou) (class-symbol symbol) &rest slots)
+  (unless (nodep class-symbol)
+    (error "このクラスは node のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
+  (tx-make-shinra system class-symbol (pairify slots)))
+
+
+;; 推奨しない。 いずれは廃棄予定。
 (defgeneric make-node (banshou class-symbol &rest slots)
   (:documentation ""))
 (defmethod make-node ((system banshou) (class-symbol symbol) &rest slots)
   (unless (nodep class-symbol)
     (error "このクラスは node のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-  (make-shinra system class-symbol (pairify slots)))
+  ;; ここじゃぁ tx-meke-node を呼ぶべきじゃが、、、slots んところがねぇ。。。。マクロにせんといけんけぇ、あとまわしにしよ。
+  ;; とりあえずこれで動くけぇ
+  (execute-transaction
+   (tx-make-shinra system class-symbol (pairify slots))))
 
 
-;; edge
-(defgeneric make-edge (banshou class-symbol from to type &rest slots)
+
+;; 検索 .... ってこれ不要なような。 find-object-with-slot で事足りるけぇ。 若気の至り関数じゃろう。
+(defgeneric find-node (banshou slot value)
+  (:documentation "Nodeを検索します。"))
+(defmethod find-node ((system banshou) slot value)
+  (find-object-with-slot system 'node slot value))
+
+
+
+;;;;;
+;;;;; Edge
+;;;;;
+(defgeneric tx-make-edge (banshou class-symbol from to type &rest slots)
   (:documentation ""))
-(defmethod make-edge ((system banshou) (class-symbol symbol) (from node) (to node) type &rest slots)
+(defmethod tx-make-edge ((system banshou) (class-symbol symbol) (from node) (to node) type &rest slots)
   (cond ((null (get-id from)) (error "この node(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
         ((null (get-id to))   (error "この node(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
         ((null type)          (error "type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")))
@@ -104,11 +146,19 @@
                      'to         (get-id to)
                      'to-class   (class-name (class-of to))
                      'type      type)))
-    (make-shinra system class-symbol
-                 (pairify (if (null slots)
-                              (concatenate 'list slots param)
-                              param)))))
+    (tx-make-shinra system class-symbol
+                    (pairify (if (null slots)
+                                 (concatenate 'list slots param)
+                                 param)))))
 
+;; 推奨しない。 いずれは廃棄予定。
+(defgeneric make-edge (banshou class-symbol from to type &rest slots)
+  (:documentation ""))
+(defmethod make-edge ((pool banshou)
+                      (class-symbol symbol)
+                      (from node) (to node) type
+                      &rest slots)
+  (execute-transaction (tx-make-edge pool class-symbol from to type slots)))
 
 ;; edge operator
 (defgeneric get-from-node (banshou edge) (:documentation ""))
@@ -119,6 +169,40 @@
 (defgeneric get-to-node (banshou edge) (:documentation ""))
 (defmethod get-to-node ((system banshou) (edge edge))
   (get-at-id system (get-to-node-id edge)))
+
+
+
+;;;;;
+;;;;; Relation
+;;;;;
+(defmethod get-r ((pool banshou) (edge-class-symbol symbol)
+                  start
+                  (start-node node) (end-node node) rtype)
+  (first
+   (remove-if #'(lambda (r)
+                  (let ((node (getf r :node))
+                        (edge (getf r :edge)))
+                    (not (and (= (get-id end-node)
+                                 (get-id node))
+                              (eq rtype (get-edge-type edge))))))
+              (find-r pool edge-class-symbol start start-node))))
+
+
+(defmethod get-r-edge ((pool banshou) (edge-class-symbol symbol)
+                       start
+                       (start-node node) (end-node node) rtype)
+  (let ((r (get-r pool edge-class-symbol start start-node end-node rtype)))
+    (when r (getf r :edge))))
+
+
+(defmethod get-r-node ((pool banshou) (edge-class-symbol symbol)
+                       start
+                       (start-node node) (end-node node) rtype)
+  (let ((r (get-r pool edge-class-symbol start start-node end-node rtype)))
+    (when r (getf r :node))))
+
+
+
 
 
 (defgeneric find-r-edge (pool edge-class-symbol start node)

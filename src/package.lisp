@@ -25,33 +25,35 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:banshou
            #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
            #:node
+           ;; edge
            #:edge
            #:get-from-node    #:get-to-node
            #:get-from-node-id #:get-from-node-class
            #:get-to-node-id   #:get-to-node-class
            #:get-edge-type
+           ;; resource
            #:resource    #:get-buddha #:get-nirvana
-           #:lifep
-           #:nodep
-           #:edgep
-           #:user        #:get-code #:get-name #:get-note #:get-password #:get-user
-           #:master-user
-           #:make-user
-           #:note
-           #:deccot
+           ;; user
+           #:user #:note
+           #:get-code #:get-name #:get-note #:get-password #:get-user
+           #:master-user #:make-user
            ;; banshou
            #:make-banshou
            ;; footpring
            #:make-footprint
            ;; deccot
-           #:add-deccot
+           #:deccot #:add-deccot
            ;; banshou
            #:get-at-id
-           #:find-node
+           #:find-node   ;; これは不要じゃろう。若気の至り関数。
            #:delete-node
-           #:make-node
-           #:make-edge
+           #:tx-make-node #:make-node
+           #:tx-make-edge #:make-edge
+           ;; paradicate
+           #:lifep #:nodep #:edgep
+           ;; Relation
            #:find-r #:find-r-edge #:find-r-node
+           #:get-r  #:get-r-edge  #:get-r-node
            ))
 (in-package :shinrabanshou)
 

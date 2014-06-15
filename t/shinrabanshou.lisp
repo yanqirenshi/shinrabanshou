@@ -89,6 +89,39 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
       (clean-data-sotr pool-stor))))
 
 
+
+(test test-predicates
+  (let ((node-note-1 "n-note-1")
+        (node-note-2 "n-note-2")
+        (node-note-3 "n-note-3")
+        (edge-type   :test-r)
+        (pool-stor *pool-stor*)
+        (pool nil))
+    ;; こりゃなんで？
+    (unless pool-stor (error "*pool-stor*がnilのままです。"))
+    ;; delete file
+    (clean-data-sotr pool-stor)
+    ;; create system
+    (setf pool (make-banshou 'banshou pool-stor))
+    (is-true pool)
+    ;; object を生成
+    (let* ((node1 (make-node pool 'resource 'note node-note-1))
+           (node2 (make-node pool 'resource 'note node-note-2))
+           (node3 (make-instance 'node :id -999))
+           (edge1 (make-edge pool 'edge node1 node2 edge-type))
+           (edge2 (make-edge pool 'edge node1 node3 edge-type))
+           (edge3 (make-instance 'edge :id -999)))
+      ;; テスト開始
+      (is-true (existp pool node1))
+      (is-true (existp pool node2))
+      (is-true (not (existp pool node3)))
+      (is-true (existp pool edge1))
+      (is-true (existp pool edge2))
+      (is-true (not (existp pool edge3)))
+      (up:snapshot pool))))
+
+
+
 (test test-find-r-xxx
   (let ((node-note-1 "n-note-1")
         (node-note-2 "n-note-2")
@@ -109,6 +142,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
            (node3 (make-node pool 'resource 'note node-note-3))
            (edge1 (make-edge pool 'edge node1 node2 edge-type))
            (edge2 (make-edge pool 'edge node1 node3 edge-type)))
+      ;; find-r
       (is-true (= 2 (length (find-r-edge pool 'edge :from node1))))
       (is-true (= 0 (length (find-r-edge pool 'edge :to   node1))))
       (is-true (= 1 (length (find-r-edge pool 'edge :to   node2))))
@@ -121,5 +155,19 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
                        (list node3 node2)))
       (is-true (equalp (find-r pool 'edge :from node1)
                        (list (list :edge edge2 :node node3)
-                             (list :edge edge1 :node node2)))))
+                             (list :edge edge1 :node node2))))
+      ;; get-r
+      (let ((ret (get-r pool 'edge :from node1 node2 edge-type)))
+        (is-true (eq edge1 (getf ret :edge)))
+        (is-true (eq node2 (getf ret :node))))
+      (let ((ret (get-r pool 'edge :from node1 node3 edge-type)))
+        (is-true (eq edge2 (getf ret :edge)))
+        (is-true (eq node3 (getf ret :node))))
+      (is-true (eq edge1 (get-r-edge pool 'edge :from node1 node2 edge-type)))
+      (is-true (eq edge2 (get-r-edge pool 'edge :from node1 node3 edge-type)))
+      (is-true (eq node2 (get-r-node pool 'edge :from node1 node2 edge-type)))
+      (is-true (eq node3 (get-r-node pool 'edge :from node1 node3 edge-type))))
     (up:snapshot pool)))
+
+
+
