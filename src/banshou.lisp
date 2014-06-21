@@ -12,7 +12,7 @@
       (execute-transaction (tx-create-id-counter sys)))
     ;; master user が存在しない場合は生成する。
     (when (null (master-user sys))
-      (make-master-user sys))
+      (tx-make-master-user sys))
     ;; index の作成
     (index-on sys 'edge '(from to type))
     sys))

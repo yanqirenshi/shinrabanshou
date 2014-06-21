@@ -36,14 +36,14 @@ gremlin を参考にしよう。
                           (password (gen-password))
                           (note "")
                           (timestamp (get-universal-time)))
-  (values (make-node sys 'deccot
-                     'create-time (make-footprint nil :timestamp timestamp)
-                     'update-time nil
-                     'buddha (make-footprint nil :timestamp timestamp)
-                     'nirvana nil
-                     'password password
-                     'name name
-                     'note note)
+  (values (tx-make-node sys 'deccot
+                        'create-time (make-footprint nil :timestamp timestamp)
+                        'update-time nil
+                        'buddha (make-footprint nil :timestamp timestamp)
+                        'nirvana nil
+                        'password password
+                        'name name
+                        'note note)
           password))
 
 

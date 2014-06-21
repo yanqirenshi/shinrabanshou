@@ -36,6 +36,7 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            ;; user
            #:user #:note
            #:get-code #:get-name #:get-note #:get-password #:get-user
+           #:tx-master-user #:tx-make-user
            #:master-user #:make-user
            ;; banshou
            #:make-banshou
@@ -50,7 +51,7 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:tx-make-node #:make-node
            #:tx-make-edge #:make-edge
            ;; paradicate
-           #:lifep #:nodep #:edgep
+           #:lifep #:nodep #:edgep #:existp
            ;; Relation
            #:find-r #:find-r-edge #:find-r-node
            #:get-r  #:get-r-edge  #:get-r-node
