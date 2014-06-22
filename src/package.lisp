@@ -36,7 +36,6 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:resource    #:get-buddha #:get-nirvana
            ;; node
            #:node #:tx-delete-node #:tx-make-node #:make-node
-           #:find-node   ;; これは不要じゃろう。若気の至り関数。
            ;; edge
            #:edge #:tx-delete-edge #:tx-make-edge #:make-edge
            #:get-from-node    #:get-to-node

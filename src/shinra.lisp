@@ -132,14 +132,6 @@
 
 
 
-;; 検索 .... ってこれ不要なような。 find-object-with-slot で事足りるけぇ。 若気の至り関数じゃろう。
-(defgeneric find-node (banshou slot value)
-  (:documentation "Nodeを検索します。"))
-(defmethod find-node ((system banshou) slot value)
-  (find-object-with-slot system 'node slot value))
-
-
-
 ;;;;;
 ;;;;; Edge
 ;;;;;
