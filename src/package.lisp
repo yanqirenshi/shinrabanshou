@@ -24,20 +24,6 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:password    #:get-spell #:get-create-time #:get-update-time
            #:banshou
            #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
-           #:node
-           ;; edge
-           #:edge
-           #:get-from-node    #:get-to-node
-           #:get-from-node-id #:get-from-node-class
-           #:get-to-node-id   #:get-to-node-class
-           #:get-edge-type
-           ;; resource
-           #:resource    #:get-buddha #:get-nirvana
-           ;; user
-           #:user #:note
-           #:get-code #:get-name #:get-note #:get-password #:get-user
-           #:tx-master-user #:tx-make-user
-           #:master-user #:make-user
            ;; banshou
            #:make-banshou
            ;; footpring
@@ -46,9 +32,22 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:deccot #:add-deccot
            ;; banshou
            #:get-at-id
+           ;; resource
+           #:resource    #:get-buddha #:get-nirvana
+           ;; node
+           #:node #:tx-delete-node #:tx-make-node #:make-node
            #:find-node   ;; これは不要じゃろう。若気の至り関数。
-           #:tx-make-node #:make-node
-           #:tx-make-edge #:make-edge
+           ;; edge
+           #:edge #:tx-delete-edge #:tx-make-edge #:make-edge
+           #:get-from-node    #:get-to-node
+           #:get-from-node-id #:get-from-node-class
+           #:get-to-node-id   #:get-to-node-class
+           #:get-edge-type
+           ;; user
+           #:user #:note
+           #:get-code #:get-name #:get-note #:get-password #:get-user
+           #:tx-master-user #:tx-make-user
+           #:master-user #:make-user
            ;; paradicate
            #:lifep #:nodep #:edgep #:existp
            ;; Relation
