@@ -19,17 +19,6 @@
   (not (null (get-object-with-id pool (class-name (class-of node)) (get-id node)))))
 
 
-
-;;;;;
-;;;;; 削除
-;;;;;
-(defgeneric tx-delete-node ( banshou node)
-  (:documentation "Nodeを削除します。"))
-(defmethod tx-delete-node ((system banshou) (node node))
-  (execute-transaction
-   (tx-delete-object system 'node (get-id node))))
-
-
 ;;;;;
 ;;;;; 作成
 ;;;;;
@@ -39,6 +28,7 @@
   (unless (nodep class-symbol)
     (error "このクラスは node のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
   (tx-make-shinra system class-symbol (pairify slots)))
+
 
 
 ;; 推奨しない。 いずれは廃棄予定。
@@ -51,6 +41,24 @@
   ;; とりあえずこれで動くけぇ
   (execute-transaction
    (tx-make-shinra system class-symbol (pairify slots))))
+
+
+
+;;;;;
+;;;;; 削除
+;;;;;
+(defgeneric tx-delete-node (banshou node)
+  (:documentation "Nodeを削除します。
+現在、関係を持っている Node は削除できないようにしています。"))
+(defmethod tx-delete-node ((pool banshou) (node node))
+  ;; 現在関係があるものは削除できないようにしています。
+  (let ((node-class (class-name (class-of node))))
+    (when (or (find-r-edge pool node-class :from node)
+              (find-r-edge pool node-class :to   node))
+      (error "関係を持っている Node は削除できません。"))
+    (execute-transaction
+     (tx-delete-object pool 'node (get-id node)))))
+
 
 
 
