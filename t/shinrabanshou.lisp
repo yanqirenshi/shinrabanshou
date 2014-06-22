@@ -197,6 +197,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
              (edge1 (tx-make-edge pool edge-class node1 node2 edge-type))
              (edge2 (tx-make-edge pool edge-class node1 node3 edge-type))
              (edge3 (make-instance  edge-class :id -999)))
+        (declare (ignore edge1 edge2 edge3))
         ;; テスト開始
         (is-true (get-root-object pool (index-name edge-class 'from)))
         (is-true (get-root-object pool (index-name edge-class 'to)))
@@ -209,4 +210,132 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
         (is-true (get-root-object pool (index-name edge-class 'from)))
         (is-true (get-root-object pool (index-name edge-class 'to)))
         (is-true (get-root-object pool (index-name edge-class 'type)))
+        ;;
         (up:snapshot pool)))))
+
+
+
+;;
+(test test-remove-object-on-slot-index
+  (labels ((index-name (cls slot)
+             (up::get-objects-slot-index-name cls slot)))
+    (let ((node-note-1 "n-note-1")
+          (node-note-2 "n-note-2")
+          (rsc-class   'resource)
+          (node-class  'node)
+          (edge-class  'edge)
+          (edge-type   :test-r)
+          (pool-stor *pool-stor*)
+          (pool nil))
+      ;; こりゃなんで？
+      (unless pool-stor (error "*pool-stor*がnilのままです。"))
+      ;; delete file
+      (clean-data-sotr pool-stor)
+      ;; create system
+      (setf pool (make-banshou 'banshou pool-stor))
+      (is-true pool)
+      ;; object を生成
+      (let* ((node1 (tx-make-node pool rsc-class 'note node-note-1))
+             (node2 (tx-make-node pool rsc-class 'note node-note-2))
+             (node3 (make-instance  node-class :id -999))
+             (edge1 (tx-make-edge pool edge-class node1 node2 edge-type))
+             (edge2 (tx-make-edge pool edge-class node1 node3 edge-type)))
+        (declare (ignore edge2))
+        ;; テスト開始
+        (is-true (get-root-object pool (index-name edge-class 'from)))
+        (is-true (get-root-object pool (index-name edge-class 'to)))
+        (is-true (get-root-object pool (index-name edge-class 'type)))
+        (up:drop-index-on pool edge-class '(from to type))
+        (is-false (get-root-object pool (index-name edge-class 'from)))
+        (is-false (get-root-object pool (index-name edge-class 'to)))
+        (is-false (get-root-object pool (index-name edge-class 'type)))
+        (up:index-on pool edge-class '(shinra::from shinra::to shinra::type))
+        (is-true (get-root-object pool (index-name edge-class 'from)))
+        (is-true (get-root-object pool (index-name edge-class 'to)))
+        (is-true (get-root-object pool (index-name edge-class 'type)))
+        ;;
+        (let ((i-from (get-root-object pool (up::get-objects-slot-index-name edge-class 'from)))
+              (i-to   (get-root-object pool (up::get-objects-slot-index-name edge-class 'to)))
+              (i-type (get-root-object pool (up::get-objects-slot-index-name edge-class 'type))))
+          (is-true (= 1 (hash-table-count i-from)))
+          (is-true (= 2 (hash-table-count i-to)))
+          (is-true (= 1 (hash-table-count i-type)))
+          ;; from
+          (is-true (= 2 (hash-table-count (gethash (get-from-node-id edge1) i-from))))
+          (up:tx-remove-object-on-slot-index pool edge1 'shinra::from)
+          (is-true (= 1 (hash-table-count (gethash (get-from-node-id edge1) i-from))))
+          (is-true (= 1 (hash-table-count i-from)))
+          (is-true (= 2 (hash-table-count i-to)))
+          (is-true (= 1 (hash-table-count i-type)))
+          ;; to
+          (is-true (= 1 (hash-table-count (gethash (get-to-node-id edge1) i-to))))
+          (up:tx-remove-object-on-slot-index pool edge1 'shinra::to)
+          (is-true (= 0 (hash-table-count (gethash (get-to-node-id edge1) i-to))))
+          (is-true (= 1 (hash-table-count i-from)))
+          (is-true (= 2 (hash-table-count i-to)))
+          (is-true (= 1 (hash-table-count i-type)))
+          ;; type
+          (is-true (= 2 (hash-table-count (gethash (get-edge-type edge1) i-type))))
+          (up:tx-remove-object-on-slot-index pool edge1 'shinra::type)
+          (is-true (= 1 (hash-table-count (gethash (get-edge-type edge1) i-type))))
+          (is-true (= 1 (hash-table-count i-from)))
+          (is-true (= 2 (hash-table-count i-to)))
+          (is-true (= 1 (hash-table-count i-type))))
+        (up:snapshot pool)))))
+
+
+(test test-delete-edge
+  (let ((node-note-1 "n-note-1")
+        (node-note-2 "n-note-2")
+        (rsc-class   'resource)
+        (node-class  'node)
+        (edge-class  'edge)
+        (edge-type   :test-r)
+        (pool-stor *pool-stor*)
+        (pool nil))
+    (unless pool-stor (error "*pool-stor*がnilのままです。"))
+    (clean-data-sotr pool-stor)
+    (setf pool (make-banshou 'banshou pool-stor))
+    (is-true pool)
+    ;; object を生成
+    (let* ((node1 (tx-make-node pool rsc-class 'note node-note-1))
+           (node2 (tx-make-node pool rsc-class 'note node-note-2))
+           (node3 (make-instance  node-class :id -999))
+           (edge1 (tx-make-edge pool edge-class node1 node2 edge-type))
+           (edge2 (tx-make-edge pool edge-class node1 node3 edge-type)))
+      (declare (ignore edge2))
+      ;; テスト開始
+      (let ((i-from (get-root-object pool (up::get-objects-slot-index-name edge-class 'from)))
+            (i-to   (get-root-object pool (up::get-objects-slot-index-name edge-class 'to)))
+            (i-type (get-root-object pool (up::get-objects-slot-index-name edge-class 'type))))
+        (is-true (= 1 (hash-table-count i-from)))
+        (is-true (= 2 (hash-table-count i-to)))
+        (is-true (= 1 (hash-table-count i-type)))
+        ;; befor check
+        (is-true (not (null (member edge1 (find-all-objects pool edge-class)))))
+        (is-true (eq edge1 (get-object-with-id pool edge-class (get-id edge1))))
+        (is-true (= 2
+                    (length (find-object-with-slot pool edge-class 'shinra::from (get-from-node-id edge1)))))
+        (is-true (= 1
+                    (length
+                     (find-object-with-slot pool edge-class 'shinra::to (get-to-node-id edge1)))))
+        (is-true (= 2
+                    (length (find-object-with-slot pool edge-class 'shinra::type (get-edge-type edge1)))))
+        ;; do
+        (shinra::tx-delete-edge pool edge1)
+        ;; after check
+        (is-false (not (null (member edge1 (find-all-objects pool edge-class)))))
+        (is-false (eq edge1 (get-object-with-id pool edge-class (get-id edge1))))
+        (is-true (= 1
+                    (length (find-object-with-slot pool edge-class 'shinra::from (get-from-node-id edge1)))))
+        (is-true (= 0
+                    (length
+                     (find-object-with-slot pool edge-class 'shinra::to (get-to-node-id edge1)))))
+        (is-true (= 1
+                    (length (find-object-with-slot pool edge-class 'shinra::type (get-edge-type edge1)))))
+
+        ;;
+        (is-true (= 1 (hash-table-count i-from)))
+        (is-true (= 2 (hash-table-count i-to)))
+        (is-true (= 1 (hash-table-count i-type)))))
+    (up:snapshot pool)))

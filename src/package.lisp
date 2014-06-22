@@ -47,7 +47,6 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            ;; banshou
            #:get-at-id
            #:find-node   ;; これは不要じゃろう。若気の至り関数。
-           #:delete-node
            #:tx-make-node #:make-node
            #:tx-make-edge #:make-edge
            ;; paradicate

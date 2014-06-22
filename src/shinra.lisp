@@ -68,11 +68,21 @@
 ;;;;;
 ;;;;; 削除
 ;;;;;
-(defgeneric delete-node ( banshou node)
+(defgeneric tx-delete-node ( banshou node)
   (:documentation "Nodeを削除します。"))
-(defmethod delete-node ((system banshou) (node node))
+(defmethod tx-delete-node ((system banshou) (node node))
   (execute-transaction
    (tx-delete-object system 'node (get-id node))))
+
+
+(defgeneric tx-delete-edge (banshou edge)
+  (:documentation "Nodeを削除します。"))
+(defmethod tx-delete-edge ((pool banshou) (edge edge))
+  ;; まずはスロット・インデックスの削除
+  (mapcar #'(lambda (slot) (up:tx-remove-object-on-slot-index pool edge slot))
+          '(from to type))
+  ;; 本体と プライマリ・インデックスを削除
+  (tx-delete-object pool (class-name (class-of edge)) (get-id edge)))
 
 
 
