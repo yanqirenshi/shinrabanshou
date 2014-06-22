@@ -15,7 +15,6 @@
                 (remove-if #'(lambda (x) (not (eq to-id (get-to-node-id x))))
                            (get-root-object sys (object-root-name 'edge)))))))
 
-;;(get-user *sys* *deccot*)
 (defmethod get-user ((sys banshou) (deccot deccot))
   "TODO: deccot -- :have --> user = (null) みたいな検索できんとイケんねぇ。
 Graph理論をもっと勉強せんとイケん。

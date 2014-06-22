@@ -6,7 +6,7 @@
 ;;;;;
 (defgeneric get-user (banshou code) (:documentation ""))
 (defmethod get-user ((sys banshou) code)
-  (find-object-with-slot sys 'user 'code code))
+  (first (find-object-with-slot sys 'user 'code code)))
 
 (defgeneric make-user (banshou creater code &key name password note timestamp)
   (:documentation ""))
@@ -69,7 +69,7 @@
 ;;;;;
 (defgeneric master-user (banshou) (:documentation ""))
 (defmethod master-user ((sys banshou))
-  (first (get-user sys *master-user-code*)))
+  (get-user sys *master-user-code*))
 
 (defgeneric make-master-user (banshou &key code name password note timestamp)
   (:documentation ""))
