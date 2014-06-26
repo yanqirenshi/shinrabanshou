@@ -52,12 +52,13 @@
 現在、関係を持っている Node は削除できないようにしています。"))
 (defmethod tx-delete-node ((pool banshou) (node node))
   ;; 現在関係があるものは削除できないようにしています。
-  (let ((node-class (class-name (class-of node))))
-    (when (or (find-r-edge pool node-class :from node)
-              (find-r-edge pool node-class :to   node))
+  (let ((node-class (class-name (class-of node)))
+        (edge-class 'edge))
+    (when (or (find-r-edge pool edge-class :from node)
+              (find-r-edge pool edge-class :to   node))
       (error "関係を持っている Node は削除できません。"))
     (execute-transaction
-     (tx-delete-object pool 'node (get-id node)))))
+     (tx-delete-object pool node-class (get-id node)))))
 
 
 
