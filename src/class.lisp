@@ -22,6 +22,8 @@ shinra としての一意という訳ではないので node と edge に実装�
 (defun make-footprint (user-code &key (timestamp (get-universal-time)))
   (make-instance 'footprint :user-code user-code :timestamp timestamp))
 
+(defun mfp (user-code &key (timestamp (get-universal-time)))
+  (make-footprint user-code :timestamp timestamp))
 
 (defclass mutable ()
   ((create-time :documentation ""

@@ -27,7 +27,7 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            ;; banshou
            #:make-banshou
            ;; footpring
-           #:make-footprint
+           #:make-footprint #:mfp
            ;; deccot
            #:deccot #:add-deccot
            ;; banshou
