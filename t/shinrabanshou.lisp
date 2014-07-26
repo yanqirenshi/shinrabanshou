@@ -30,7 +30,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
       (delete-file pathname))))
 
 
-(test test-basic
+(test test@basic
   (let ((node-note-1 "n-note-1")
         (node-note-2 "n-note-2")
         (node-note-3 "n-note-3")
@@ -90,7 +90,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 
 
 
-(test test-predicates
+(test test@predicates
   (let ((node-note-1 "n-note-1")
         (node-note-2 "n-note-2")
         (edge-type   :test-r)
@@ -121,7 +121,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 
 
 
-(test test-find-r-xxx
+(test test@find-r-xxx
   (let ((node-note-1 "n-note-1")
         (node-note-2 "n-note-2")
         (node-note-3 "n-note-3")
@@ -172,7 +172,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 
 
 ;;
-(test test-slot-index
+(test test@slot-index
   (labels ((index-name (cls slot)
              (up::get-objects-slot-index-name cls slot)))
     (let ((node-note-1 "n-note-1")
@@ -216,7 +216,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 
 
 ;;
-(test test-remove-object-on-slot-index
+(test test@remove-object-on-slot-index
   (labels ((index-name (cls slot)
              (up::get-objects-slot-index-name cls slot)))
     (let ((node-note-1 "n-note-1")
@@ -284,7 +284,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
         (up:snapshot pool)))))
 
 
-(test test-delete-edge
+(test test@delete-edge
   (let ((node-note-1 "n-note-1")
         (node-note-2 "n-note-2")
         (rsc-class   'resource)
@@ -339,3 +339,63 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
         (is-true (= 2 (hash-table-count i-to)))
         (is-true (= 1 (hash-table-count i-type)))))
     (up:snapshot pool)))
+
+
+
+(test test@tx-change-node
+  (let ((node-note-1 "n-note-1")
+        (node-note-2 "n-note-2")
+        (node-note-3 "n-note-3")
+        (edge-type   :test-r)
+        (pool-stor *pool-stor*)
+        (pool nil))
+    ;; こりゃなんで？
+    (unless pool-stor (error "*pool-stor*がnilのままです。"))
+    ;; delete file
+    (clean-data-sotr pool-stor)
+    ;; create system
+    (setf pool (make-banshou 'banshou pool-stor))
+    (is-true pool)
+    ;;
+    (let* ((node1 (tx-make-node pool 'resource 'note node-note-1))
+           (node2 (tx-make-node pool 'resource 'note node-note-2))
+           (node3 (tx-make-node pool 'resource 'note node-note-3))
+           (edge1 (tx-make-edge pool 'edge node1 node2 edge-type)))
+      (is-true (= (get-id node1) (get-from-node-id edge1)))
+      (is-true (= (get-id node2) (get-to-node-id edge1)))
+      (is-true (eq edge1 (tx-change-node pool edge1 :from node3)))
+      (is-true (= (get-id node3) (get-from-node-id edge1)))
+      (is-true (= (get-id node2) (get-to-node-id edge1)))
+      (is-true (eq edge1 (tx-change-node pool edge1 :to node1)))
+      (is-true (= (get-id node3) (get-from-node-id edge1)))
+      (is-true (= (get-id node1) (get-to-node-id edge1)))
+      (up:snapshot pool)
+      )))
+
+
+
+(test test@tx-change-type
+  (let ((node-note-1 "n-note-1")
+        (node-note-2 "n-note-2")
+        (edge-type-befor :test-b)
+        (edge-type-after :test-a)
+        (pool-stor *pool-stor*)
+        (pool nil))
+    ;; こりゃなんで？
+    (unless pool-stor (error "*pool-stor*がnilのままです。"))
+    ;; delete file
+    (clean-data-sotr pool-stor)
+    ;; create system
+    (setf pool (make-banshou 'banshou pool-stor))
+    (is-true pool)
+    ;;
+    (let* ((node1 (tx-make-node pool 'resource 'note node-note-1))
+           (node2 (tx-make-node pool 'resource 'note node-note-2))
+           (edge1 (tx-make-edge pool 'edge node1 node2 edge-type-befor)))
+      (is-true (= (get-id node1)   (get-from-node-id edge1)))
+      (is-true (= (get-id node2)   (get-to-node-id edge1)))
+      (is-true (eq edge-type-befor (get-edge-type edge1)))
+      (is-true (eq edge1 (tx-change-type pool edge1 edge-type-after)))
+      (is-true (eq edge-type-after (get-edge-type edge1)))
+      ;;
+      (up:snapshot pool))))

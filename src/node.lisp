@@ -49,7 +49,12 @@
 ;;;;;
 (defgeneric tx-delete-node (banshou node)
   (:documentation "Nodeを削除します。
-現在、関係を持っている Node は削除できないようにしています。"))
+現在、関係を持っている Node は削除できないようにしています。
+2014/7/26
+なんじゃあるんかいね。
+でもこれ、関係があったらそれらを返すようにしたほうが良さそうじゃね。
+どんとなんあるか判断できるもんね。
+"))
 (defmethod tx-delete-node ((pool banshou) (node node))
   ;; 現在関係があるものは削除できないようにしています。
   (let ((node-class (class-name (class-of node)))

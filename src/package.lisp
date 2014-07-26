@@ -42,6 +42,8 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:get-from-node-id #:get-from-node-class
            #:get-to-node-id   #:get-to-node-class
            #:get-edge-type
+           #:tx-change-node
+           #:tx-change-type
            ;; user
            #:user #:note
            #:get-code #:get-name #:get-note #:get-password #:get-user

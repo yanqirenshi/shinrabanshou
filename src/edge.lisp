@@ -35,12 +35,16 @@
 ;;;;; 削除
 ;;;;;
 (defgeneric tx-delete-edge (banshou edge)
-  (:documentation "Nodeを削除します。"))
+  (:documentation "Nodeを削除します。
+これ作りっぱなしで使ぉとらんかったわ。
+これ、そのまんま使えそうじゃね。
+"))
 (defmethod tx-delete-edge ((pool banshou) (edge edge))
-  ;; まずはスロット・インデックスの削除
-  (mapcar #'(lambda (slot) (up:tx-remove-object-on-slot-index pool edge slot))
+  ;; remove edge on index
+  (mapcar #'(lambda (slot)
+              (up:tx-remove-object-on-slot-index pool edge slot))
           '(from to type))
-  ;; 本体と プライマリ・インデックスを削除
+  ;; remove edge object
   (tx-delete-object pool (class-name (class-of edge)) (get-id edge)))
 
 
@@ -87,3 +91,45 @@
 (defgeneric get-to-node (banshou edge) (:documentation ""))
 (defmethod get-to-node ((system banshou) (edge edge))
   (get-at-id system (get-to-node-id edge)))
+
+
+(defun tx-change-from-node (pool edge node)
+  (let ((class (class-name (class-of node)))
+        (id    (get-id node)))
+    (tx-change-object-slots pool
+                            class
+                            (get-id edge)
+                            `((from ,id)
+                              (from-class ,class)))))
+
+
+(defun class-symbol (obj)
+  (class-name (class-of obj)))
+(defun class@ (obj)
+  (class-name (class-of obj)))
+
+(defun get-edge-node-slot (type)
+  (cond ((eq :from type)
+         (values 'from 'from-class))
+        ((eq :to type)
+         (values 'to 'to-class))
+        (t (error "こんとなん知らんけぇ。type=~a" type))))
+
+(defmethod tx-change-node ((pool banshou) (edge edge) type (node node))
+  (multiple-value-bind (cls-id cls-class)
+      (get-edge-node-slot type)
+    (tx-change-object-slots pool
+                            (class@ edge)
+                            (get-id edge)
+                            `((,cls-id    ,(get-id node))
+                              (,cls-class ,(class@ node)))))
+  (values edge node))
+
+
+(defmethod tx-change-type ((pool banshou) (edge edge) type)
+  (tx-change-object-slots pool
+                          (class@ edge)
+                          (get-id edge)
+                          `((type ,type)))
+  edge)
+
