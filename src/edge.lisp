@@ -35,10 +35,7 @@
 ;;;;; 削除
 ;;;;;
 (defgeneric tx-delete-edge (banshou edge)
-  (:documentation "Nodeを削除します。
-これ作りっぱなしで使ぉとらんかったわ。
-これ、そのまんま使えそうじゃね。
-"))
+  (:documentation "Nodeを削除します。"))
 (defmethod tx-delete-edge ((pool banshou) (edge edge))
   ;; remove edge on index
   (mapcar #'(lambda (slot)
