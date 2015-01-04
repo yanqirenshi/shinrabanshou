@@ -17,6 +17,37 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
   :depends-on (:alexandria :cl-ppcre :cl+ :upanishad)
   :components ((:module "src"
                         :components
+                        ;; 
+                        ;; (start)
+                        ;;    |
+                        ;; package
+                        ;;    |
+                        ;;    +----------------------------+
+                        ;;    |                            |
+                        ;; utility                 extension/cl-json+
+                        ;;    |                            |
+                        ;; class                           |
+                        ;;    |                            |
+                        ;;    +-------+----------+         |
+                        ;;    |       |          |         |
+                        ;; shinra  password  mail-address  |
+                        ;;    |       |          |         |
+                        ;;  node      +----------+-------->|
+                        ;;    |                            |
+                        ;;  edge                           |
+                        ;;    |                            |
+                        ;;  finder                         |
+                        ;;    |                            |
+                        ;;  user                           |
+                        ;;    |                            |
+                        ;;    +--------+                   |
+                        ;;    |        |                   |
+                        ;;  banshou  deccot                |
+                        ;;    |        |                   |
+                        ;;    +--------+-------------------+
+                        ;;    |
+                        ;;  (end)
+                        ;; 
                         ((:file "package")
                          (:file "extension/cl-json+" :depends-on ("package"))
                          (:file "utility"            :depends-on ("package"))

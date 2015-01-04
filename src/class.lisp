@@ -17,7 +17,8 @@ shinra としての一意という訳ではないので node と edge に実装�
 ;;;;;
 (defclass footprint ()
   ((user-code :accessor get-user-code :initarg :user-code :initform nil)
-   (timestamp :accessor get-timestamp :initarg :timestamp :initform nil)))
+   (timestamp :accessor get-timestamp :initarg :timestamp :initform nil))
+  (:documentation ""))
 
 (defun make-footprint (user-code &key (timestamp (get-universal-time)))
   (make-instance 'footprint :user-code user-code :timestamp timestamp))
@@ -27,15 +28,18 @@ shinra としての一意という訳ではないので node と edge に実装�
 
 (defclass mutable ()
   ((create-time :documentation ""
-                :accessor get-create-time :initarg :create-time :initform nil)))
+                :accessor get-create-time :initarg :create-time :initform nil))
+  (:documentation ""))
 
 (defclass immutable (mutable)
   ((update-time :documentation ""
-                :accessor get-update-time :initarg :update-time :initform nil)))
+                :accessor get-update-time :initarg :update-time :initform nil))
+  (:documentation ""))
 
 (defclass password (immutable)
   ((spell       :documentation ""
-                :accessor get-spell       :initarg :spell       :initform nil)))
+                :accessor get-spell       :initarg :spell       :initform nil))
+  (:documentation ""))
 
 
 ;; <参考>
@@ -44,7 +48,8 @@ shinra としての一意という訳ではないので node と edge に実装�
   ((local       :documentation ""
                 :accessor get-local       :initarg :local       :initform nil)
    (domain      :documentation ""
-                :accessor get-domain       :initarg :domain       :initform nil)))
+                :accessor get-domain       :initarg :domain       :initform nil))
+  (:documentation "これ、つこぉとるか？"))
 
 
 
@@ -58,7 +63,8 @@ shinra としての一意という訳ではないので node と edge に実装�
                 :accessor get-create-time :initarg :create-time :initform nil)
    (update-time :documentation ""
                 :accessor get-update-time :initarg :update-time :initform nil))
-  (:documentation "森羅 : 数多く並びつらなること。また，そのもの。
+  (:documentation "Node と Edge の親クラス。
+森羅 : 数多く並びつらなること。また，そのもの。
 この世を構成するもの。的な意味で Node と Edge の親クラスとしては良い感じかな。と。
 まぁ分かり難いっちゃぁそうなんですが、ヒンドゥー語からチョイスするよりは日本人には優しいかな。と。
 shinra で構成される物が banshou である。と。
@@ -127,7 +133,8 @@ cl-prevalence の prevalence-system を継承しています。
    (note :documentation ""
          :accessor get-note
          :initarg :note
-         :initform nil)))
+         :initform nil))
+  (:documentation ""))
 
 
 
@@ -140,7 +147,7 @@ cl-prevalence の prevalence-system を継承しています。
              :accessor get-password
              :initarg :password
              :initform nil))
-  (:documentation ""))
+  (:documentation "権限のクラスです。"))
 
 
 
@@ -162,7 +169,7 @@ cl-prevalence の prevalence-system を継承しています。
              :accessor get-forces
              :initarg :forces
              :initform nil))
-  (:documentation ""))
+  (:documentation "ユーザーのクラスです。"))
 
 
 
@@ -175,4 +182,5 @@ cl-prevalence の prevalence-system を継承しています。
    (forces   :documentation ""
              :accessor get-forces
              :initarg :forces
-             :initform nil)))
+             :initform nil))
+  (:documentation ""))
