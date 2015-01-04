@@ -1,4 +1,4 @@
-* 森羅万象(shinrabanshou) 
+* 森羅万象(shinrabanshou)
 
 Common Lisp On-Memory Objective Graph Database.
 
@@ -26,6 +26,52 @@ Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase
 (shinra-test::run!)
 #+END_SRC
 
+*** オペレータ
+**** ノード/エッジの作成/削除
+| 内容                                     | non exec-tran  | with exec-tran |
+|------------------------------------------+----------------+----------------|
+| ノードの作成                             | tx-make-node   | make-node      |
+| ノードの削除                             | tx-delete-node | delete-node    |
+| エッジの作成                             | tx-make-edge   | make-edge      |
+| エッジの削除                             | tx-delete-edge | @dev           |
+| エッジの開始or終点のノードを変更します。 | tx-change-node | @dev           |
+| エッジのエッジタイプを変更します。       | tx-change-type | @dev           |
+
+**** 述語
+| 対象                 | ノード | エッジ |
+|----------------------+--------+--------|
+| オブジェクトの型確認 | nodep  | edgep  |
+| pool上での存在確認   | existp | 同左   |
+
+**** エッジ
+| operator       | description                              |
+|----------------+------------------------------------------|
+| get-from-node  | エッジの開始ノードを返します。           |
+| get-to-node    | エッジの終点ノードを返します。           |
+
+**** ファインダー
+| operator    | description |
+|-------------+-------------|
+| get-r       |             |
+| get-r-edge  |             |
+| get-r-node  |             |
+|-------------+-------------|
+| find-r-edge |             |
+| find-r      |             |
+| find-r-node |             |
+
+**** インデックス(全面実装中)
+| operator      | arg                                 |
+|---------------+-------------------------------------|
+| create-index  | banshou user class-symbol slot-list |
+| remove-index  | banshou user class-symbol index     |
+| rebuild-index | banshou user class-symbol index     |
+
+**** 印刷
+| operator        | arg                          |
+|-----------------+------------------------------|
+| print-root-list |                              |
+| print-user-list | ユーザーの一覧を印字します。 |
 
 ** Dependencies
 | library    | description                            |
@@ -34,7 +80,6 @@ Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase
 | cl-ppcre   | 正規表現ライブラリ                     |
 | cl+        | ユーティリティ                         |
 | upanishad  | オブジェクトDB(cl-prevalence クローン) |
-
 
 ** Installation
 #+BEGIN_SRC lisp
