@@ -23,26 +23,20 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 ;;;;;
 ;;;;; 作成
 ;;;;;
-(defgeneric tx-make-node (banshou class-symbol &rest slots)
+(defgeneric tx-make-node (banshou class-symbol &optional slots-and-values)
   (:documentation "")
-  (:method ((system banshou) (class-symbol symbol) &rest slots)
+  (:method ((system banshou) (class-symbol symbol) &optional slots-and-values)
     (unless (nodep class-symbol)
       (error "このクラスは node のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-    (tx-make-shinra system class-symbol (pairify slots))))
+    (tx-make-shinra system class-symbol slots-and-values)))
 
 
 
-(defgeneric make-node (banshou class-symbol &rest slots)
-  (:documentation "tx-make-node をトランザクション実行します。
---------
-TODO: しとらんじゃないか!!")
-  (:method ((system banshou) (class-symbol symbol) &rest slots)
-    (unless (nodep class-symbol)
-      (error "このクラスは node のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-    ;; ここじゃぁ tx-meke-node を呼ぶべきじゃが、、、slots んところがねぇ。。。。マクロにせんといけんけぇ、あとまわしにしよ。
-    ;; とりあえずこれで動くけぇ
+(defgeneric make-node (banshou class-symbol &optional slots-and-values)
+  (:documentation "")
+  (:method ((system banshou) (class-symbol symbol) &optional slots-and-values)
     (execute-transaction
-     (tx-make-shinra system class-symbol (pairify slots)))))
+     (tx-make-node system class-symbol slots-and-values))))
 
 
 

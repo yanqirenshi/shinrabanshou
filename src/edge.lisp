@@ -50,30 +50,30 @@
 ;;;;;
 ;;;;; 作成
 ;;;;;
-(defgeneric tx-make-edge (banshou class-symbol from to type &rest slots)
+(defgeneric tx-make-edge (banshou class-symbol from to type &optional slots)
   (:documentation "edge を作成します。")
-  (:method ((system banshou) (class-symbol symbol) (from node) (to node) type &rest slots)
+  (:method ((system banshou) (class-symbol symbol) (from node) (to node) type
+            &optional slots)
     (cond ((null (get-id from)) (error "この node(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
           ((null (get-id to))   (error "この node(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
           ((null type)          (error "type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")))
     (unless (edgep class-symbol)
       (error "このクラスは edge のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-    (let ((param (list 'from       (get-id from)
-                       'from-class (class-name (class-of from))
-                       'to         (get-id to)
-                       'to-class   (class-name (class-of to))
-                       'type      type)))
-      (tx-make-shinra system class-symbol
-                      (pairify (if (null slots)
-                                   (concatenate 'list slots param)
-                                   param))))))
+    (let ((param `((from       ,(get-id from))
+                   (from-class ,(class-name (class-of from)))
+                   (to         ,(get-id to))
+                   (to-class   ,(class-name (class-of to)))
+                   (type       ,type))))
+      (tx-make-shinra system class-symbol (if slots
+                                              (append param slots)
+                                              param)))))
 
-(defgeneric make-edge (banshou class-symbol from to type &rest slots)
+(defgeneric make-edge (banshou class-symbol from to type &optional slots)
   (:documentation "tx-make-edgeをトランザクション実行します。")
   (:method ((pool banshou)
             (class-symbol symbol)
             (from node) (to node) type
-            &rest slots)
+            &optional slots)
     (execute-transaction (tx-make-edge pool class-symbol from to type slots))))
 
 

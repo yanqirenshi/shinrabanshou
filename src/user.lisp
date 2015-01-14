@@ -26,14 +26,14 @@
           ((get-user sys code)
            (error "このユーザーはもう存在するけぇ。作れるわけがなかろぉ。user-code=~a" code)))
     (values (tx-make-node sys 'user
-                          'create-time (make-footprint nil :timestamp timestamp)
-                          'update-time nil
-                          'buddha (make-footprint nil :timestamp timestamp)
-                          'nirvana nil
-                          'code code
-                          'password password
-                          'name name
-                          'note note)
+                          `((create-time ,(make-footprint nil :timestamp timestamp))
+                            ((update-time nil))
+                            ((buddha      ,(make-footprint nil :timestamp timestamp)))
+                            ((nirvana nil))
+                            ((code ,code))
+                            ((password ,password))
+                            ((name ,name))
+                            ((note ,note))))
             password)))
 
 (defgeneric tx-make-user (banshou creater code &key name password note timestamp)
@@ -53,14 +53,14 @@
           ((get-user sys code)
            (error "このユーザーはもう存在するけぇ。作れるわけがなかろぉ。user-code=~a" code)))
     (values (tx-make-node sys 'user
-                          'create-time (make-footprint nil :timestamp timestamp)
-                          'update-time nil
-                          'buddha (make-footprint nil :timestamp timestamp)
-                          'nirvana nil
-                          'code code
-                          'password password
-                          'name name
-                          'note note)
+                          `(((create-time ,(make-footprint nil :timestamp timestamp)))
+                            ((update-time nil))
+                            ((buddha ,(make-footprint nil :timestamp timestamp)))
+                            ((nirvana nil))
+                            ((code ,code))
+                            ((password ,password))
+                            ((name ,name))
+                            ((note ,note))))
             password)))
 
 
@@ -84,14 +84,14 @@
     (when (master-user sys)
       (error "このユーザーはもう存在するけぇ。user-code=~a" code))
     (tx-make-node sys 'user
-                  'create-time (make-footprint nil :timestamp timestamp)
-                  'update-time nil
-                  'buddha (make-footprint nil :timestamp timestamp)
-                  'nirvana nil
-                  'code code
-                  'password password
-                  'name name
-                  'note note)))
+                  `((create-time ,(make-footprint nil :timestamp timestamp))
+                    (update-time nil)
+                    (buddha ,(make-footprint nil :timestamp timestamp))
+                    (nirvana nil)
+                    (code ,code)
+                    (password ,password)
+                    (name ,name)
+                    (note ,note)))))
 
 
 (defgeneric tx-make-master-user (banshou &key code name password note timestamp)
@@ -105,13 +105,13 @@
     (when (master-user sys)
       (error "このユーザーはもう存在するけぇ。user-code=~a" code))
     (tx-make-node sys 'user
-                  'create-time (make-footprint nil :timestamp timestamp)
-                  'update-time nil
-                  'buddha (make-footprint nil :timestamp timestamp)
-                  'nirvana nil
-                  'code code
-                  'password password
-                  'name name
-                  'note note)))
+                  `((create-time ,(make-footprint nil :timestamp timestamp))
+                    (update-time nil)
+                    (buddha ,(make-footprint nil :timestamp timestamp))
+                    (nirvana nil)
+                    (code ,code)
+                    (password ,password)
+                    (name ,name)
+                    (note ,note)))))
 
 
