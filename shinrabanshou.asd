@@ -28,11 +28,11 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ;;    |                            |
                         ;; class                           |
                         ;;    |                            |
-                        ;;    +-------+----------+         |
-                        ;;    |       |          |         |
-                        ;; shinra  password  mail-address  |
-                        ;;    |       |          |         |
-                        ;;  node      +----------+-------->|
+                        ;;    +-------+                    |
+                        ;;    |       |                    |
+                        ;; shinra  password                |
+                        ;;    |       |                    |
+                        ;;  node      +------------------->|
                         ;;    |                            |
                         ;;  edge                           |
                         ;;    |                            |
@@ -53,7 +53,6 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                          (:file "utility"            :depends-on ("package"))
                          (:file "class"              :depends-on ("utility"))
                          (:file "password"           :depends-on ("class"))
-                         (:file "mail-address"       :depends-on ("class"))
                          (:file "shinra"             :depends-on ("class"))
                          (:file "node"               :depends-on ("shinra"))
                          (:file "edge"               :depends-on ("node"))

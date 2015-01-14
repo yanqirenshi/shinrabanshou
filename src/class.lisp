@@ -26,30 +26,35 @@ shinra としての一意という訳ではないので node と edge に実装�
 (defun mfp (user-code &key (timestamp (get-universal-time)))
   (make-footprint user-code :timestamp timestamp))
 
-(defclass mutable ()
+(defclass immutable ()
   ((create-time :documentation ""
                 :accessor get-create-time :initarg :create-time :initform nil))
   (:documentation ""))
 
-(defclass immutable (mutable)
+(defclass mutable (immutable)
   ((update-time :documentation ""
                 :accessor get-update-time :initarg :update-time :initform nil))
   (:documentation ""))
 
-(defclass password (immutable)
+
+(defclass buddha-nature ()
+  ((buddha :documentation ""
+           :accessor get-buddha
+           :initarg :buddha
+           :initform nil)
+   (nirvana :documentation ""
+            :accessor get-nirvana
+            :initarg :nirvana
+            :initform nil))
+  (:documentation "仏性を表現しとるんよ。"))
+
+
+(defclass password (mutable)
   ((spell       :documentation ""
                 :accessor get-spell       :initarg :spell       :initform nil))
-  (:documentation ""))
+  (:documentation "パスワード
+これ、別パッケージにしようや。。。"))
 
-
-;; <参考>
-;; http://ja.wikipedia.org/wiki/%E3%83%A1%E3%83%BC%E3%83%AB%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9
-(defclass mail-address ()
-  ((local       :documentation ""
-                :accessor get-local       :initarg :local       :initform nil)
-   (domain      :documentation ""
-                :accessor get-domain       :initarg :domain       :initform nil))
-  (:documentation "これ、つこぉとるか？"))
 
 
 
@@ -115,22 +120,6 @@ cl-prevalence の prevalence-system を継承しています。
 まぁ、今んところそのままで名前を変えただけですが。
 こう言うのってわかりニクイんですけど、何か好きなんですよね。"))
 
-
-
-
-;;;;;
-;;;;; 仏性
-;;;;;
-(defclass buddha-nature ()
-  ((buddha :documentation ""
-           :accessor get-buddha
-           :initarg :buddha
-           :initform nil)
-   (nirvana :documentation ""
-            :accessor get-nirvana
-            :initarg :nirvana
-            :initform nil))
-  (:documentation "仏性を表現しとるんよ。"))
 
 
 
