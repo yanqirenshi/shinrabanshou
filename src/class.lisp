@@ -1,20 +1,6 @@
 (in-package :shinrabanshou)
 
-#|
 
-森羅万象 を 構成する クラス。
-
-object-with-id を継承しているのは id を持つから。
-基本連番で良いかな。と。
-が、node と edge では別の name-space なので番号は被ります。
-shinra としての一意という訳ではないので node と edge に実装するほうが良いのかもしれませんね。
-
-|#
-
-
-;;;;;
-;;;;; utility class
-;;;;;
 (defclass footprint ()
   ((user-code :accessor get-user-code :initarg :user-code :initform nil)
    (timestamp :accessor get-timestamp :initarg :timestamp :initform nil))
@@ -36,6 +22,16 @@ shinra としての一意という訳ではないので node と edge に実装�
                 :accessor get-update-time :initarg :update-time :initform nil))
   (:documentation ""))
 
+
+(defclass naming ()
+  ((code :documentation ""
+         :accessor get-code
+         :initarg :code
+         :initform nil)
+   (name :documentation ""
+         :accessor get-name
+         :initarg :name
+         :initform nil)))
 
 (defclass buddha-nature ()
   ((buddha :documentation ""
@@ -116,9 +112,8 @@ shinra で構成される物が banshou である。と。
 (defclass banshou (pool)
   ()
   (:documentation "万象：起きたこと、起きていること、その記憶。
-cl-prevalence の prevalence-system を継承しています。
-まぁ、今んところそのままで名前を変えただけですが。
-こう言うのってわかりニクイんですけど、何か好きなんですよね。"))
+upanishad の pool を継承しています。
+まぁ、今んところそのままで名前を変えただけですが。"))
 
 
 
@@ -126,41 +121,16 @@ cl-prevalence の prevalence-system を継承しています。
 ;;;;;
 ;;;;; 力
 ;;;;;
-(defclass force (node buddha-nature)
-  ((name :documentation ""
-         :accessor get-name
-         :initarg :name
-         :initform nil))
+(defclass force (node buddha-nature naming)
+  ()
   (:documentation "権限のクラスです。"))
 
 
 
 
-(defclass ghost (node buddha-nature)
-  ((code :documentation ""
-         :accessor get-code
-         :initarg :code
-         :initform nil)
-   (name :documentation ""
-         :accessor get-name
-         :initarg :name
-         :initform nil)
-   (password :documentation ""
+(defclass user (node buddha-nature naming)
+  ((password :documentation ""
              :accessor get-password
              :initarg :password
              :initform nil))
   (:documentation "ユーザーのクラスです。"))
-
-
-
-
-(defclass deccot (node buddha-nature)
-  ((name :documentation ""
-         :accessor get-name
-         :initarg :name
-         :initform nil)
-   (forces   :documentation ""
-             :accessor get-forces
-             :initarg :forces
-             :initform nil))
-  (:documentation ""))

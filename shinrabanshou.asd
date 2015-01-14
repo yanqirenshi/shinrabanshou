@@ -38,13 +38,11 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ;;    |                            |
                         ;;  finder                         |
                         ;;    |                            |
-                        ;;  ghost                          |
+                        ;;  user                           |
                         ;;    |                            |
-                        ;;    +--------+                   |
-                        ;;    |        |                   |
-                        ;;  banshou  deccot                |
-                        ;;    |        |                   |
-                        ;;    +--------+-------------------+
+                        ;;  banshou                        |
+                        ;;    |                            |
+                        ;;    +----------------------------+
                         ;;    |
                         ;;  (end)
                         ;;
@@ -57,9 +55,8 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                          (:file "node"               :depends-on ("shinra"))
                          (:file "edge"               :depends-on ("node"))
                          (:file "finder"             :depends-on ("edge"))
-                         (:file "ghost"              :depends-on ("finder"))
-                         (:file "banshou"            :depends-on ("ghost"))
-                         (:file "deccot"             :depends-on ("ghost")))))
+                         (:file "user"               :depends-on ("finder"))
+                         (:file "banshou"            :depends-on ("user")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames

@@ -18,7 +18,7 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
   (:use :cl :alexandria :cl-ppcre :cl+ :upanishad)
   (:nicknames :shinra)
   (:export #:property
-           #:footprint   #:get-ghost-code  #:get-timestamp
+           #:footprint   #:get-user-code  #:get-timestamp
            #:password    #:get-spell #:get-create-time #:get-update-time
            #:banshou
            #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
@@ -26,8 +26,6 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:make-banshou
            ;; footpring
            #:make-footprint #:mfp
-           ;; deccot
-           #:deccot #:add-deccot
            ;; banshou
            #:get-at-id
            ;; buddha-nature
@@ -42,11 +40,11 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
            #:get-edge-type
            #:tx-change-node
            #:tx-change-type
-           ;; ghost
-           #:ghost #:note
-           #:get-code #:get-name #:get-note #:get-password #:get-ghost
-           #:tx-master-ghost #:tx-make-ghost
-           #:master-ghost #:make-ghost
+           ;; user
+           #:user #:note
+           #:get-code #:get-name #:get-note #:get-password #:get-user
+           #:tx-master-user #:tx-make-user
+           #:master-user #:make-user
            ;; paradicate
            #:lifep #:nodep #:edgep #:existp
            ;; Relation
@@ -57,9 +55,9 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
 
 
 
-(defvar *master-ghost-code* "@master")
-(defvar *master-ghost-name* "森羅万象 Master Ghost")
-(defvar *master-ghost-password* "zaq12wsx")
-(defvar *master-ghost-note* "Created by shinrabanshou")
+(defvar *master-user-code* "@master")
+(defvar *master-user-name* "森羅万象 Master User")
+(defvar *master-user-password* "zaq12wsx")
+(defvar *master-user-note* "Created by shinrabanshou")
 (defvar *password-characters* "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-=!@#$%^&*()_+|[]{};:,./<>?")
 

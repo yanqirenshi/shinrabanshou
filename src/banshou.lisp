@@ -9,15 +9,15 @@
 
 banshou のインスタンスを生成する以外に以下の処理も実行します。
  (1) id-counter が生成されていない場合は生成する。
- (2) master ghost が存在しない場合は生成する。
+ (2) master user が存在しない場合は生成する。
  (3) edge の index を作成する。
 ")
   (:method ((class-symbol symbol) data-stor)
     (let ((pool (make-pool data-stor :pool-class class-symbol)))
       (when (null (get-root-object pool :id-counter))
         (execute-transaction (tx-create-id-counter pool)))
-      (when (null (master-ghost pool))
-        (execute-transaction (tx-make-master-ghost pool)))
+      (when (null (master-user pool))
+        (execute-transaction (tx-make-master-user pool)))
       (index-on pool 'edge '(from to type))
       pool)))
 
@@ -26,13 +26,13 @@ banshou のインスタンスを生成する以外に以下の処理も実行し
 ;;;;;
 ;;;;; Permission
 ;;;;;
-(defgeneric chek-permission (banshou ghost &rest param)
-  (:documentation "ghostの権限をチェックします。
+(defgeneric chek-permission (banshou user &rest param)
+  (:documentation "userの権限をチェックします。
 -----------
 TODO: 作成(停止)中です。
 ")
-  (:method ((pool banshou) (ghost ghost) &rest param)
-    (list pool ghost param)))
+  (:method ((pool banshou) (user user) &rest param)
+    (list pool user param)))
 
 
 
@@ -98,24 +98,24 @@ TODO: 作成(停止)中です。
 ;;;;; TODO: これも作らんとね。
 ;;;;;
 ;; create
-(defgeneric create-index (banshou ghost class-symbol slot-list)
+(defgeneric create-index (banshou user class-symbol slot-list)
   (:documentation "" )
-  (:method ((pool banshou) (ghost ghost) (class-symbol symbol) (slot-list list))
-    (list pool ghost class-symbol slot-list)))
+  (:method ((pool banshou) (user user) (class-symbol symbol) (slot-list list))
+    (list pool user class-symbol slot-list)))
 
 
 ;; remove
-(defgeneric remove-index (banshou ghost class-symbol index)
+(defgeneric remove-index (banshou user class-symbol index)
   (:documentation "" )
-  (:method ((pool banshou) (ghost ghost) (class-symbol symbol) index)
-    (list pool ghost class-symbol index)))
+  (:method ((pool banshou) (user user) (class-symbol symbol) index)
+    (list pool user class-symbol index)))
 
 
 ;; rebuild
-(defgeneric rebuild-index (banshou ghost class-symbol index)
+(defgeneric rebuild-index (banshou user class-symbol index)
   (:documentation "" )
-  (:method ((pool banshou) (ghost ghost) (class-symbol symbol) index)
-    (list pool ghost class-symbol index)))
+  (:method ((pool banshou) (user user) (class-symbol symbol) index)
+    (list pool user class-symbol index)))
 
 
 
@@ -135,14 +135,14 @@ TODO: 作成(停止)中です。
 
 
 
-;; (print-ghost-list *sys* (master-ghost *sys*))
-(defgeneric print-ghost-list (banshou ghost &key stream)
+;; (print-user-list *sys* (master-user *sys*))
+(defgeneric print-user-list (banshou user &key stream)
   (:documentation "")
-  (:method ((pool banshou) (ghost ghost) &key (stream t))
+  (:method ((pool banshou) (user user) &key (stream t))
     (mapcar #'(lambda (u)
                 (format stream
                         "| ~20a | ~a~%"
                         (get-code u)
                         (get-name u)))
-            (get-object-list pool 'ghost))))
+            (get-object-list pool 'user))))
 
