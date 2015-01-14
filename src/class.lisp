@@ -79,26 +79,26 @@ shinra で構成される物が banshou である。と。
 
 
 (defclass edge (shinra)
-  ((from :accessor get-from-node-id
+  ((from :documentation ""
+         :accessor get-from-node-id
          :initarg :from
-         :initform nil
-         :documentation "")
-   (from-class :accessor get-from-node-class
+         :initform nil)
+   (from-class :documentation ""
+               :accessor get-from-node-class
                :initarg :from-class
-               :initform nil
-               :documentation "")
-   (to :accessor get-to-node-id
+               :initform nil)
+   (to :documentation ""
+       :accessor get-to-node-id
        :initarg :to
-       :initform nil
-       :documentation "")
-   (to-class :accessor get-to-node-class
+       :initform nil)
+   (to-class :documentation ""
+             :accessor get-to-node-class
              :initarg :to-class
-             :initform nil
-             :documentation "")
-   (type :accessor get-edge-type
+             :initform nil)
+   (type :documentation ""
+         :accessor get-edge-type
          :initarg :type
-         :initform nil
-         :documentation ""))
+         :initform nil))
   (:documentation ""))
 
 
@@ -119,9 +119,9 @@ cl-prevalence の prevalence-system を継承しています。
 
 
 ;;;;;
-;;;;; shinra resource
+;;;;; 仏性
 ;;;;;
-(defclass resource (node)
+(defclass buddha-nature ()
   ((buddha :documentation ""
            :accessor get-buddha
            :initarg :buddha
@@ -129,30 +129,25 @@ cl-prevalence の prevalence-system を継承しています。
    (nirvana :documentation ""
             :accessor get-nirvana
             :initarg :nirvana
-            :initform nil)
-   (note :documentation ""
-         :accessor get-note
-         :initarg :note
-         :initform nil))
-  (:documentation ""))
+            :initform nil))
+  (:documentation "仏性を表現しとるんよ。"))
 
 
 
-(defclass force (resource)
+;;;;;
+;;;;; 力
+;;;;;
+(defclass force (node buddha-nature)
   ((name :documentation ""
          :accessor get-name
          :initarg :name
-         :initform nil)
-   (password :documentation ""
-             :accessor get-password
-             :initarg :password
-             :initform nil))
+         :initform nil))
   (:documentation "権限のクラスです。"))
 
 
 
 
-(defclass user (resource)
+(defclass ghost (node buddha-nature)
   ((code :documentation ""
          :accessor get-code
          :initarg :code
@@ -164,17 +159,13 @@ cl-prevalence の prevalence-system を継承しています。
    (password :documentation ""
              :accessor get-password
              :initarg :password
-             :initform nil)
-   (forces   :documentation ""
-             :accessor get-forces
-             :initarg :forces
              :initform nil))
   (:documentation "ユーザーのクラスです。"))
 
 
 
 
-(defclass deccot (resource)
+(defclass deccot (node buddha-nature)
   ((name :documentation ""
          :accessor get-name
          :initarg :name

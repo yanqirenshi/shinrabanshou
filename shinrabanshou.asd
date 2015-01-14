@@ -17,7 +17,7 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
   :depends-on (:alexandria :cl-ppcre :cl+ :upanishad)
   :components ((:module "src"
                         :components
-                        ;; 
+                        ;;
                         ;; (start)
                         ;;    |
                         ;; package
@@ -38,7 +38,7 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ;;    |                            |
                         ;;  finder                         |
                         ;;    |                            |
-                        ;;  user                           |
+                        ;;  ghost                          |
                         ;;    |                            |
                         ;;    +--------+                   |
                         ;;    |        |                   |
@@ -47,7 +47,7 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ;;    +--------+-------------------+
                         ;;    |
                         ;;  (end)
-                        ;; 
+                        ;;
                         ((:file "package")
                          (:file "extension/cl-json+" :depends-on ("package"))
                          (:file "utility"            :depends-on ("package"))
@@ -58,9 +58,9 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                          (:file "node"               :depends-on ("shinra"))
                          (:file "edge"               :depends-on ("node"))
                          (:file "finder"             :depends-on ("edge"))
-                         (:file "user"               :depends-on ("finder"))
-                         (:file "banshou"            :depends-on ("user"))
-                         (:file "deccot"             :depends-on ("user")))))
+                         (:file "ghost"              :depends-on ("finder"))
+                         (:file "banshou"            :depends-on ("ghost"))
+                         (:file "deccot"             :depends-on ("ghost")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames

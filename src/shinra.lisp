@@ -13,9 +13,9 @@
 ;;;;;
 ;;;;; shinra 。。。 TODO:これ up に必要なんじゃ？
 ;;;;;
-(defgeneric lifep (resource &key time)
+(defgeneric lifep (buddha-nature &key time)
   (:documentation"リソースが生きているかを返します。")
-  (:method ((rsc resource) &key (time (get-universal-time)))
+  (:method ((rsc buddha-nature) &key (time (get-universal-time)))
     (let ((from (get-buddha  rsc)) (to   (get-nirvana rsc)))
       (cond ((and (null to)
                   (<= (get-timestamp from) time))
