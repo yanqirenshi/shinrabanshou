@@ -18,18 +18,13 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
   (:use :cl :alexandria :cl-ppcre :cl+ :upanishad)
   (:nicknames :shinra)
   (:export #:property
-           #:footprint   #:get-user-code  #:get-timestamp
-           #:password    #:get-spell #:get-create-time #:get-update-time
+           #:password    #:get-spell
            #:banshou
            #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
            ;; banshou
            #:make-banshou
-           ;; footpring
-           #:make-footprint #:mfp
            ;; banshou
            #:get-at-id
-           ;; buddha-nature
-           #:buddha-nature    #:get-buddha #:get-nirvana
            ;; node
            #:node #:tx-delete-node #:tx-make-node #:make-node
            ;; edge

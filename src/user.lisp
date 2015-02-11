@@ -26,11 +26,7 @@
           ((get-user sys code)
            (error "このユーザーはもう存在するけぇ。作れるわけがなかろぉ。user-code=~a" code)))
     (values (tx-make-node sys 'user
-                          `((create-time ,(make-footprint nil :timestamp timestamp))
-                            ((update-time nil))
-                            ((buddha      ,(make-footprint nil :timestamp timestamp)))
-                            ((nirvana nil))
-                            ((code ,code))
+                          `(((code ,code))
                             ((password ,password))
                             ((name ,name))))
             password)))
@@ -52,11 +48,7 @@
           ((get-user sys code)
            (error "このユーザーはもう存在するけぇ。作れるわけがなかろぉ。user-code=~a" code)))
     (values (tx-make-node sys 'user
-                          `(((create-time ,(make-footprint nil :timestamp timestamp)))
-                            ((update-time nil))
-                            ((buddha ,(make-footprint nil :timestamp timestamp)))
-                            ((nirvana nil))
-                            ((code ,code))
+                          `(((code ,code))
                             ((password ,password))
                             ((name ,name))))
             password)))
@@ -81,11 +73,7 @@
     (when (master-user sys)
       (error "このユーザーはもう存在するけぇ。user-code=~a" code))
     (tx-make-node sys 'user
-                  `((create-time ,(make-footprint nil :timestamp timestamp))
-                    (update-time nil)
-                    (buddha ,(make-footprint nil :timestamp timestamp))
-                    (nirvana nil)
-                    (code ,code)
+                  `((code ,code)
                     (password ,password)
                     (name ,name)))))
 
@@ -100,11 +88,7 @@
     (when (master-user sys)
       (error "このユーザーはもう存在するけぇ。user-code=~a" code))
     (tx-make-node sys 'user
-                  `((create-time ,(make-footprint nil :timestamp timestamp))
-                    (update-time nil)
-                    (buddha ,(make-footprint nil :timestamp timestamp))
-                    (nirvana nil)
-                    (code ,code)
+                  `((code ,code)
                     (password ,password)
                     (name ,name)))))
 

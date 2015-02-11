@@ -31,7 +31,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
 
 
 ;;
-(defclass test-node (node buddha-nature)
+(defclass test-node (node)
   ((note :documentation ""
          :accessor get-note
          :initarg :note

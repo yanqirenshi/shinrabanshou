@@ -47,7 +47,7 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ;;  (end)
                         ;;
                         ((:file "package")
-                         (:file "extension/cl-json+" :depends-on ("package"))
+                         ;;(:file "extension/cl-json+" :depends-on ("package"))
                          (:file "utility"            :depends-on ("package"))
                          (:file "class"              :depends-on ("utility"))
                          (:file "password"           :depends-on ("class"))

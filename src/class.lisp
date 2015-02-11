@@ -1,28 +1,6 @@
 (in-package :shinrabanshou)
 
 
-(defclass footprint ()
-  ((user-code :accessor get-user-code :initarg :user-code :initform nil)
-   (timestamp :accessor get-timestamp :initarg :timestamp :initform nil))
-  (:documentation ""))
-
-(defun make-footprint (user-code &key (timestamp (get-universal-time)))
-  (make-instance 'footprint :user-code user-code :timestamp timestamp))
-
-(defun mfp (user-code &key (timestamp (get-universal-time)))
-  (make-footprint user-code :timestamp timestamp))
-
-(defclass immutable ()
-  ((create-time :documentation ""
-                :accessor get-create-time :initarg :create-time :initform nil))
-  (:documentation ""))
-
-(defclass mutable (immutable)
-  ((update-time :documentation ""
-                :accessor get-update-time :initarg :update-time :initform nil))
-  (:documentation ""))
-
-
 (defclass naming ()
   ((code :documentation ""
          :accessor get-code
@@ -33,19 +11,8 @@
          :initarg :name
          :initform nil)))
 
-(defclass buddha-nature ()
-  ((buddha :documentation ""
-           :accessor get-buddha
-           :initarg :buddha
-           :initform nil)
-   (nirvana :documentation ""
-            :accessor get-nirvana
-            :initarg :nirvana
-            :initform nil))
-  (:documentation "仏性を表現しとるんよ。"))
 
-
-(defclass password (mutable)
+(defclass password ()
   ((spell       :documentation ""
                 :accessor get-spell       :initarg :spell       :initform nil))
   (:documentation "パスワード
@@ -60,10 +27,7 @@
 ;;;;;
 ;;;;;
 (defclass shinra (atman)
-  ((create-time :documentation ""
-                :accessor get-create-time :initarg :create-time :initform nil)
-   (update-time :documentation ""
-                :accessor get-update-time :initarg :update-time :initform nil))
+  ()
   (:documentation "Node と Edge の親クラス。
 森羅 : 数多く並びつらなること。また，そのもの。
 この世を構成するもの。的な意味で Node と Edge の親クラスとしては良い感じかな。と。
@@ -121,14 +85,14 @@ upanishad の pool を継承しています。
 ;;;;;
 ;;;;; 力
 ;;;;;
-(defclass force (node buddha-nature naming)
+(defclass force (node naming)
   ()
   (:documentation "権限のクラスです。"))
 
 
 
 
-(defclass user (node buddha-nature naming)
+(defclass user (node naming)
   ((password :documentation ""
              :accessor get-password
              :initarg :password
