@@ -22,27 +22,27 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ;;    |
                         ;; package
                         ;;    |
-                        ;;    +----------------------------+
-                        ;;    |                            |
-                        ;; utility                 extension/cl-json+
-                        ;;    |                            |
-                        ;; class                           |
-                        ;;    |                            |
-                        ;;    +-------+                    |
-                        ;;    |       |                    |
-                        ;; shinra  password                |
-                        ;;    |       |                    |
-                        ;;  node      +------------------->|
-                        ;;    |                            |
-                        ;;  edge                           |
-                        ;;    |                            |
-                        ;;  finder                         |
-                        ;;    |                            |
-                        ;;  user                           |
-                        ;;    |                            |
-                        ;;  banshou                        |
-                        ;;    |                            |
-                        ;;    +----------------------------+
+                        ;;    +----------------------+
+                        ;;    |                      |
+                        ;; utility                   |
+                        ;;    |                      |
+                        ;; class                     |
+                        ;;    |                      |
+                        ;;    +--------+             |
+                        ;;    |        |             |
+                        ;; shinra   password   extension/cl-json+
+                        ;;    |        |             |
+                        ;;  node       |             |
+                        ;;    |        |             |
+                        ;;  edge       |             |
+                        ;;    |        |             |
+                        ;;  finder     |             |
+                        ;;    |        |             |
+                        ;;  user       |             |
+                        ;;    |        |             |
+                        ;;  banshou    |             |
+                        ;;    |        |             |
+                        ;;    +--------+-------------+
                         ;;    |
                         ;;  (end)
                         ;;
