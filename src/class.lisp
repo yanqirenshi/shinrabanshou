@@ -1,32 +1,53 @@
+;;;;;
+;;;;; 神羅纐纈のクラス図です。
+;;;;;
+;;;;; Contents
+;;;;;   1. クラス図
+;;;;;   2. 森羅
+;;;;;   3. 万象
+;;;;;   4. ユーザー/権限
+;;;;;
+
+;;;
+;;; 1. クラス図
+;;;
+;;;   <<upanishad>>
+;;;         +--------+               +--------+
+;;;         | meme   |               | pool   |
+;;;         |========|               |========|
+;;;         |--------|               |--------|
+;;;         +--------+               +--------+
+;;;            ^                        ^
+;;;            |                        |
+;;;   - - - - -|- - - - - - - - - - - - | - - - - - - - - - - - - - - - - - - - - - - - -
+;;;            |                        |                             <<shinrabanshou>>
+;;;         +--------+               +---------+
+;;;         | shinra |               | banshou |
+;;;         |========|               |=========|                      +--------+
+;;;         |--------|               |---------|                      | naming |
+;;;         +--------+               +---------+                      |========|
+;;;            ^                                                      |a code  |
+;;;            |                                                      |a name  |
+;;;    +----------------+                                             |--------|
+;;;    |                |                                             +--------+
+;;; +--------+   +-------------+                                          ^
+;;; | node   |   | node        |                                          |
+;;; |========|   |=============|                       +----------+   +-----------+
+;;; |--------|   |a from-id    |                       | password |   | user      |
+;;; +--------+   |a from-class |                       |==========|   |===========|
+;;;              |a to-id      |                       |a spell   |-->|a password |
+;;;              |a to-class   |                       |----------|   |-----------|
+;;;              |a type       |                       +----------+   +-----------+
+;;;              |-------------|
+;;;              +-------------+
+;;;
+
 (in-package :shinrabanshou)
 
-
-(defclass naming ()
-  ((code :documentation ""
-         :accessor get-code
-         :initarg :code
-         :initform nil)
-   (name :documentation ""
-         :accessor get-name
-         :initarg :name
-         :initform nil)))
-
-
-(defclass password ()
-  ((spell       :documentation ""
-                :accessor get-spell       :initarg :spell       :initform nil))
-  (:documentation "パスワード
-これ、別パッケージにしようや。。。"))
-
-
-
-
 ;;;;;
+;;;;; 2. 森羅
 ;;;;;
-;;;;; 森羅
-;;;;;
-;;;;;
-(defclass shinra (atman)
+(defclass shinra (meme)
   ()
   (:documentation "Node と Edge の親クラス。
 森羅 : 数多く並びつらなること。また，そのもの。
@@ -70,7 +91,7 @@ shinra で構成される物が banshou である。と。
 
 ;;;;;
 ;;;;;
-;;;;; 万象
+;;;;; 3. 万象
 ;;;;;
 ;;;;;
 (defclass banshou (pool)
@@ -83,13 +104,26 @@ upanishad の pool を継承しています。
 
 
 ;;;;;
-;;;;; 力
+;;;;; 4. ユーザー/権限
 ;;;;;
-(defclass force (node naming)
-  ()
-  (:documentation "権限のクラスです。"))
+(defclass password ()
+  ((spell :documentation ""
+          :accessor get-spell
+          :initarg :spell
+          :initform nil))
+  (:documentation "パスワード
+これ、別パッケージにしようや。。。"))
 
 
+(defclass naming ()
+  ((code :documentation ""
+         :accessor get-code
+         :initarg :code
+         :initform nil)
+   (name :documentation ""
+         :accessor get-name
+         :initarg :name
+         :initform nil)))
 
 
 (defclass user (node naming)
@@ -98,3 +132,11 @@ upanishad の pool を継承しています。
              :initarg :password
              :initform nil))
   (:documentation "ユーザーのクラスです。"))
+
+
+(defclass force (node naming)
+  ()
+  (:documentation "権限のクラスです。"))
+
+
+
