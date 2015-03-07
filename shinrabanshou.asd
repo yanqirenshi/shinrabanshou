@@ -26,6 +26,8 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ;;    |                      |
                         ;; utility                   |
                         ;;    |                      |
+                        ;; generic-function          | 
+                        ;;    |                      |
                         ;; class                     |
                         ;;    |                      |
                         ;;    +--------+             |
@@ -49,7 +51,8 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ((:file "package")
                          ;;(:file "extension/cl-json+" :depends-on ("package"))
                          (:file "utility"            :depends-on ("package"))
-                         (:file "class"              :depends-on ("utility"))
+                         (:file "generic-function"   :depends-on ("utility"))
+                         (:file "class"              :depends-on ("generic-function"))
                          (:file "password"           :depends-on ("class"))
                          (:file "shinra"             :depends-on ("class"))
                          (:file "node"               :depends-on ("shinra"))
