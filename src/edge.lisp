@@ -81,11 +81,11 @@
 ;;;;; 4. Accsessor
 ;;;;;
 (defmethod get-from-node ((system banshou) (edge edge))
-  (get-at-id system (get-from-node-id edge)))
+  (up:get-at-id system (get-from-node-id edge)))
 
 
 (defmethod get-to-node ((system banshou) (edge edge))
-  (get-at-id system (get-to-node-id edge)))
+  (up:get-at-id system (get-to-node-id edge)))
 
 
 (defun tx-change-from-node (pool edge node)

@@ -20,8 +20,6 @@
            #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
            ;; banshou
            #:make-banshou
-           ;; banshou
-           #:get-at-id
            ;; node
            #:node #:tx-delete-node #:tx-make-node #:make-node
            ;; edge

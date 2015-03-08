@@ -47,22 +47,6 @@ TODO: 作成(停止)中です。
 "))
 
 
-(defgeneric class-id-list (banshou)
-  (:documentation "banshouに登録されているクラスの一覧(list)を返します。"))
-
-
-(defgeneric root-list (banshou)
-  (:documentation "banshouに登録されているルートオブジェクトの一覧(list)を返します。"))
-
-
-(defgeneric get-object-list (banshou symbol)
-  (:documentation "banshouで管理されている symbolクラスのオブジェクトの一覧(list)を返します。"))
-
-
-(defgeneric get-at-id (banshou id)
-  (:documentation ""))
-
-
 ;; index
 (defgeneric create-index (banshou user class-symbol slot-list)
   (:documentation "" ))
@@ -77,10 +61,6 @@ TODO: 作成(停止)中です。
 
 
 ;; printer
-(defgeneric print-root-list (banshou &key stream)
-  (:documentation ""))
-
-
 (defgeneric print-user-list (banshou user &key stream)
   (:documentation ""))
 
