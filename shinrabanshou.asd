@@ -29,21 +29,19 @@
                         ;;    |                      |
                         ;; class                     |
                         ;;    |                      |
-                        ;;    +--------+             |
-                        ;;    |        |             |
-                        ;; shinra   password   extension/cl-json+
-                        ;;    |        |             |
-                        ;;  node       |             |
-                        ;;    |        |             |
-                        ;;  edge       |             |
-                        ;;    |        |             |
-                        ;;  finder     |             |
-                        ;;    |        |             |
-                        ;;  user       |             |
-                        ;;    |        |             |
-                        ;;  banshou    |             |
-                        ;;    |        |             |
-                        ;;    +--------+-------------+
+                        ;; shinra           extension/cl-json+
+                        ;;    |                      |
+                        ;;  node                     |
+                        ;;    |                      |
+                        ;;  edge                     |
+                        ;;    |                      |
+                        ;;  finder                   |
+                        ;;    |                      |
+                        ;;  user                     |
+                        ;;    |                      |
+                        ;;  banshou                  |
+                        ;;    |                      |
+                        ;;    +----------------------+
                         ;;    |
                         ;;  (end)
                         ;;
@@ -52,7 +50,6 @@
                          (:file "utility"            :depends-on ("package"))
                          (:file "generic-function"   :depends-on ("utility"))
                          (:file "class"              :depends-on ("generic-function"))
-                         (:file "password"           :depends-on ("class"))
                          (:file "shinra"             :depends-on ("class"))
                          (:file "node"               :depends-on ("shinra"))
                          (:file "edge"               :depends-on ("node"))

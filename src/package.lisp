@@ -16,7 +16,6 @@
   (:use :cl :alexandria :cl-ppcre :cl+ :upanishad)
   (:nicknames :shinra)
   (:export #:property
-           #:password    #:get-spell
            #:banshou
            #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
            ;; banshou
@@ -55,7 +54,6 @@
 (defvar *master-user-name* "森羅万象 Master User")
 (defvar *master-user-password* "zaq12wsx")
 (defvar *master-user-note* "Created by shinrabanshou")
-(defvar *password-characters* "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-=!@#$%^&*()_+|[]{};:,./<>?")
 
 
 
