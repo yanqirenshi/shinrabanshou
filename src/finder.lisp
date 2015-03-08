@@ -1,8 +1,10 @@
+;;;;;
+;;;;; Contents
+;;;;;   none....
+;;;;;
+
 (in-package :shinrabanshou)
 
-#|
-
-|#
 
 (defmethod get-r ((pool banshou) (edge-class-symbol symbol)
                   start
@@ -52,3 +54,12 @@
   (mapcar #'(lambda (data)
               (getf data :node))
           (find-r pool edge-class-symbol start node)))
+
+
+
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+|#

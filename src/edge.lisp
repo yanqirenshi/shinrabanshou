@@ -1,8 +1,17 @@
+;;;;;
+;;;;; Contents
+;;;;;   1. 述語
+;;;;;   2. 削除
+;;;;;   3. 作成
+;;;;;   4. Accsessor
+;;;;;   5. 整理中
+;;;;;
+
 (in-package :shinrabanshou)
 
 
 ;;;;;
-;;;;; 述語
+;;;;; 1. 述語
 ;;;;;
 (defmethod edgep (obj) (declare (ignore obj)) nil)
 (defmethod edgep ((edge edge)) t)
@@ -29,7 +38,7 @@
 
 
 ;;;;;
-;;;;; 削除
+;;;;; 2. 削除
 ;;;;;
 (defmethod tx-delete-edge ((pool banshou) (edge edge))
   ;; remove edge on index
@@ -42,7 +51,7 @@
 
 
 ;;;;;
-;;;;; 作成
+;;;;; 3. 作成
 ;;;;;
 (defmethod tx-make-edge ((system banshou) (class-symbol symbol) (from node) (to node) type
                          &optional slots)
@@ -69,7 +78,7 @@
 
 
 ;;;;;
-;;;;; accsessor
+;;;;; 4. Accsessor
 ;;;;;
 (defmethod get-from-node ((system banshou) (edge edge))
   (get-at-id system (get-from-node-id edge)))
@@ -89,6 +98,10 @@
                               (from-class ,class)))))
 
 
+
+;;;;;
+;;;;; 5. 整理中
+;;;;;
 ;;; これは。。。TODO:整理が必要じゃね。
 (defun class-symbol (obj)
   (class-name (class-of obj)))
@@ -120,4 +133,13 @@
                           (get-id edge)
                           `((type ,type)))
   edge)
+
+
+
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+|#
 

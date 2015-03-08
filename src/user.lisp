@@ -1,9 +1,11 @@
+;;;;;
+;;;;; Contents
+;;;;;   none...
+;;;;;
+
 (in-package :shinrabanshou)
 
 
-;;;;;
-;;;;; master user
-;;;;;
 (defmethod get-user ((sys banshou) code)
   (first (find-object-with-slot sys 'user 'code code)))
 
@@ -49,9 +51,6 @@
 
 
 
-;;;;;
-;;;;; master user
-;;;;;
 (defmethod master-user ((sys banshou))
   (get-user sys *master-user-code*))
 
@@ -81,4 +80,13 @@
                   (password ,password)
                   (name ,name))))
 
+
+
+
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+|#
 

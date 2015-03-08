@@ -1,9 +1,11 @@
+;;;;;
+;;;;; Contents
+;;;;;   none...
+;;;;;
+
 (in-package :shinrabanshou)
 
 
-;;;;;
-;;;;; password
-;;;;;
 (defun password-charp (string &key (charcters *password-characters*))
   (search string charcters))
 
@@ -22,3 +24,12 @@
         (setf out
               (concatenate 'string out (subseq use-chars col (+ 1 col))))))
     out))
+
+
+
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+|#

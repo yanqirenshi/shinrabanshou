@@ -1,19 +1,17 @@
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-
-shinra(森羅)
-------------
-Node と Edge がこれに当ります。
-
-
-banshou(万象)
--------------
-Node と Edge のプール 及び、それらの永続化がこれに当たります。
-
-|#
+;;;;;
+;;;;; shinra(森羅)  : Node と Edge がこれに当ります。
+;;;;; banshou(万象) : Node と Edge のプール 及び、それらの永続化がこれに当たります。
+;;;;;
+;;;;; Contents
+;;;;;   1. Package
+;;;;;   2. Variable
+;;;;;
 
 (in-package :cl-user)
+
+;;;;;
+;;;;; 1. Package
+;;;;;
 (defpackage shinrabanshou
   (:use :cl :alexandria :cl-ppcre :cl+ :upanishad)
   (:nicknames :shinra)
@@ -50,9 +48,22 @@ Node と Edge のプール 及び、それらの永続化がこれに当たり�
 
 
 
+;;;;;
+;;;;; 2. Variable
+;;;;;
 (defvar *master-user-code* "@master")
 (defvar *master-user-name* "森羅万象 Master User")
 (defvar *master-user-password* "zaq12wsx")
 (defvar *master-user-note* "Created by shinrabanshou")
 (defvar *password-characters* "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-=!@#$%^&*()_+|[]{};:,./<>?")
 
+
+
+
+
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+|#

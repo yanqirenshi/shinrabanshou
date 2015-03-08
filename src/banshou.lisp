@@ -1,8 +1,18 @@
+;;;;;
+;;;;; Contents
+;;;;;   1. 万象
+;;;;;   2. Permission
+;;;;;   3. Getter
+;;;;;   4. Index
+;;;;;   5. Printer
+;;;;;
+
 (in-package :shinrabanshou)
 
 
+
 ;;;;;
-;;;;; 万象
+;;;;; 1. 万象
 ;;;;;
 (defmethod make-banshou ((class-symbol symbol) data-stor)
   (let ((pool (make-pool data-stor :pool-class class-symbol)))
@@ -16,7 +26,7 @@
 
 
 ;;;;;
-;;;;; Permission
+;;;;; 2. Permission
 ;;;;;
 (defmethod chek-permission ((pool banshou) (user user) &rest param)
   (list pool user param))
@@ -24,7 +34,7 @@
 
 
 ;;;;;
-;;;;; getter
+;;;;; 3. getter
 ;;;;;
 (defun class-id-indexp (symbol)
   (scan "^(\\S)+-ID-INDEX$"
@@ -70,9 +80,8 @@
 
 
 
-
 ;;;;;
-;;;;; index
+;;;;; 4. Index
 ;;;;;
 ;;;;; TODO: これも作らんとね。
 ;;;;;
@@ -94,7 +103,7 @@
 
 
 ;;;;;
-;;;;; printer
+;;;;; 5. Printer
 ;;;;;
 (defmethod print-root-list ((pool banshou) &key (stream t))
   (mapcar #'(lambda (root)
@@ -114,4 +123,12 @@
                       (get-code u)
                       (get-name u)))
           (get-object-list pool 'user)))
+
+
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+|#
 

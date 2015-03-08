@@ -140,3 +140,10 @@ upanishad の pool を継承しています。
 
 
 
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+|#
+

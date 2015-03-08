@@ -1,11 +1,5 @@
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-
-Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
-|#
-
 (in-package :cl-user)
+
 (defpackage shinrabanshou-asd
   (:use :cl :asdf))
 (in-package :shinrabanshou-asd)
@@ -26,7 +20,7 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
                         ;;    |                      |
                         ;; utility                   |
                         ;;    |                      |
-                        ;; generic-function          | 
+                        ;; generic-function          |
                         ;;    |                      |
                         ;; class                     |
                         ;;    |                      |
@@ -74,3 +68,14 @@ Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
           (setf (fill-pointer seq) (read-sequence seq stream))
           seq)))
   :in-order-to ((test-op (load-op shinrabanshou-test))))
+
+
+
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+Author: Satoshi Iwasaki (yanqirenshi@gmail.com)
+|#
+

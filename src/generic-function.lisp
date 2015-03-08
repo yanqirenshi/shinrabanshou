@@ -6,7 +6,7 @@
 ;;;;;   2. Node
 ;;;;;   3. Edge
 ;;;;;   4. Finder
-;;;;;   5. User 
+;;;;;   5. User
 ;;;;;
 
 (in-package :shinrabanshou)
@@ -225,4 +225,11 @@ type に fromノードか toノードかを指定します。"))
 
 
 
+
+
+#|
+This file is a part of shinrabanshou project.
+Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
+
+|#
 
