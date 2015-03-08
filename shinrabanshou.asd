@@ -8,7 +8,12 @@
   :version "0.1"
   :author "Satoshi Iwasaki"
   :license "LLGPL"
-  :depends-on (:alexandria :cl-ppcre :cl+ :upanishad)
+  :depends-on (:alexandria
+               :cl-ppcre
+               :cl+
+               :upanishad
+               :takajin84key
+               :world2world)
   :components ((:module "src"
                         :components
                         ;;
