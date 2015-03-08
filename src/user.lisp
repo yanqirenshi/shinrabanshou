@@ -63,19 +63,6 @@
 ;;;;;
 ;;;;; 4. Make Master User
 ;;;;;
-(defmethod make-master-user ((sys banshou) &key
-                                             (code     *master-user-code*)
-                                             (name     *master-user-name*)
-                                             (password *master-user-password*)
-                                             (timestamp (get-universal-time)))
-  (when (master-user sys)
-    (error "このユーザーはもう存在するけぇ。user-code=~a" code))
-  (tx-make-node sys 'user
-                `((code ,code)
-                  (password ,password)
-                  (name ,name))))
-
-
 (defmethod tx-make-master-user ((sys banshou) &key
                                                 (code     *master-user-code*)
                                                 (name     *master-user-name*)
@@ -88,6 +75,15 @@
                 `((code ,code)
                   (password ,password)
                   (name ,name))))
+
+
+(defmethod make-master-user ((sys banshou) &key
+                                             (code     *master-user-code*)
+                                             (name     *master-user-name*)
+                                             (password *master-user-password*)
+                                             (timestamp (get-universal-time)))
+  (up:execute-transaction
+   (make-master-user sys :code code :name name :password password :timestamp timestamp)))
 
 
 
