@@ -27,11 +27,11 @@
       (if
        ;; これ以降は不要なチェックみたいになっとるけど。。。。
        ;; これ以降のチェックがNGの場合は 例外発生させてもエエレベルなんよね。やっぱそうしよ。
-       (and (=  (get-from-vertex-id edge)    (get-from-vertex-id exist))
-            (=  (get-to-vertex-id edge)      (get-to-vertex-id exist))
-            (eq (get-from-vertex-class edge) (get-from-vertex-class exist))
-            (eq (get-to-vertex-class edge)   (get-to-vertex-class exist))
-            (eq (get-edge-type edge)       (get-edge-type exist)))
+       (and (=  (from-id    edge) (from-id    exist))
+            (=  (to-id      edge) (to-id      exist))
+            (eq (from-class edge) (from-class exist))
+            (eq (to-class   edge) (to-class   exist))
+            (eq (edge-type  edge) (edge-type  exist)))
        t
        (error "id(~a) はおおとるんじゃけど、なんか内容が一致せんけぇ。おかしいじゃろう。 "
               (get-id edge))))))
@@ -44,7 +44,7 @@
   ;; remove edge on index
   (mapcar #'(lambda (slot)
               (up:tx-remove-object-on-slot-index pool edge slot))
-          '(from to type))
+          '(from-id to-id edge-type))
   ;; remove edge object
   (tx-delete-object pool (class-name (class-of edge)) (get-id edge)))
 
@@ -60,11 +60,11 @@
         ((null type)          (error "type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")))
   (unless (edgep class-symbol)
     (error "このクラスは edge のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-  (let ((param `((from       ,(get-id from))
+  (let ((param `((from-id    ,(get-id from))
                  (from-class ,(class-name (class-of from)))
-                 (to         ,(get-id to))
+                 (to-id      ,(get-id to))
                  (to-class   ,(class-name (class-of to)))
-                 (type       ,type))))
+                 (edge-type  ,type))))
     (tx-make-shinra system class-symbol (if slots
                                             (append param slots)
                                             param))))
@@ -81,11 +81,11 @@
 ;;;;; 4. Accsessor
 ;;;;;
 (defmethod get-from-vertex ((system banshou) (edge edge))
-  (up:get-at-id system (get-from-vertex-id edge)))
+  (up:get-at-id system (from-id edge)))
 
 
 (defmethod get-to-vertex ((system banshou) (edge edge))
-  (up:get-at-id system (get-to-vertex-id edge)))
+  (up:get-at-id system (to-id edge)))
 
 
 (defun tx-change-from-vertex (pool edge vertex)
@@ -94,7 +94,7 @@
     (tx-change-object-slots pool
                             class
                             (get-id edge)
-                            `((from ,id)
+                            `((from-id    ,id)
                               (from-class ,class)))))
 
 
@@ -109,10 +109,8 @@
   (class-name (class-of obj)))
 
 (defun get-edge-vertex-slot (type)
-  (cond ((eq :from type)
-         (values 'from 'from-class))
-        ((eq :to type)
-         (values 'to 'to-class))
+  (cond ((eq :from type) (values 'from-id 'from-class))
+        ((eq :to type)   (values 'to-id   'to-class))
         (t (error "こんとなん知らんけぇ。type=~a" type))))
 
 
@@ -131,7 +129,7 @@
   (tx-change-object-slots pool
                           (class@ edge)
                           (get-id edge)
-                          `((type ,type)))
+                          `((edge-type ,type)))
   edge)
 
 

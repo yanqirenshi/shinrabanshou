@@ -12,10 +12,10 @@
   (first
    (remove-if #'(lambda (r)
                   (let ((vertex (getf r :vertex))
-                        (edge (getf r :edge)))
+                        (edge   (getf r :edge)))
                     (not (and (= (get-id end-vertex)
                                  (get-id vertex))
-                              (eq rtype (get-edge-type edge))))))
+                              (eq rtype (edge-type edge))))))
               (find-r pool edge-class-symbol start start-vertex))))
 
 
@@ -34,14 +34,14 @@
 
 
 (defmethod find-r-edge ((pool banshou) (edge-class-symbol symbol) start (vertex vertex))
-  (let ((start-slot (cond ((eq start :from) 'from)
-                          ((eq start :to  ) 'to))))
+  (let ((start-slot (cond ((eq start :from) 'from-id)
+                          ((eq start :to  ) 'to-id))))
     (find-object-with-slot pool edge-class-symbol
                            start-slot (get-id vertex))))
 
 (defmethod find-r ((pool banshou) (edge-class-symbol symbol) start (vertex vertex))
-  (let ((start-symbol (cond ((eq start :from) '(get-to-vertex-class   get-to-vertex-id))
-                            ((eq start :to  ) '(get-from-vertex-class get-from-vertex-id)))))
+  (let ((start-symbol (cond ((eq start :from) '(to-class   to-id))
+                            ((eq start :to  ) '(from-class from-id)))))
     (mapcar #'(lambda (edge)
                 (list :edge edge
                       :vertex (find-object-with-id pool
