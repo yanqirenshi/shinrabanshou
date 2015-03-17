@@ -29,7 +29,7 @@
                         ;;    |                      |
                         ;; shinra           extension/cl-json+
                         ;;    |                      |
-                        ;;  node                     |
+                        ;; vertex                    |
                         ;;    |                      |
                         ;;  edge                     |
                         ;;    |                      |
@@ -48,8 +48,8 @@
                          (:file "generic-function"   :depends-on ("package"))
                          (:file "class"              :depends-on ("generic-function"))
                          (:file "shinra"             :depends-on ("class"))
-                         (:file "node"               :depends-on ("shinra"))
-                         (:file "edge"               :depends-on ("node"))
+                         (:file "vertex"             :depends-on ("shinra"))
+                         (:file "edge"               :depends-on ("vertex"))
                          (:file "finder"             :depends-on ("edge"))
                          (:file "user"               :depends-on ("finder"))
                          (:file "banshou"            :depends-on ("user")))))

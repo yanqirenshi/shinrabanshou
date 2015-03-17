@@ -33,10 +33,10 @@
         ((get-user sys code)
          (error "このユーザーはもう存在するけぇ。作れるわけがなかろぉ。user-code=~a" code)))
   (let ((takajin (takajin:make-password password)))
-    (values (tx-make-node sys 'user
-                          `(((code ,code))
-                            ((password ,takajin))
-                            ((name ,name))))
+    (values (tx-make-vertex sys 'user
+                            `(((code ,code))
+                              ((password ,takajin))
+                              ((name ,name))))
             password)))
 
 
@@ -71,10 +71,10 @@
   (declare (ignore timestamp))
   (when (master-user sys)
     (error "このユーザーはもう存在するけぇ。user-code=~a" code))
-  (tx-make-node sys 'user
-                `((code ,code)
-                  (password ,password)
-                  (name ,name))))
+  (tx-make-vertex sys 'user
+                  `((code ,code)
+                    (password ,password)
+                    (name ,name))))
 
 
 (defmethod make-master-user ((sys banshou) &key

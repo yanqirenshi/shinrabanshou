@@ -27,10 +27,10 @@
       (if
        ;; これ以降は不要なチェックみたいになっとるけど。。。。
        ;; これ以降のチェックがNGの場合は 例外発生させてもエエレベルなんよね。やっぱそうしよ。
-       (and (=  (get-from-node-id edge)    (get-from-node-id exist))
-            (=  (get-to-node-id edge)      (get-to-node-id exist))
-            (eq (get-from-node-class edge) (get-from-node-class exist))
-            (eq (get-to-node-class edge)   (get-to-node-class exist))
+       (and (=  (get-from-vertex-id edge)    (get-from-vertex-id exist))
+            (=  (get-to-vertex-id edge)      (get-to-vertex-id exist))
+            (eq (get-from-vertex-class edge) (get-from-vertex-class exist))
+            (eq (get-to-vertex-class edge)   (get-to-vertex-class exist))
             (eq (get-edge-type edge)       (get-edge-type exist)))
        t
        (error "id(~a) はおおとるんじゃけど、なんか内容が一致せんけぇ。おかしいじゃろう。 "
@@ -53,10 +53,10 @@
 ;;;;;
 ;;;;; 3. 作成
 ;;;;;
-(defmethod tx-make-edge ((system banshou) (class-symbol symbol) (from node) (to node) type
+(defmethod tx-make-edge ((system banshou) (class-symbol symbol) (from vertex) (to vertex) type
                          &optional slots)
-  (cond ((null (get-id from)) (error "この node(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
-        ((null (get-id to))   (error "この node(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
+  (cond ((null (get-id from)) (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
+        ((null (get-id to))   (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
         ((null type)          (error "type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")))
   (unless (edgep class-symbol)
     (error "このクラスは edge のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
@@ -71,7 +71,7 @@
 
 (defmethod make-edge ((pool banshou)
                       (class-symbol symbol)
-                      (from node) (to node) type
+                      (from vertex) (to vertex) type
                       &optional slots)
   (execute-transaction (tx-make-edge pool class-symbol from to type slots)))
 
@@ -80,17 +80,17 @@
 ;;;;;
 ;;;;; 4. Accsessor
 ;;;;;
-(defmethod get-from-node ((system banshou) (edge edge))
-  (up:get-at-id system (get-from-node-id edge)))
+(defmethod get-from-vertex ((system banshou) (edge edge))
+  (up:get-at-id system (get-from-vertex-id edge)))
 
 
-(defmethod get-to-node ((system banshou) (edge edge))
-  (up:get-at-id system (get-to-node-id edge)))
+(defmethod get-to-vertex ((system banshou) (edge edge))
+  (up:get-at-id system (get-to-vertex-id edge)))
 
 
-(defun tx-change-from-node (pool edge node)
-  (let ((class (class-name (class-of node)))
-        (id    (get-id node)))
+(defun tx-change-from-vertex (pool edge vertex)
+  (let ((class (class-name (class-of vertex)))
+        (id    (get-id vertex)))
     (tx-change-object-slots pool
                             class
                             (get-id edge)
@@ -108,7 +108,7 @@
 (defun class@ (obj)
   (class-name (class-of obj)))
 
-(defun get-edge-node-slot (type)
+(defun get-edge-vertex-slot (type)
   (cond ((eq :from type)
          (values 'from 'from-class))
         ((eq :to type)
@@ -116,15 +116,15 @@
         (t (error "こんとなん知らんけぇ。type=~a" type))))
 
 
-(defmethod tx-change-node ((pool banshou) (edge edge) type (node node))
+(defmethod tx-change-vertex ((pool banshou) (edge edge) type (vertex vertex))
   (multiple-value-bind (cls-id cls-class)
-      (get-edge-node-slot type)
+      (get-edge-vertex-slot type)
     (tx-change-object-slots pool
                             (class@ edge)
                             (get-id edge)
-                            `((,cls-id    ,(get-id node))
-                              (,cls-class ,(class@ node)))))
-  (values edge node))
+                            `((,cls-id    ,(get-id vertex))
+                              (,cls-class ,(class@ vertex)))))
+  (values edge vertex))
 
 
 (defmethod tx-change-type ((pool banshou) (edge edge) type)

@@ -3,7 +3,7 @@
 ;;;;;
 ;;;;; Contents
 ;;;;;   1. 森羅
-;;;;;   2. Node
+;;;;;   2. Vertex
 ;;;;;   3. Edge
 ;;;;;   4. Finder
 ;;;;;   5. User
@@ -16,7 +16,7 @@
 ;;;;;
 (defgeneric existp (pool rsc)
   (:documentation "pool に rsc が存在するかを返します。
-実装は node, edge のところで実装しています。"))
+実装は vertex, edge のところで実装しています。"))
 
 
 (defgeneric tx-make-shinra (banshou class-symbol slots-and-values)
@@ -67,32 +67,32 @@ TODO: 作成(停止)中です。
 
 
 ;;;;;
-;;;;; 2. Node
+;;;;; 2. Vertex
 ;;;;;
 ;; 述語
-(defgeneric nodep (obj)
-  (:documentation "symbolで指定された class が node のサブクラスかどうかを返す。
+(defgeneric vertexp (obj)
+  (:documentation "symbolで指定された class が vertex のサブクラスかどうかを返す。
 -----------
 TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマートな方法がありそうなんじゃけど。。。"))
 
 
 ;; 作成
-(defgeneric tx-make-node (banshou class-symbol &optional slots-and-values)
+(defgeneric tx-make-vertex (banshou class-symbol &optional slots-and-values)
   (:documentation ""))
 
 
-(defgeneric make-node (banshou class-symbol &optional slots-and-values)
+(defgeneric make-vertex (banshou class-symbol &optional slots-and-values)
   (:documentation ""))
 
 
-(defgeneric make-node (banshou class-symbol &optional slots-and-values)
+(defgeneric make-vertex (banshou class-symbol &optional slots-and-values)
   (:documentation ""))
 
 
 ;; 削除
-(defgeneric tx-delete-node (banshou node)
-  (:documentation "Nodeを削除します。
-現在、関係を持っている Node は削除できないようにしています。
+(defgeneric tx-delete-vertex (banshou vertex)
+  (:documentation "Vertexを削除します。
+現在、関係を持っている Vertex は削除できないようにしています。
 2014/7/26
 なんじゃあるんかいね。
 でもこれ、関係があったらそれらをq返すようにしたほうが良さそうじゃね。
@@ -113,7 +113,7 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 
 ;; 削除
 (defgeneric tx-delete-edge (banshou edge)
-  (:documentation "Nodeを削除します。"))
+  (:documentation "Vertexを削除します。"))
 
 
 ;; 作成
@@ -126,20 +126,20 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 
 
 ;; accsessor
-(defgeneric get-from-node (banshou edge)
+(defgeneric get-from-vertex (banshou edge)
   (:documentation "edge のfromノードを取得します。
 fromノードのオブジェクトを返します。"))
 
 
-(defgeneric get-to-node (banshou edge)
+(defgeneric get-to-vertex (banshou edge)
   (:documentation "edge のtoノードを取得します。
 toノードのオブジェクトを返します。"))
 
 
-;; (defun tx-change-from-node (pool edge node)
+;; (defun tx-change-from-vertex (pool edge vertex)
 
 
-(defgeneric tx-change-node (pool edge type node)
+(defgeneric tx-change-vertex (pool edge type vertex)
   (:documentation "edge に関連付いているノードを変更します。
 type に fromノードか toノードかを指定します。"))
 
@@ -152,27 +152,27 @@ type に fromノードか toノードかを指定します。"))
 ;;;;;
 ;;;;; 4. Finder
 ;;;;;
-(defgeneric get-r (pool edge-class-symbol start start-node end-node rtype)
+(defgeneric get-r (pool edge-class-symbol start start-vertex end-vertex rtype)
   (:documentation ""))
 
 
-(defgeneric get-r-edge (pool edge-class-symbol start start-node end-node rtype)
+(defgeneric get-r-edge (pool edge-class-symbol start start-vertex end-vertex rtype)
   (:documentation ""))
 
 
-(defgeneric get-r-node (pool edge-class-symbol start start-node end-node rtype)
+(defgeneric get-r-vertex (pool edge-class-symbol start start-vertex end-vertex rtype)
   (:documentation ""))
 
 
-(defgeneric find-r-edge (pool edge-class-symbol start node)
+(defgeneric find-r-edge (pool edge-class-symbol start vertex)
   (:documentation ""))
 
 
-(defgeneric find-r (pool edge-class-symbol start node)
+(defgeneric find-r (pool edge-class-symbol start vertex)
   (:documentation ""))
 
 
-(defgeneric find-r-node (pool edge-class-symbol start node)
+(defgeneric find-r-vertex (pool edge-class-symbol start vertex)
   (:documentation ""))
 
 
