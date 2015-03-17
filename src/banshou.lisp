@@ -62,8 +62,8 @@
   (mapcar #'(lambda (u)
               (format stream
                       "| ~20a | ~a~%"
-                      (get-code u)
-                      (get-name u)))
+                      (code u)
+                      (name u)))
           (up:get-object-list pool 'user)))
 
 

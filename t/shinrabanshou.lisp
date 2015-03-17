@@ -43,7 +43,7 @@
 ;;;;;
 (defclass test-vertex (vertex)
   ((note :documentation ""
-         :accessor get-note
+         :accessor note
          :initarg :note
          :initform nil)))
 
