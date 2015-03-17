@@ -43,7 +43,6 @@
                         ;;  (end)
                         ;;
                         ((:file "package")
-                         ;;(:file "extension/cl-json+" :depends-on ("package"))
                          (:file "generic-function"   :depends-on ("package"))
                          (:file "class"              :depends-on ("generic-function"))
                          (:file "shinra"             :depends-on ("class"))
