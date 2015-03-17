@@ -18,12 +18,10 @@ Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase
 なんかまだ使いかた出来とらんけぇ、作りながら整理しとるところじゃけぇ。
 
 ``` lisp
-(ql:quickload :shinrabanshou)
+(qlot:quickload :shinrabanshou)
 (in-package :shinrabanshou)
 (defvar *pool* nil)
 (setf *pool* (make-banshou 'banshou pool-stor))
-
-(shinra-test::run!)
 ```
 
 ## Dependencies
@@ -36,8 +34,11 @@ Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase
 
 # Installation
 ``` lisp
-(ql:quickload :shinrabanshou)
-(ql:quickload :shinrabanshou-test)
+(qlot:quickload :shinrabanshou)
+```
+
+``` lisp
+(qlot:quickload :shinrabanshou-test)
 ```
 
 # Author
