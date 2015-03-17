@@ -12,14 +12,14 @@
 ;;;;; 1. 述語
 ;;;;;
 (defmethod nodep (obj) (declare (ignore obj)) nil)
-(defmethod nodep ((node node)) t)
+(defmethod nodep ((node vertex)) t)
 (defmethod nodep ((class-symbol symbol))
   (handler-case
       (nodep (make-instance class-symbol))
     (error () nil)))
 
 
-(defmethod existp ((pool banshou) (node node))
+(defmethod existp ((pool banshou) (node vertex))
   (not (null (get-object-with-id pool (class-name (class-of node)) (get-id node)))))
 
 
@@ -42,7 +42,7 @@
 ;;;;;
 ;;;;; 3. 削除
 ;;;;;
-(defmethod tx-delete-node ((pool banshou) (node node))
+(defmethod tx-delete-node ((pool banshou) (node vertex))
   ;; 現在関係があるものは削除できないようにしています。
   (let ((node-class (class-name (class-of node)))
         (edge-class 'edge))

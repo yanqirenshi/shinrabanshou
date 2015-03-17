@@ -58,7 +58,7 @@ shinra で構成される物が banshou である。と。
 "))
 
 
-(defclass node (shinra)
+(defclass vertex (shinra)
   ()
   (:documentation ""))
 
@@ -117,7 +117,7 @@ upanishad の pool を継承しています。
          :initform nil)))
 
 
-(defclass user (node naming)
+(defclass user (vertex naming)
   ((password :documentation ""
              :accessor get-password
              :initarg :password
@@ -125,7 +125,7 @@ upanishad の pool を継承しています。
   (:documentation "ユーザーのクラスです。"))
 
 
-(defclass force (node naming)
+(defclass force (vertex naming)
   ()
   (:documentation "権限のクラスです。"))
 
