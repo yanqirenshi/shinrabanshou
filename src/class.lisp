@@ -65,26 +65,26 @@ shinra で構成される物が banshou である。と。
 
 
 (defclass edge (shinra)
-  ((from :documentation ""
-         :accessor get-from-vertex-id
-         :initarg :from
-         :initform nil)
+  ((from-id :documentation ""
+            :accessor from-id
+            :initarg :from-id
+            :initform nil)
    (from-class :documentation ""
-               :accessor get-from-vertex-class
+               :accessor from-class
                :initarg :from-class
                :initform nil)
-   (to :documentation ""
-       :accessor get-to-vertex-id
-       :initarg :to
-       :initform nil)
+   (to-id :documentation ""
+          :accessor to-id
+          :initarg :to-id
+          :initform nil)
    (to-class :documentation ""
-             :accessor get-to-vertex-class
+             :accessor to-class
              :initarg :to-class
              :initform nil)
-   (type :documentation ""
-         :accessor get-edge-type
-         :initarg :type
-         :initform nil))
+   (edge-type :documentation ""
+              :accessor edge-type
+              :initarg :edge-type
+              :initform nil))
   (:documentation ""))
 
 

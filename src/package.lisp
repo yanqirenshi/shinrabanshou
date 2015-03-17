@@ -25,9 +25,9 @@
            ;; edge
            #:edge #:tx-delete-edge #:tx-make-edge #:make-edge
            #:get-from-vertex    #:get-to-vertex
-           #:get-from-vertex-id #:get-from-vertex-class
-           #:get-to-vertex-id   #:get-to-vertex-class
-           #:get-edge-type
+           #:from-id #:from-class
+           #:to-id   #:to-class
+           #:edge-type
            #:tx-change-vertex
            #:tx-change-type
            ;; user
