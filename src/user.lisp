@@ -28,7 +28,7 @@
   (declare (ignore timestamp))
   (cond ((null code)
          (error "code が空(nil)なんじゃけど。code=~a, name=~a" code name))
-        ((and (stringp code) (string= "" (cl+:trim-string code)))
+        ((and (stringp code) (string= "" (trim-string code)))
          (error "code が文字列の場合、0バイトの文字列は許しとらんのんよ。code=~a, name=~a" code name))
         ((get-user sys code)
          (error "このユーザーはもう存在するけぇ。作れるわけがなかろぉ。user-code=~a" code)))

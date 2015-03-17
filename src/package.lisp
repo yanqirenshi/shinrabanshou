@@ -13,7 +13,7 @@
 ;;;;; 1. Package
 ;;;;;
 (defpackage shinrabanshou
-  (:use :cl :alexandria :cl-ppcre :cl+ :upanishad)
+  (:use :cl :alexandria :cl-ppcre :upanishad)
   (:nicknames :shinra)
   (:export #:property
            #:banshou
@@ -55,6 +55,19 @@
 
 
 
+;;;;;
+;;;;; 3. Utility
+;;;;;
+;; #\U+3000 : 全角スペース
+;; #\Return : ^M
+;; #\U+FEFF : なんだったっけ？ sbcl では NG?
+(defun trim-string (seq &key (char-bag '(#\Space #\Tab #\Newline #\Return)))
+  "cl:string-trim のラッパーです。
+char-bag を指定するのが面倒なのでデフォルトでセットするようにしました。
+あと cl:string-trim は nil を入力にすると \"NIL\" を返すので nil を返すようにしています。
+"
+  (when seq
+    (string-trim char-bag seq)))
 
 
 

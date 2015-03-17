@@ -10,7 +10,6 @@
   :license "LLGPL"
   :depends-on (:alexandria
                :cl-ppcre
-               :cl+
                :upanishad
                :takajin84key
                :world2world)
