@@ -12,7 +12,7 @@ Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
   :author "Satoshi Iwasaki"
   :license "LLGPL"
   :depends-on (:shinrabanshou
-               :fiveam)
+               :prove)
   :components ((:module "t"
                         :components
                         ((:file "shinrabanshou"))))
