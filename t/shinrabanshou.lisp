@@ -43,7 +43,7 @@
 ;;;;;
 (defclass test-vertex (vertex)
   ((note :documentation ""
-         :accessor get-note
+         :accessor note
          :initarg :note
          :initform nil)))
 
@@ -73,24 +73,24 @@
          (edge1 (tx-make-edge pool 'edge vertex1 vertex2 edge-type))
          (edge2 (tx-make-edge pool 'edge vertex1 vertex3 edge-type)))
        ;;; check vertex
-    (is vertex1 (find-object-with-id pool 'test-vertex (get-id vertex1)))
-    (is vertex2 (find-object-with-id pool 'test-vertex (get-id vertex2)))
+    (is vertex1 (find-object-with-id pool 'test-vertex (id vertex1)))
+    (is vertex2 (find-object-with-id pool 'test-vertex (id vertex2)))
     (ok (find-object-with-slot pool 'test-vertex 'note vertex-note-1))
     (ok (find-object-with-slot pool 'test-vertex 'note vertex-note-2))
        ;;; check edge
     (is 2 (length (get-root-object pool :EDGE-ROOT)))
     (is 2 (length (find-object-with-slot pool 'edge 'shinra::edge-type :test-r)))
-    (is 2 (length (find-object-with-slot pool 'edge 'shinra::from-id (get-id vertex1))))
-    (is edge1 (find-object-with-id pool 'edge (get-id edge1)))
-    (is edge2 (find-object-with-id pool 'edge (get-id edge2)))
+    (is 2 (length (find-object-with-slot pool 'edge 'shinra::from-id (id vertex1))))
+    (is edge1 (find-object-with-id pool 'edge (id edge1)))
+    (is edge2 (find-object-with-id pool 'edge (id edge2)))
     ;;
-    (let ((tmp-edge-1 (find-object-with-id pool 'edge (get-id edge1)))
-          (tmp-edge-2 (find-object-with-id pool 'edge (get-id edge2))))
+    (let ((tmp-edge-1 (find-object-with-id pool 'edge (id edge1)))
+          (tmp-edge-2 (find-object-with-id pool 'edge (id edge2))))
       ;; check id. from and to vertex.
-      (is (get-id vertex1) (from-id tmp-edge-1))
-      (is (get-id vertex2) (to-id   tmp-edge-1))
-      (is (get-id vertex1) (from-id tmp-edge-2))
-      (is (get-id vertex3) (to-id   tmp-edge-2))
+      (is (id vertex1) (from-id tmp-edge-1))
+      (is (id vertex2) (to-id   tmp-edge-1))
+      (is (id vertex1) (from-id tmp-edge-2))
+      (is (id vertex3) (to-id   tmp-edge-2))
       ;; check class. from and to vertex.
       (is (class-name (class-of vertex1))
           (from-class tmp-edge-1))
@@ -100,10 +100,10 @@
           (from-class tmp-edge-2))
       (is (class-name (class-of vertex3))
           (to-class tmp-edge-2))
-      (is vertex1 (find-object-with-id pool (from-class tmp-edge-1) (get-id vertex1)))
-      (is vertex2 (find-object-with-id pool (to-class tmp-edge-1)   (get-id vertex2)))
-      (is vertex1 (find-object-with-id pool (from-class tmp-edge-2) (get-id vertex1)))
-      (is vertex3 (find-object-with-id pool (to-class tmp-edge-2)   (get-id vertex3)))
+      (is vertex1 (find-object-with-id pool (from-class tmp-edge-1) (id vertex1)))
+      (is vertex2 (find-object-with-id pool (to-class tmp-edge-1)   (id vertex2)))
+      (is vertex1 (find-object-with-id pool (from-class tmp-edge-2) (id vertex1)))
+      (is vertex3 (find-object-with-id pool (to-class tmp-edge-2)   (id vertex3)))
       )
        ;;;
        ;;;
@@ -351,7 +351,7 @@
       (is 1 (hash-table-count i-type))
       ;; befor check
       (ok (not (null (member edge1 (find-all-objects pool edge-class)))))
-      (is edge1 (get-object-with-id pool edge-class (get-id edge1)))
+      (is edge1 (get-object-with-id pool edge-class (id edge1)))
       (is 2 (length (find-object-with-slot pool edge-class 'from-id   (from-id   edge1))))
       (is 1 (length (find-object-with-slot pool edge-class 'to-id     (to-id     edge1))))
       (is 2 (length (find-object-with-slot pool edge-class 'edge-type (edge-type edge1))))
@@ -359,7 +359,7 @@
       (shinra::tx-delete-edge pool edge1)
       ;; after check
       (is nil (not (null (member edge1 (find-all-objects pool edge-class)))))
-      (is nil (eq edge1 (get-object-with-id pool edge-class (get-id edge1))))
+      (is nil (eq edge1 (get-object-with-id pool edge-class (id edge1))))
       (is 1 (length (find-object-with-slot pool edge-class 'from-id   (from-id   edge1))))
       (is 0 (length (find-object-with-slot pool edge-class 'to-id     (to-id     edge1))))
       (is 1 (length (find-object-with-slot pool edge-class 'edge-type (edge-type edge1))))
@@ -393,14 +393,14 @@
          (vertex2 (tx-make-vertex pool 'test-vertex `((note ,vertex-note-2))))
          (vertex3 (tx-make-vertex pool 'test-vertex `((note ,vertex-note-3))))
          (edge1 (tx-make-edge pool 'edge vertex1 vertex2 edge-type)))
-    (is (get-id vertex1) (from-id edge1))
-    (is (get-id vertex2) (to-id   edge1))
+    (is (id vertex1) (from-id edge1))
+    (is (id vertex2) (to-id   edge1))
     (is edge1 (tx-change-vertex pool edge1 :from vertex3))
-    (is (get-id vertex3) (from-id edge1))
-    (is (get-id vertex2) (to-id   edge1))
+    (is (id vertex3) (from-id edge1))
+    (is (id vertex2) (to-id   edge1))
     (is edge1 (tx-change-vertex pool edge1 :to vertex1))
-    (is (get-id vertex3) (from-id edge1))
-    (is (get-id vertex1) (to-id   edge1))
+    (is (id vertex3) (from-id edge1))
+    (is (id vertex1) (to-id   edge1))
     (up:snapshot pool)
     ))
 
@@ -426,8 +426,8 @@
   (let* ((vertex1 (tx-make-vertex pool 'test-vertex `((note ,vertex-note-1))))
          (vertex2 (tx-make-vertex pool 'test-vertex `((note ,vertex-note-2))))
          (edge1 (tx-make-edge pool 'edge vertex1 vertex2 edge-type-befor)))
-    (is (get-id vertex1)   (from-id edge1))
-    (is (get-id vertex2)   (to-id edge1))
+    (is (id vertex1)   (from-id edge1))
+    (is (id vertex2)   (to-id edge1))
     (is edge-type-befor (edge-type edge1))
     (is edge1 (tx-change-type pool edge1 edge-type-after))
     (is edge-type-after (edge-type edge1))

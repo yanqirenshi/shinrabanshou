@@ -17,7 +17,7 @@
   (:nicknames :shinra)
   (:export #:property
            #:banshou
-           #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
+           #:id ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
            ;; banshou
            #:make-banshou
            ;; vertex
@@ -32,7 +32,7 @@
            #:tx-change-type
            ;; user
            #:user #:note
-           #:get-code #:get-name #:get-note #:get-password #:get-user
+           #:code #:name #:password #:get-user
            #:tx-master-user #:tx-make-user
            #:master-user #:make-user
            ;; paradicate

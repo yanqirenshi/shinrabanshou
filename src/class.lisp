@@ -108,18 +108,18 @@ upanishad の pool を継承しています。
 ;;;;;
 (defclass naming ()
   ((code :documentation ""
-         :accessor get-code
+         :accessor code
          :initarg :code
          :initform nil)
    (name :documentation ""
-         :accessor get-name
+         :accessor name
          :initarg :name
          :initform nil)))
 
 
 (defclass user (vertex naming)
   ((password :documentation ""
-             :accessor get-password
+             :accessor password
              :initarg :password
              :initform nil))
   (:documentation "ユーザーのクラスです。"))

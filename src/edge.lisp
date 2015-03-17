@@ -22,7 +22,7 @@
 
 
 (defmethod existp ((pool banshou) (edge edge))
-  (let ((exist (get-object-with-id pool (class-name (class-of edge)) (get-id edge))))
+  (let ((exist (get-object-with-id pool (class-name (class-of edge)) (id edge))))
     (when (not (null exist))
       (if
        ;; これ以降は不要なチェックみたいになっとるけど。。。。
@@ -34,7 +34,7 @@
             (eq (edge-type  edge) (edge-type  exist)))
        t
        (error "id(~a) はおおとるんじゃけど、なんか内容が一致せんけぇ。おかしいじゃろう。 "
-              (get-id edge))))))
+              (id edge))))))
 
 
 ;;;;;
@@ -46,7 +46,7 @@
               (up:tx-remove-object-on-slot-index pool edge slot))
           '(from-id to-id edge-type))
   ;; remove edge object
-  (tx-delete-object pool (class-name (class-of edge)) (get-id edge)))
+  (tx-delete-object pool (class-name (class-of edge)) (id edge)))
 
 
 
@@ -55,14 +55,14 @@
 ;;;;;
 (defmethod tx-make-edge ((system banshou) (class-symbol symbol) (from vertex) (to vertex) type
                          &optional slots)
-  (cond ((null (get-id from)) (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
-        ((null (get-id to))   (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
+  (cond ((null (id from)) (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
+        ((null (id to))   (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
         ((null type)          (error "type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")))
   (unless (edgep class-symbol)
     (error "このクラスは edge のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-  (let ((param `((from-id    ,(get-id from))
+  (let ((param `((from-id    ,(id from))
                  (from-class ,(class-name (class-of from)))
-                 (to-id      ,(get-id to))
+                 (to-id      ,(id to))
                  (to-class   ,(class-name (class-of to)))
                  (edge-type  ,type))))
     (tx-make-shinra system class-symbol (if slots
@@ -90,10 +90,10 @@
 
 (defun tx-change-from-vertex (pool edge vertex)
   (let ((class (class-name (class-of vertex)))
-        (id    (get-id vertex)))
+        (id    (id vertex)))
     (tx-change-object-slots pool
                             class
-                            (get-id edge)
+                            (id edge)
                             `((from-id    ,id)
                               (from-class ,class)))))
 
@@ -119,8 +119,8 @@
       (get-edge-vertex-slot type)
     (tx-change-object-slots pool
                             (class@ edge)
-                            (get-id edge)
-                            `((,cls-id    ,(get-id vertex))
+                            (id edge)
+                            `((,cls-id    ,(id vertex))
                               (,cls-class ,(class@ vertex)))))
   (values edge vertex))
 
@@ -128,7 +128,7 @@
 (defmethod tx-change-type ((pool banshou) (edge edge) type)
   (tx-change-object-slots pool
                           (class@ edge)
-                          (get-id edge)
+                          (id edge)
                           `((edge-type ,type)))
   edge)
 
