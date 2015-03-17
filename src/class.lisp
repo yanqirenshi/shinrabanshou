@@ -31,7 +31,7 @@
 ;;;    +----------------+                             |--------|
 ;;;    |                |                             +--------+
 ;;; +--------+   +-------------+                          ^
-;;; | node   |   | node        |                          |
+;;; | vertex |   | vertex      |                          |
 ;;; |========|   |=============|                      +-----------+
 ;;; |--------|   |a from-id    |                      | user      |
 ;;; +--------+   |a from-class |                      |===========|
@@ -49,9 +49,9 @@
 ;;;;;
 (defclass shinra (meme)
   ()
-  (:documentation "Node と Edge の親クラス。
+  (:documentation "Vertex と Edge の親クラス。
 森羅 : 数多く並びつらなること。また，そのもの。
-この世を構成するもの。的な意味で Node と Edge の親クラスとしては良い感じかな。と。
+この世を構成するもの。的な意味で Vertex と Edge の親クラスとしては良い感じかな。と。
 まぁ分かり難いっちゃぁそうなんですが、ヒンドゥー語からチョイスするよりは日本人には優しいかな。と。
 shinra で構成される物が banshou である。と。
 そう言った感じなんじゃなかろうか。と。
@@ -66,19 +66,19 @@ shinra で構成される物が banshou である。と。
 
 (defclass edge (shinra)
   ((from :documentation ""
-         :accessor get-from-node-id
+         :accessor get-from-vertex-id
          :initarg :from
          :initform nil)
    (from-class :documentation ""
-               :accessor get-from-node-class
+               :accessor get-from-vertex-class
                :initarg :from-class
                :initform nil)
    (to :documentation ""
-       :accessor get-to-node-id
+       :accessor get-to-vertex-id
        :initarg :to
        :initform nil)
    (to-class :documentation ""
-             :accessor get-to-node-class
+             :accessor get-to-vertex-class
              :initarg :to-class
              :initform nil)
    (type :documentation ""
