@@ -17,7 +17,7 @@
   (:nicknames :shinra)
   (:export #:property
            #:banshou
-           #:get-id     ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
+           #:id ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
            ;; banshou
            #:make-banshou
            ;; vertex

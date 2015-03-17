@@ -20,7 +20,7 @@
 
 
 (defmethod existp ((pool banshou) (vertex vertex))
-  (not (null (get-object-with-id pool (class-name (class-of vertex)) (get-id vertex)))))
+  (not (null (get-object-with-id pool (class-name (class-of vertex)) (id vertex)))))
 
 
 ;;;;;
@@ -50,7 +50,7 @@
               (find-r-edge pool edge-class :to   vertex))
       (error "関係を持っている Vertex は削除できません。"))
     (execute-transaction
-     (tx-delete-object pool vertex-class (get-id vertex)))))
+     (tx-delete-object pool vertex-class (id vertex)))))
 
 
 
