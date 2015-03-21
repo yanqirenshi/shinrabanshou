@@ -15,6 +15,9 @@
 (defpackage shinrabanshou
   (:use :cl :alexandria :cl-ppcre :upanishad)
   (:nicknames :shinra)
+  (:import-from :world2world
+                :error*
+                :format*)
   (:export #:property
            #:banshou
            #:id ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。

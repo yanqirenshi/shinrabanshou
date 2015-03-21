@@ -20,6 +20,8 @@
                         ;;    |
                         ;; package
                         ;;    |
+                        ;; communication
+                        ;;    |
                         ;;    +----------------------+
                         ;;    |                      |
                         ;; generic-function          |
@@ -43,14 +45,15 @@
                         ;;  (end)
                         ;;
                         ((:file "package")
-                         (:file "generic-function"   :depends-on ("package"))
-                         (:file "class"              :depends-on ("generic-function"))
-                         (:file "shinra"             :depends-on ("class"))
-                         (:file "vertex"             :depends-on ("shinra"))
-                         (:file "edge"               :depends-on ("vertex"))
-                         (:file "finder"             :depends-on ("edge"))
-                         (:file "user"               :depends-on ("finder"))
-                         (:file "banshou"            :depends-on ("user")))))
+                         (:file "communication"    :depends-on ("package"))
+                         (:file "generic-function" :depends-on ("communication"))
+                         (:file "class"            :depends-on ("generic-function"))
+                         (:file "shinra"           :depends-on ("class"))
+                         (:file "vertex"           :depends-on ("shinra"))
+                         (:file "edge"             :depends-on ("vertex"))
+                         (:file "finder"           :depends-on ("edge"))
+                         (:file "user"             :depends-on ("finder"))
+                         (:file "banshou"          :depends-on ("user")))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames
