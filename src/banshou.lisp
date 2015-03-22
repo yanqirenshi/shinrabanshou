@@ -19,7 +19,7 @@
       (execute-transaction (tx-create-id-counter pool)))
     (when (null (master-user pool))
       (execute-transaction (tx-make-master-user pool)))
-    (index-on pool 'edge '(from-id to-id edge-type))
+    (index-on pool 'ra '(from-id to-id edge-type))
     pool))
 
 

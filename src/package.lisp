@@ -24,13 +24,13 @@
            ;; banshou
            #:make-banshou
            ;; vertex
-           #:vertex
+           #:shin
            #:tx-make-vertex   #:make-vertex
            #:tx-delete-vertex #:delete-vertex
            ;; edge
-           #:edge
+           #:ra
+           #:tx-delete-edge #:delete-edge
            #:tx-make-edge   #:make-edge
-           #:tx-delete-edge
            #:get-from-vertex    #:get-to-vertex
            #:from-id #:from-class
            #:to-id   #:to-class

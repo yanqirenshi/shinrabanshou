@@ -8,63 +8,57 @@
 ;;;;;   4. ユーザー/権限
 ;;;;;
 
+(in-package :shinrabanshou)
+
 ;;;
 ;;; 1. クラス図
 ;;;
-;;;   <<upanishad>>
 ;;;         +--------+               +--------+
 ;;;         | meme   |               | pool   |
 ;;;         |========|               |========|
 ;;;         |--------|               |--------|
 ;;;         +--------+               +--------+
 ;;;            ^                        ^
-;;;            |                        |
-;;;   - - - - -|- - - - - - - - - - - - | - - - - - - - - - - - - - - - -
-;;;            |                        |             <<shinrabanshou>>
-;;;         +--------+               +---------+
-;;;         | shinra |               | banshou |
-;;;         |========|               |=========|      +--------+
-;;;         |--------|               |---------|      | naming |
-;;;         +--------+               +---------+      |========|
-;;;            ^                                      |a code  |
-;;;            |                                      |a name  |
-;;;    +----------------+                             |--------|
-;;;    |                |                             +--------+
-;;; +--------+   +-------------+                          ^
-;;; | vertex |   | vertex      |                          |
-;;; |========|   |=============|                      +-----------+
-;;; |--------|   |a from-id    |                      | user      |
-;;; +--------+   |a from-class |                      |===========|
-;;;              |a to-id      |                      |a password |
-;;;              |a to-class   |                      |-----------|
-;;;              |a type       |                      +-----------+
-;;;              |-------------|
-;;;              +-------------+
+;;;            |                        |             <<upanishad>>
+;;;   - - - - -|- - - - - - - - - - - - | - - - - - - - - - - - - - - - -+
+;;;            |                        |             <<shinrabanshou>>  |
+;;;    +----------------+               |
+;;;    |                |               |                                |
+;;; +--------+   +-------------+     +---------+     .................
+;;; | shin   |   | ra          |     | banshou |     :<Utility class>:   |
+;;; |========|   |=============|     |=========|     :               :
+;;; |--------|   |a from-id    |     |---------|     : +--------+    :   |
+;;; +--------+   |a from-class |     +---------+     : | naming |    :
+;;; super class  |a to-id      |     super class     : |========|    :   |
+;;; or vertex    |a to-class   |     or graph        : |a code  |    :
+;;;              |a type       |                     : |a name  |    :   |
+;;;              |-------------|                     : |--------|    :
+;;;              +-------------+                     : +--------+    :   |
+;;;              super class                         :     ^         :
+;;;              or edge                             :.....|.........:   |
+;;;                                                        |
+;;;                           .............................|..........   |
+;;;                           : <Security>                 |         :
+;;;                           : +-----------+          +-----------+ :   |  <<takajin84key>>
+;;;                           : | force     |<--:have--| user      | :
+;;;                           : |===========|          |===========| :   |   +----------+
+;;;                           : |-----------|          |a password |<<-------| password |
+;;;                           : +-----------+          |-----------| :   |   +----------+
+;;;                           :                        +-----------+ :
+;;;                           :......................................:   |
 ;;;
-
-(in-package :shinrabanshou)
+;;;
 
 ;;;;;
 ;;;;; 2. 森羅
 ;;;;;
-(defclass shinra (meme)
-  ()
-  (:documentation "Vertex と Edge の親クラス。
-森羅 : 数多く並びつらなること。また，そのもの。
-この世を構成するもの。的な意味で Vertex と Edge の親クラスとしては良い感じかな。と。
-まぁ分かり難いっちゃぁそうなんですが、ヒンドゥー語からチョイスするよりは日本人には優しいかな。と。
-shinra で構成される物が banshou である。と。
-そう言った感じなんじゃなかろうか。と。
-"))
-
-
-(defclass vertex (shinra)
+(defclass shin (meme)
   ()
   (:documentation ""))
 
 
 
-(defclass edge (shinra)
+(defclass ra (meme)
   ((from-id :documentation ""
             :accessor from-id
             :initarg :from-id
@@ -117,7 +111,7 @@ upanishad の pool を継承しています。
          :initform nil)))
 
 
-(defclass user (vertex naming)
+(defclass user (shin naming)
   ((password :documentation ""
              :accessor password
              :initarg :password
@@ -125,7 +119,7 @@ upanishad の pool を継承しています。
   (:documentation "ユーザーのクラスです。"))
 
 
-(defclass force (vertex naming)
+(defclass force (shin naming)
   ()
   (:documentation "権限のクラスです。"))
 
@@ -135,6 +129,5 @@ upanishad の pool を継承しています。
 #|
 This file is a part of shinrabanshou project.
 Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-
 |#
 

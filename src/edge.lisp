@@ -14,14 +14,14 @@
 ;;;;; 1. 述語
 ;;;;;
 (defmethod edgep (obj) (declare (ignore obj)) nil)
-(defmethod edgep ((edge edge)) t)
+(defmethod edgep ((edge ra)) t)
 (defmethod edgep ((class-symbol symbol))
   (handler-case
       (edgep (make-instance class-symbol))
     (error () nil)))
 
 
-(defmethod existp ((graph banshou) (edge edge))
+(defmethod existp ((graph banshou) (edge ra))
   (let ((exist (get-object-with-id graph (class-name (class-of edge)) (id edge))))
     (when (not (null exist))
       (if
@@ -39,12 +39,22 @@
 ;;;;;
 ;;;;; 2. Accsessor
 ;;;;;
-(defmethod get-from-vertex ((system banshou) (edge edge))
+(defmethod get-from-vertex ((system banshou) (edge ra))
   (up:get-at-id system (from-id edge)))
 
 
-(defmethod get-to-vertex ((system banshou) (edge edge))
+(defmethod get-to-vertex ((system banshou) (edge ra))
   (up:get-at-id system (to-id edge)))
+
+
+(defun tx-change-from-vertex (graph edge vertex)
+  (let ((class (class-name (class-of vertex)))
+        (id    (id vertex)))
+    (tx-change-object-slots graph
+                            class
+                            (id edge)
+                            `((from-id    ,id)
+                              (from-class ,class)))))
 
 
 (defun tx-change-from-vertex (graph edge vertex)
@@ -60,25 +70,25 @@
 ;;;;;
 ;;;;; 3. 作成
 ;;;;;
-(defmethod tx-make-edge ((system banshou) (class-symbol symbol) (from vertex) (to vertex) type
+(defmethod tx-make-edge ((graph banshou) (class-symbol symbol) (from shin) (to shin) type
                          &optional slots)
   (cond ((null (id from)) (error* :bad-id-is-null "vertex(from)"))
         ((null (id to))   (error* :bad-id-is-null "vertex(to)"))
         ((null type)      (error* :edge-type-is-null)))
   (unless (edgep class-symbol)
-    (error* :bad-class 'edge class-symbol))
+    (error* :bad-class 'ra class-symbol))
   (let ((param `((from-id    ,(id from))
                  (from-class ,(class-name (class-of from)))
                  (to-id      ,(id to))
                  (to-class   ,(class-name (class-of to)))
                  (edge-type  ,type))))
-    (tx-make-shinra system class-symbol (if slots
-                                            (append param slots)
-                                            param))))
+    (tx-create-object graph class-symbol (if slots
+                                             (append param slots)
+                                             param))))
 
 (defmethod make-edge ((graph banshou)
                       (class-symbol symbol)
-                      (from vertex) (to vertex) type
+                      (from shin) (to shin) type
                       &optional slots)
   (execute-transaction (tx-make-edge graph class-symbol from to type slots)))
 
@@ -87,7 +97,7 @@
 ;;;;;
 ;;;;; 4. 削除
 ;;;;;
-(defmethod tx-delete-edge ((graph banshou) (edge edge))
+(defmethod tx-delete-edge ((graph banshou) (edge ra))
   ;; remove edge on index
   (mapcar #'(lambda (slot)
               (up:tx-remove-object-on-slot-index graph edge slot))
@@ -95,7 +105,7 @@
   ;; remove edge object
   (tx-delete-object graph (class-name (class-of edge)) (id edge)))
 
-(defmethod delete-edge ((graph banshou) (edge edge))
+(defmethod delete-edge ((graph banshou) (edge ra))
   (execute-transaction (tx-delete-edge graph edge)))
 
 
@@ -114,7 +124,7 @@
         (t (error* :understand-this-value "edge-slot" type))))
 
 
-(defmethod tx-change-vertex ((graph banshou) (edge edge) type (vertex vertex))
+(defmethod tx-change-vertex ((graph banshou) (edge ra) type (vertex shin))
   (multiple-value-bind (cls-id cls-class)
       (get-edge-vertex-slot type)
     (tx-change-object-slots graph
@@ -125,7 +135,7 @@
   (values edge vertex))
 
 
-(defmethod tx-change-type ((graph banshou) (edge edge) type)
+(defmethod tx-change-type ((graph banshou) (edge ra) type)
   (tx-change-object-slots graph
                           (class@ edge)
                           (id edge)
