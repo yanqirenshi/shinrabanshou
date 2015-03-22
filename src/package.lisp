@@ -21,7 +21,7 @@
            ;; banshou
            #:make-banshou
            ;; vertex
-           #:vertex #:tx-delete-vertex #:tx-make-vertex #:make-vertex
+           #:shin #:tx-delete-vertex #:tx-make-vertex #:make-vertex
            ;; edge
            #:edge #:tx-delete-edge #:tx-make-edge #:make-edge
            #:get-from-vertex    #:get-to-vertex

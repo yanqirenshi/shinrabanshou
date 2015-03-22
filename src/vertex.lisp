@@ -12,14 +12,14 @@
 ;;;;; 1. 述語
 ;;;;;
 (defmethod vertexp (obj) (declare (ignore obj)) nil)
-(defmethod vertexp ((vertex vertex)) t)
+(defmethod vertexp ((vertex shin)) t)
 (defmethod vertexp ((class-symbol symbol))
   (handler-case
       (vertexp (make-instance class-symbol))
     (error () nil)))
 
 
-(defmethod existp ((pool banshou) (vertex vertex))
+(defmethod existp ((pool banshou) (vertex shin))
   (not (null (get-object-with-id pool (class-name (class-of vertex)) (id vertex)))))
 
 
@@ -41,7 +41,7 @@
 ;;;;;
 ;;;;; 3. 削除
 ;;;;;
-(defmethod tx-delete-vertex ((pool banshou) (vertex vertex))
+(defmethod tx-delete-vertex ((pool banshou) (vertex shin))
   ;; 現在関係があるものは削除できないようにしています。
   (let ((vertex-class (class-name (class-of vertex)))
         (edge-class 'edge))

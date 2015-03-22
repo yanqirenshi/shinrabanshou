@@ -53,7 +53,7 @@
 ;;;;;
 ;;;;; 3. 作成
 ;;;;;
-(defmethod tx-make-edge ((graph banshou) (class-symbol symbol) (from vertex) (to vertex) type
+(defmethod tx-make-edge ((graph banshou) (class-symbol symbol) (from shin) (to shin) type
                          &optional slots)
   (cond ((null (id from)) (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
         ((null (id to))   (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
@@ -71,7 +71,7 @@
 
 (defmethod make-edge ((graph banshou)
                       (class-symbol symbol)
-                      (from vertex) (to vertex) type
+                      (from shin) (to shin) type
                       &optional slots)
   (execute-transaction (tx-make-edge graph class-symbol from to type slots)))
 
@@ -114,7 +114,7 @@
         (t (error "こんとなん知らんけぇ。type=~a" type))))
 
 
-(defmethod tx-change-vertex ((pool banshou) (edge edge) type (vertex vertex))
+(defmethod tx-change-vertex ((pool banshou) (edge edge) type (vertex shin))
   (multiple-value-bind (cls-id cls-class)
       (get-edge-vertex-slot type)
     (tx-change-object-slots pool

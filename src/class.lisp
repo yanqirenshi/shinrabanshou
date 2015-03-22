@@ -52,24 +52,13 @@
 ;;;;;
 ;;;;; 2. 森羅
 ;;;;;
-(defclass shinra (meme)
-  ()
-  (:documentation "Vertex と Edge の親クラス。
-森羅 : 数多く並びつらなること。また，そのもの。
-この世を構成するもの。的な意味で Vertex と Edge の親クラスとしては良い感じかな。と。
-まぁ分かり難いっちゃぁそうなんですが、ヒンドゥー語からチョイスするよりは日本人には優しいかな。と。
-shinra で構成される物が banshou である。と。
-そう言った感じなんじゃなかろうか。と。
-"))
-
-
-(defclass vertex (shinra)
+(defclass shin (meme)
   ()
   (:documentation ""))
 
 
 
-(defclass edge (shinra)
+(defclass edge (meme)
   ((from-id :documentation ""
             :accessor from-id
             :initarg :from-id
@@ -122,7 +111,7 @@ upanishad の pool を継承しています。
          :initform nil)))
 
 
-(defclass user (vertex naming)
+(defclass user (shin naming)
   ((password :documentation ""
              :accessor password
              :initarg :password
@@ -130,7 +119,7 @@ upanishad の pool を継承しています。
   (:documentation "ユーザーのクラスです。"))
 
 
-(defclass force (vertex naming)
+(defclass force (shin naming)
   ()
   (:documentation "権限のクラスです。"))
 

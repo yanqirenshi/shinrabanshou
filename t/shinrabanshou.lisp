@@ -41,7 +41,7 @@
 ;;;;;
 ;;;;; 2. Class
 ;;;;;
-(defclass test-vertex (vertex)
+(defclass test-vertex (shin)
   ((note :documentation ""
          :accessor note
          :initarg :note
@@ -131,7 +131,7 @@
   ;; object を生成
   (let* ((vertex1 (tx-make-vertex pool 'test-vertex `((note ,vertex-note-1))))
          (vertex2 (tx-make-vertex pool 'test-vertex `((note ,vertex-note-2))))
-         (vertex3 (make-instance 'vertex :id -999))
+         (vertex3 (make-instance 'test-vertex :id -999))
          (edge1 (tx-make-edge pool 'edge vertex1 vertex2 edge-type))
          (edge2 (tx-make-edge pool 'edge vertex1 vertex3 edge-type))
          (edge3 (make-instance 'edge :id -999)))
@@ -208,7 +208,7 @@
   (let ((vertex-note-1 "n-note-1")
         (vertex-note-2 "n-note-2")
         (rsc-class   'test-vertex)
-        (vertex-class  'vertex)
+        (vertex-class  'shin)
         (edge-class  'edge)
         (edge-type   :test-r)
         (pool-stor *pool-stor*)
@@ -254,7 +254,7 @@
   (let ((vertex-note-1 "n-note-1")
         (vertex-note-2 "n-note-2")
         (rsc-class   'test-vertex)
-        (vertex-class  'vertex)
+        (vertex-class  'shin)
         (edge-class  'edge)
         (edge-type   :test-r)
         (pool-stor *pool-stor*)
@@ -326,7 +326,7 @@
 (let ((vertex-note-1 "n-note-1")
       (vertex-note-2 "n-note-2")
       (rsc-class     'test-vertex)
-      (vertex-class  'vertex)
+      (vertex-class  'shin)
       (edge-class    'edge)
       (edge-type     :test-r)
       (pool-stor     *pool-stor*)
