@@ -76,7 +76,7 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 
 
 ;; 削除
-(defgeneric tx-delete-vertex (banshou vertex)
+(defgeneric tx-delete-vertex (graph vertex)
   (:documentation "Vertexを削除します。
 現在、関係を持っている Vertex は削除できないようにしています。
 2014/7/26
@@ -85,6 +85,9 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 どんとなんあるか判断できるもんね。
 "))
 
+
+(defgeneric delete-vertex (graph vertex)
+  (:documentation ""))
 
 
 ;;;;;
@@ -106,17 +109,20 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 
 
 ;; 削除
-(defgeneric tx-delete-edge (banshou edge)
+(defgeneric tx-delete-edge (graph edge)
+  (:documentation "Vertexを削除します。"))
+
+(defgeneric delete-edge (graph edge)
   (:documentation "Vertexを削除します。"))
 
 
 ;; accsessor
-(defgeneric get-from-vertex (banshou edge)
+(defgeneric get-from-vertex (graph edge)
   (:documentation "edge のfromノードを取得します。
 fromノードのオブジェクトを返します。"))
 
 
-(defgeneric get-to-vertex (banshou edge)
+(defgeneric get-to-vertex (graph edge)
   (:documentation "edge のtoノードを取得します。
 toノードのオブジェクトを返します。"))
 

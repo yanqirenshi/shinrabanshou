@@ -28,9 +28,8 @@
 ;;;;;
 (defmethod tx-make-vertex ((graph banshou) (class-symbol symbol) &optional slots-and-values)
   (unless (vertexp class-symbol)
-    (error "このクラスは vertex のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
+    (error* :bad-class 'shin class-symbol))
   (tx-create-object graph class-symbol slots-and-values))
-
 
 (defmethod make-vertex ((graph banshou) (class-symbol symbol) &optional slots-and-values)
   (execute-transaction
@@ -47,9 +46,14 @@
         (edge-class 'ra))
     (when (or (find-r-edge graph edge-class :from vertex)
               (find-r-edge graph edge-class :to   vertex))
-      (error "関係を持っている Vertex は削除できません。"))
+      (error* :delete-failed-have-some-edge vertex-class))
     (execute-transaction
      (tx-delete-object graph vertex-class (id vertex)))))
+
+(defmethod delete-vertex ((graph banshou) (vertex shin))
+  (execute-transaction
+   (tx-delete-vertex graph vertex)))
+
 
 
 

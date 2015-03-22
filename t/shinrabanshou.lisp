@@ -16,9 +16,10 @@
 ;;;;;       Plan 3 : Find-r-xxx
 ;;;;;       Plan 4 : Slot-index
 ;;;;;       Plan 5 : remove-object-on-slot-index
-;;;;;       Plan 6 : delete-edge
-;;;;;       Plan 7 : tx-change-vertex
-;;;;;       Plan 8 : tx-change-type
+;;;;;       Plan 6 : delete-vertex
+;;;;;       Plan 7 : delete-edge
+;;;;;       Plan 8 : tx-change-vertex
+;;;;;       Plan 9 : tx-change-type
 ;;;;;
 
 (in-package :shinrabanshou-test)
@@ -37,6 +38,8 @@
     (dolist (pathname (directory (merge-pathnames "*.xml" data-stor)))
       (delete-file pathname))))
 
+(defun diag! (plan-num text)
+  (diag (format nil "Plan ~a : ~a" plan-num text)))
 
 ;;;;;
 ;;;;; 2. Class
@@ -50,10 +53,13 @@
 ;;;;;
 ;;;;; 3. Plan
 ;;;;;
+(defparameter *plan* 0)
+
 ;;;
 ;;; Plan 1 : Basic
 ;;;
-(plan 1)
+(plan (incf *plan*))
+(diag! *plan* "Basic Test")
 (let ((vertex-note-1 "n-note-1")
       (vertex-note-2 "n-note-2")
       (vertex-note-3 "n-note-3")
@@ -115,7 +121,8 @@
 ;;;
 ;;; Plan 2 : Predicates
 ;;;
-(plan 2)
+(plan (incf *plan*))
+(diag! *plan* "Predicates Test")
 (let ((vertex-note-1 "n-note-1")
       (vertex-note-2 "n-note-2")
       (edge-type   :test-r)
@@ -149,7 +156,8 @@
 ;;;
 ;;; Plan 3 : Find-r-xxx
 ;;;
-(plan 3)
+(plan (incf *plan*))
+(diag! *plan* "Find-r-xxx")
 (let ((vertex-note-1 "n-note-1")
       (vertex-note-2 "n-note-2")
       (vertex-note-3 "n-note-3")
@@ -202,7 +210,8 @@
 ;;;
 ;;; Plan 4 : Slot-index
 ;;;
-(plan 4)
+(plan (incf *plan*))
+(diag! *plan* "Slot-index")
 (labels ((index-name (cls slot)
            (up::get-objects-slot-index-name cls slot)))
   (let ((vertex-note-1 "n-note-1")
@@ -248,7 +257,8 @@
 ;;;
 ;;; Plan 5 : remove-object-on-slot-index
 ;;;
-(plan 5)
+(plan (incf *plan*))
+(diag! *plan* "remove-object-on-slot-index")
 (labels ((index-name (cls slot)
            (up::get-objects-slot-index-name cls slot)))
   (let ((vertex-note-1 "n-note-1")
@@ -320,9 +330,60 @@
 
 
 ;;;
+;;; Plan 6 : delete-vertex
+;;;
+(plan (incf *plan*))
+(diag! *plan* "delete-vertex")
+(let ((vertex-note-1 "n-note-1")
+      (vertex-note-2 "n-note-2")
+      (rsc-class     'vertex)
+      (vertex-class  'vertex)
+      (edge-class    'ra)
+      (edge-type     :test-r)
+      (pool-stor     *pool-stor*)
+      (pool nil))
+  (unless pool-stor (error "*pool-stor*がnilのままです。"))
+  (clean-data-sotr pool-stor)
+  (setf pool (make-banshou 'banshou pool-stor))
+  (ok pool)
+  ;; object を生成
+  (let* ((vertex1 (tx-make-vertex pool rsc-class `((note ,vertex-note-1))))
+         (vertex2 (tx-make-vertex pool rsc-class `((note ,vertex-note-2))))
+         (vertex3 (tx-make-vertex pool rsc-class))
+         (vertex4 (tx-make-vertex pool rsc-class))
+         (edge1 (tx-make-edge pool edge-class vertex1 vertex2 edge-type)))
+    (declare (ignore edge2))
+    ;; テスト開始
+    (let ((i-from (get-root-object pool (up::get-objects-slot-index-name edge-class 'from-id)))
+          (i-to   (get-root-object pool (up::get-objects-slot-index-name edge-class 'to-id)))
+          (i-type (get-root-object pool (up::get-objects-slot-index-name edge-class 'edge-type))))
+      ;; do 1
+      (ok (existp pool vertex1))
+      (is-error (tx-delete-vertex pool vertex1) 'error)
+      (is-error (delete-vertex pool vertex1) 'error)
+      (ok (existp pool vertex1))
+      ;; do 2
+      (ok (existp pool vertex2))
+      (is-error (tx-delete-vertex pool vertex2) 'error)
+      (is-error (delete-vertex pool vertex2) 'error)
+      (ok (existp pool vertex2))
+      ;; do 1
+      (ok (existp pool vertex3))
+      (ok (tx-delete-vertex pool vertex3))
+      (is nil (existp pool vertex3))
+      (ok (existp pool vertex4))
+      (ok (delete-vertex pool vertex4))
+      (is nil (existp pool vertex4))
+      )
+    )
+  (up:snapshot pool))
+
+
+;;;
 ;;; Plan 6 : delete-edge
 ;;;
-(plan 6)
+(plan (incf *plan*))
+(diag! *plan* "delete-edge")
 (let ((vertex-note-1 "n-note-1")
       (vertex-note-2 "n-note-2")
       (rsc-class     'vertex)
@@ -355,14 +416,22 @@
       (is 2 (length (find-object-with-slot pool edge-class 'from-id   (from-id   edge1))))
       (is 1 (length (find-object-with-slot pool edge-class 'to-id     (to-id     edge1))))
       (is 2 (length (find-object-with-slot pool edge-class 'edge-type (edge-type edge1))))
-      ;; do
+      ;; do 1
       (shinra::tx-delete-edge pool edge1)
-      ;; after check
+      ;; after check 1
       (is nil (not (null (member edge1 (find-all-objects pool edge-class)))))
       (is nil (eq edge1 (get-object-with-id pool edge-class (id edge1))))
       (is 1 (length (find-object-with-slot pool edge-class 'from-id   (from-id   edge1))))
       (is 0 (length (find-object-with-slot pool edge-class 'to-id     (to-id     edge1))))
       (is 1 (length (find-object-with-slot pool edge-class 'edge-type (edge-type edge1))))
+      ;; do 2
+      (shinra::delete-edge pool edge2)
+      ;; after check 2
+      (is nil (not (null (member edge1 (find-all-objects pool edge-class)))))
+      (is nil (eq edge1 (get-object-with-id pool edge-class (id edge1))))
+      (is 0 (length (find-object-with-slot pool edge-class 'from-id   (from-id   edge1))))
+      (is 0 (length (find-object-with-slot pool edge-class 'to-id     (to-id     edge1))))
+      (is 0 (length (find-object-with-slot pool edge-class 'edge-type (edge-type edge1))))
       ;;
       (is 1 (hash-table-count i-from))
       (is 2 (hash-table-count i-to))
@@ -374,7 +443,8 @@
 ;;;
 ;;; Plan 7 : tx-change-vertex
 ;;;
-(plan 7)
+(plan (incf *plan*))
+(diag! *plan* "tx-change-vertex")
 (let ((vertex-note-1 "n-note-1")
       (vertex-note-2 "n-note-2")
       (vertex-note-3 "n-note-3")
@@ -408,7 +478,8 @@
 ;;;
 ;;; Plan 8 : tx-change-type
 ;;;
-(plan 8)
+(plan (incf *plan*))
+(diag! *plan* "tx-change-type")
 (let ((vertex-note-1 "n-note-1")
       (vertex-note-2 "n-note-2")
       (edge-type-befor :test-b)

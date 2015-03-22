@@ -15,13 +15,18 @@
 (defpackage shinrabanshou
   (:use :cl :alexandria :cl-ppcre :upanishad)
   (:nicknames :shinra)
+  (:import-from :world2world
+                :error*
+                :format*)
   (:export #:property
            #:banshou
            #:id ;; これは upanishad のやつを export しとるわけじゃけど。。。そんなもんか。
            ;; banshou
            #:make-banshou
            ;; vertex
-           #:shin #:tx-delete-vertex #:tx-make-vertex #:make-vertex
+           #:shin
+           #:tx-make-vertex   #:make-vertex
+           #:tx-delete-vertex #:delete-vertex
            ;; edge
            #:ra
            #:tx-delete-edge #:delete-edge
@@ -35,8 +40,8 @@
            ;; user
            #:user #:note
            #:code #:name #:password #:get-user
-           #:tx-master-user #:tx-make-user
-           #:master-user #:make-user
+           #:tx-master-user #:master-user
+           #:tx-make-user   #:make-user
            ;; paradicate
            #:lifep #:vertexp #:edgep #:existp
            ;; Relation
