@@ -19,8 +19,8 @@
     (error () nil)))
 
 
-(defmethod existp ((pool banshou) (vertex shin))
-  (not (null (get-object-with-id pool (class-name (class-of vertex)) (id vertex)))))
+(defmethod existp ((graph banshou) (vertex shin))
+  (not (null (get-object-with-id graph (class-name (class-of vertex)) (id vertex)))))
 
 
 ;;;;;
@@ -41,15 +41,15 @@
 ;;;;;
 ;;;;; 3. 削除
 ;;;;;
-(defmethod tx-delete-vertex ((pool banshou) (vertex shin))
+(defmethod tx-delete-vertex ((graph banshou) (vertex shin))
   ;; 現在関係があるものは削除できないようにしています。
   (let ((vertex-class (class-name (class-of vertex)))
-        (edge-class 'edge))
-    (when (or (find-r-edge pool edge-class :from vertex)
-              (find-r-edge pool edge-class :to   vertex))
+        (edge-class 'ra))
+    (when (or (find-r-edge graph edge-class :from vertex)
+              (find-r-edge graph edge-class :to   vertex))
       (error "関係を持っている Vertex は削除できません。"))
     (execute-transaction
-     (tx-delete-object pool vertex-class (id vertex)))))
+     (tx-delete-object graph vertex-class (id vertex)))))
 
 
 

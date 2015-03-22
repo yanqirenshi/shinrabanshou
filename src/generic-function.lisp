@@ -14,8 +14,8 @@
 ;;;;;
 ;;;;; 1. 森羅
 ;;;;;
-(defgeneric existp (pool rsc)
-  (:documentation "pool に rsc が存在するかを返します。
+(defgeneric existp (graph rsc)
+  (:documentation "graph に rsc が存在するかを返します。
 実装は vertex, edge のところで実装しています。"))
 
 
@@ -121,15 +121,15 @@ fromノードのオブジェクトを返します。"))
 toノードのオブジェクトを返します。"))
 
 
-;; (defun tx-change-from-vertex (pool edge vertex)
+;; (defun tx-change-from-vertex (graph edge vertex)
 
 
-(defgeneric tx-change-vertex (pool edge type vertex)
+(defgeneric tx-change-vertex (graph edge type vertex)
   (:documentation "edge に関連付いているノードを変更します。
 type に fromノードか toノードかを指定します。"))
 
 
-(defgeneric tx-change-type (pool edge type)
+(defgeneric tx-change-type (graph edge type)
   (:documentation ""))
 
 
@@ -137,27 +137,27 @@ type に fromノードか toノードかを指定します。"))
 ;;;;;
 ;;;;; 4. Finder
 ;;;;;
-(defgeneric get-r (pool edge-class-symbol start start-vertex end-vertex rtype)
+(defgeneric get-r (graph edge-class-symbol start start-vertex end-vertex rtype)
   (:documentation ""))
 
 
-(defgeneric get-r-edge (pool edge-class-symbol start start-vertex end-vertex rtype)
+(defgeneric get-r-edge (graph edge-class-symbol start start-vertex end-vertex rtype)
   (:documentation ""))
 
 
-(defgeneric get-r-vertex (pool edge-class-symbol start start-vertex end-vertex rtype)
+(defgeneric get-r-vertex (graph edge-class-symbol start start-vertex end-vertex rtype)
   (:documentation ""))
 
 
-(defgeneric find-r-edge (pool edge-class-symbol start vertex)
+(defgeneric find-r-edge (graph edge-class-symbol start vertex)
   (:documentation ""))
 
 
-(defgeneric find-r (pool edge-class-symbol start vertex)
+(defgeneric find-r (graph edge-class-symbol start vertex)
   (:documentation ""))
 
 
-(defgeneric find-r-vertex (pool edge-class-symbol start vertex)
+(defgeneric find-r-vertex (graph edge-class-symbol start vertex)
   (:documentation ""))
 
 

@@ -58,7 +58,7 @@
 
 
 
-(defclass edge (meme)
+(defclass ra (meme)
   ((from-id :documentation ""
             :accessor from-id
             :initarg :from-id
