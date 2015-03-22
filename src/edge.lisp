@@ -1,9 +1,9 @@
 ;;;;;
 ;;;;; Contents
 ;;;;;   1. 述語
-;;;;;   2. 削除
+;;;;;   2. Accsessor
 ;;;;;   3. 作成
-;;;;;   4. Accsessor
+;;;;;   4. 削除
 ;;;;;   5. 整理中
 ;;;;;
 
@@ -21,8 +21,8 @@
     (error () nil)))
 
 
-(defmethod existp ((pool banshou) (edge edge))
-  (let ((exist (get-object-with-id pool (class-name (class-of edge)) (id edge))))
+(defmethod existp ((graph banshou) (edge edge))
+  (let ((exist (get-object-with-id graph (class-name (class-of edge)) (id edge))))
     (when (not (null exist))
       (if
        ;; これ以降は不要なチェックみたいになっとるけど。。。。
@@ -37,16 +37,24 @@
 
 
 ;;;;;
-;;;;; 2. 削除
+;;;;; 2. Accsessor
 ;;;;;
-(defmethod tx-delete-edge ((pool banshou) (edge edge))
-  ;; remove edge on index
-  (mapcar #'(lambda (slot)
-              (up:tx-remove-object-on-slot-index pool edge slot))
-          '(from-id to-id edge-type))
-  ;; remove edge object
-  (tx-delete-object pool (class-name (class-of edge)) (id edge)))
+(defmethod get-from-vertex ((system banshou) (edge edge))
+  (up:get-at-id system (from-id edge)))
 
+
+(defmethod get-to-vertex ((system banshou) (edge edge))
+  (up:get-at-id system (to-id edge)))
+
+
+(defun tx-change-from-vertex (graph edge vertex)
+  (let ((class (class-name (class-of vertex)))
+        (id    (id vertex)))
+    (tx-change-object-slots graph
+                            class
+                            (id edge)
+                            `((from-id    ,id)
+                              (from-class ,class)))))
 
 
 ;;;;;
@@ -68,34 +76,27 @@
                                             (append param slots)
                                             param))))
 
-(defmethod make-edge ((pool banshou)
+(defmethod make-edge ((graph banshou)
                       (class-symbol symbol)
                       (from vertex) (to vertex) type
                       &optional slots)
-  (execute-transaction (tx-make-edge pool class-symbol from to type slots)))
+  (execute-transaction (tx-make-edge graph class-symbol from to type slots)))
 
 
 
 ;;;;;
-;;;;; 4. Accsessor
+;;;;; 4. 削除
 ;;;;;
-(defmethod get-from-vertex ((system banshou) (edge edge))
-  (up:get-at-id system (from-id edge)))
+(defmethod tx-delete-edge ((graph banshou) (edge edge))
+  ;; remove edge on index
+  (mapcar #'(lambda (slot)
+              (up:tx-remove-object-on-slot-index graph edge slot))
+          '(from-id to-id edge-type))
+  ;; remove edge object
+  (tx-delete-object graph (class-name (class-of edge)) (id edge)))
 
-
-(defmethod get-to-vertex ((system banshou) (edge edge))
-  (up:get-at-id system (to-id edge)))
-
-
-(defun tx-change-from-vertex (pool edge vertex)
-  (let ((class (class-name (class-of vertex)))
-        (id    (id vertex)))
-    (tx-change-object-slots pool
-                            class
-                            (id edge)
-                            `((from-id    ,id)
-                              (from-class ,class)))))
-
+(defmethod delete-edge ((graph banshou) (edge edge))
+  (execute-transaction (tx-delete-edge graph edge)))
 
 
 ;;;;;
@@ -113,10 +114,10 @@
         (t (error* :understand-this-value "edge-slot" type))))
 
 
-(defmethod tx-change-vertex ((pool banshou) (edge edge) type (vertex vertex))
+(defmethod tx-change-vertex ((graph banshou) (edge edge) type (vertex vertex))
   (multiple-value-bind (cls-id cls-class)
       (get-edge-vertex-slot type)
-    (tx-change-object-slots pool
+    (tx-change-object-slots graph
                             (class@ edge)
                             (id edge)
                             `((,cls-id    ,(id vertex))
@@ -124,8 +125,8 @@
   (values edge vertex))
 
 
-(defmethod tx-change-type ((pool banshou) (edge edge) type)
-  (tx-change-object-slots pool
+(defmethod tx-change-type ((graph banshou) (edge edge) type)
+  (tx-change-object-slots graph
                           (class@ edge)
                           (id edge)
                           `((edge-type ,type)))
