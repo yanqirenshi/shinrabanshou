@@ -77,20 +77,16 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 
 
 ;; 作成
-(defgeneric tx-make-vertex (banshou class-symbol &optional slots-and-values)
+(defgeneric tx-make-vertex (graph class-symbol &optional slots-and-values)
   (:documentation ""))
 
 
-(defgeneric make-vertex (banshou class-symbol &optional slots-and-values)
-  (:documentation ""))
-
-
-(defgeneric make-vertex (banshou class-symbol &optional slots-and-values)
+(defgeneric make-vertex (graph class-symbol &optional slots-and-values)
   (:documentation ""))
 
 
 ;; 削除
-(defgeneric tx-delete-vertex (banshou vertex)
+(defgeneric tx-delete-vertex (graph vertex)
   (:documentation "Vertexを削除します。
 現在、関係を持っている Vertex は削除できないようにしています。
 2014/7/26
@@ -99,6 +95,9 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 どんとなんあるか判断できるもんね。
 "))
 
+
+(defgeneric delete-vertex (graph vertex)
+  (:documentation ""))
 
 
 ;;;;;
@@ -111,27 +110,30 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 ほかにスマートな方法がありそうなんじゃけど。。。"))
 
 
-;; 削除
-(defgeneric tx-delete-edge (banshou edge)
-  (:documentation "Vertexを削除します。"))
-
-
 ;; 作成
-(defgeneric tx-make-edge (banshou class-symbol from to type &optional slots)
+(defgeneric tx-make-edge (graph class-symbol from to type &optional slots)
   (:documentation "edge を作成します。"))
 
 
-(defgeneric make-edge (banshou class-symbol from to type &optional slots)
+(defgeneric make-edge (graph class-symbol from to type &optional slots)
   (:documentation "tx-make-edgeをトランザクション実行します。"))
 
 
+;; 削除
+(defgeneric tx-delete-edge (graph edge)
+  (:documentation "Vertexを削除します。"))
+
+(defgeneric delete-edge (graph edge)
+  (:documentation "Vertexを削除します。"))
+
+
 ;; accsessor
-(defgeneric get-from-vertex (banshou edge)
+(defgeneric get-from-vertex (graph edge)
   (:documentation "edge のfromノードを取得します。
 fromノードのオブジェクトを返します。"))
 
 
-(defgeneric get-to-vertex (banshou edge)
+(defgeneric get-to-vertex (graph edge)
   (:documentation "edge のtoノードを取得します。
 toノードのオブジェクトを返します。"))
 
@@ -139,12 +141,12 @@ toノードのオブジェクトを返します。"))
 ;; (defun tx-change-from-vertex (pool edge vertex)
 
 
-(defgeneric tx-change-vertex (pool edge type vertex)
+(defgeneric tx-change-vertex (graph edge type vertex)
   (:documentation "edge に関連付いているノードを変更します。
 type に fromノードか toノードかを指定します。"))
 
 
-(defgeneric tx-change-type (pool edge type)
+(defgeneric tx-change-type (graph edge type)
   (:documentation ""))
 
 

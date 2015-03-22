@@ -19,38 +19,39 @@
     (error () nil)))
 
 
-(defmethod existp ((pool banshou) (vertex vertex))
-  (not (null (get-object-with-id pool (class-name (class-of vertex)) (id vertex)))))
+(defmethod existp ((graph banshou) (vertex vertex))
+  (not (null (get-object-with-id graph (class-name (class-of vertex)) (id vertex)))))
 
 
 ;;;;;
 ;;;;; 2. 作成
 ;;;;;
-(defmethod tx-make-vertex ((system banshou) (class-symbol symbol) &optional slots-and-values)
+(defmethod tx-make-vertex ((graph banshou) (class-symbol symbol) &optional slots-and-values)
   (unless (vertexp class-symbol)
     (error* :bad-class 'vertex class-symbol))
-  (tx-make-shinra system class-symbol slots-and-values))
+  (tx-make-shinra graph class-symbol slots-and-values))
 
-
-
-(defmethod make-vertex ((system banshou) (class-symbol symbol) &optional slots-and-values)
+(defmethod make-vertex ((graph banshou) (class-symbol symbol) &optional slots-and-values)
   (execute-transaction
-   (tx-make-vertex system class-symbol slots-and-values)))
+   (tx-make-vertex graph class-symbol slots-and-values)))
 
 
 
 ;;;;;
 ;;;;; 3. 削除
 ;;;;;
-(defmethod tx-delete-vertex ((pool banshou) (vertex vertex))
-  ;; 現在関係があるものは削除できないようにしています。
+(defmethod tx-delete-vertex ((graph banshou) (vertex vertex))
   (let ((vertex-class (class-name (class-of vertex)))
         (edge-class 'edge))
-    (when (or (find-r-edge pool edge-class :from vertex)
-              (find-r-edge pool edge-class :to   vertex))
+    (when (or (find-r-edge graph edge-class :from vertex)
+              (find-r-edge graph edge-class :to   vertex))
       (error* :delete-failed-have-some-edge vertex-class))
     (execute-transaction
-     (tx-delete-object pool vertex-class (id vertex)))))
+     (tx-delete-object graph vertex-class (id vertex)))))
+
+(defmethod delete-vertex ((graph banshou) (vertex vertex))
+  (execute-transaction
+   (tx-delete-vertex graph vertex)))
 
 
 

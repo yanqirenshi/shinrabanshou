@@ -24,9 +24,13 @@
            ;; banshou
            #:make-banshou
            ;; vertex
-           #:vertex #:tx-delete-vertex #:tx-make-vertex #:make-vertex
+           #:vertex
+           #:tx-make-vertex   #:make-vertex
+           #:tx-delete-vertex #:delete-vertex
            ;; edge
-           #:edge #:tx-delete-edge #:tx-make-edge #:make-edge
+           #:edge
+           #:tx-make-edge   #:make-edge
+           #:tx-delete-edge
            #:get-from-vertex    #:get-to-vertex
            #:from-id #:from-class
            #:to-id   #:to-class
@@ -36,8 +40,8 @@
            ;; user
            #:user #:note
            #:code #:name #:password #:get-user
-           #:tx-master-user #:tx-make-user
-           #:master-user #:make-user
+           #:tx-master-user #:master-user
+           #:tx-make-user   #:make-user
            ;; paradicate
            #:lifep #:vertexp #:edgep #:existp
            ;; Relation
