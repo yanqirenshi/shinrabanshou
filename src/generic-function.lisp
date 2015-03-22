@@ -19,15 +19,6 @@
 実装は vertex, edge のところで実装しています。"))
 
 
-(defgeneric tx-make-shinra (banshou class-symbol slots-and-values)
-  (:documentation ""))
-
-
-(defgeneric make-shinra (banshou class-symbol slots-and-values)
-  (:documentation ""))
-
-
-
 ;;;;;
 ;;;;; 2. 万象
 ;;;;;
@@ -77,15 +68,10 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 
 
 ;; 作成
-(defgeneric tx-make-vertex (banshou class-symbol &optional slots-and-values)
+(defgeneric tx-make-vertex (graph class-symbol &optional slots-and-values)
   (:documentation ""))
 
-
-(defgeneric make-vertex (banshou class-symbol &optional slots-and-values)
-  (:documentation ""))
-
-
-(defgeneric make-vertex (banshou class-symbol &optional slots-and-values)
+(defgeneric make-vertex (graph class-symbol &optional slots-and-values)
   (:documentation ""))
 
 
@@ -111,18 +97,17 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 ほかにスマートな方法がありそうなんじゃけど。。。"))
 
 
+;; 作成
+(defgeneric tx-make-edge (graph class-symbol from to type &optional slots)
+  (:documentation "edge を作成します。"))
+
+(defgeneric make-edge (graph class-symbol from to type &optional slots)
+  (:documentation "tx-make-edgeをトランザクション実行します。"))
+
+
 ;; 削除
 (defgeneric tx-delete-edge (banshou edge)
   (:documentation "Vertexを削除します。"))
-
-
-;; 作成
-(defgeneric tx-make-edge (banshou class-symbol from to type &optional slots)
-  (:documentation "edge を作成します。"))
-
-
-(defgeneric make-edge (banshou class-symbol from to type &optional slots)
-  (:documentation "tx-make-edgeをトランザクション実行します。"))
 
 
 ;; accsessor

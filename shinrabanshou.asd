@@ -20,33 +20,26 @@
                         ;;    |
                         ;; package
                         ;;    |
-                        ;;    +----------------------+
-                        ;;    |                      |
-                        ;; generic-function          |
-                        ;;    |                      |
-                        ;; class                     |
-                        ;;    |                      |
-                        ;; shinra           extension/cl-json+
-                        ;;    |                      |
-                        ;; vertex                    |
-                        ;;    |                      |
-                        ;;  edge                     |
-                        ;;    |                      |
-                        ;;  finder                   |
-                        ;;    |                      |
-                        ;;  user                     |
-                        ;;    |                      |
-                        ;;  banshou                  |
-                        ;;    |                      |
-                        ;;    +----------------------+
+                        ;; generic-function
+                        ;;    |
+                        ;; class
+                        ;;    |
+                        ;; vertex
+                        ;;    |
+                        ;;  edge
+                        ;;    |
+                        ;;  finder
+                        ;;    |
+                        ;;  user
+                        ;;    |
+                        ;;  banshou
                         ;;    |
                         ;;  (end)
                         ;;
                         ((:file "package")
                          (:file "generic-function"   :depends-on ("package"))
                          (:file "class"              :depends-on ("generic-function"))
-                         (:file "shinra"             :depends-on ("class"))
-                         (:file "vertex"             :depends-on ("shinra"))
+                         (:file "vertex"             :depends-on ("class"))
                          (:file "edge"               :depends-on ("vertex"))
                          (:file "finder"             :depends-on ("edge"))
                          (:file "user"               :depends-on ("finder"))

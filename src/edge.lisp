@@ -53,7 +53,7 @@
 ;;;;;
 ;;;;; 3. 作成
 ;;;;;
-(defmethod tx-make-edge ((system banshou) (class-symbol symbol) (from vertex) (to vertex) type
+(defmethod tx-make-edge ((graph banshou) (class-symbol symbol) (from vertex) (to vertex) type
                          &optional slots)
   (cond ((null (id from)) (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
         ((null (id to))   (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
@@ -65,15 +65,15 @@
                  (to-id      ,(id to))
                  (to-class   ,(class-name (class-of to)))
                  (edge-type  ,type))))
-    (tx-make-shinra system class-symbol (if slots
-                                            (append param slots)
-                                            param))))
+    (tx-create-object graph class-symbol (if slots
+                                             (append param slots)
+                                             param))))
 
-(defmethod make-edge ((pool banshou)
+(defmethod make-edge ((graph banshou)
                       (class-symbol symbol)
                       (from vertex) (to vertex) type
                       &optional slots)
-  (execute-transaction (tx-make-edge pool class-symbol from to type slots)))
+  (execute-transaction (tx-make-edge graph class-symbol from to type slots)))
 
 
 

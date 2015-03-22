@@ -26,16 +26,15 @@
 ;;;;;
 ;;;;; 2. 作成
 ;;;;;
-(defmethod tx-make-vertex ((system banshou) (class-symbol symbol) &optional slots-and-values)
+(defmethod tx-make-vertex ((graph banshou) (class-symbol symbol) &optional slots-and-values)
   (unless (vertexp class-symbol)
     (error "このクラスは vertex のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
-  (tx-make-shinra system class-symbol slots-and-values))
+  (tx-create-object graph class-symbol slots-and-values))
 
 
-
-(defmethod make-vertex ((system banshou) (class-symbol symbol) &optional slots-and-values)
+(defmethod make-vertex ((graph banshou) (class-symbol symbol) &optional slots-and-values)
   (execute-transaction
-   (tx-make-vertex system class-symbol slots-and-values)))
+   (tx-make-vertex graph class-symbol slots-and-values)))
 
 
 
