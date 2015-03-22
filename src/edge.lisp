@@ -33,8 +33,7 @@
             (eq (to-class   edge) (to-class   exist))
             (eq (edge-type  edge) (edge-type  exist)))
        t
-       (error "id(~a) はおおとるんじゃけど、なんか内容が一致せんけぇ。おかしいじゃろう。 "
-              (id edge))))))
+       (error* :edge-bad-contents (id edge))))))
 
 
 ;;;;;
@@ -55,11 +54,11 @@
 ;;;;;
 (defmethod tx-make-edge ((system banshou) (class-symbol symbol) (from vertex) (to vertex) type
                          &optional slots)
-  (cond ((null (id from)) (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
-        ((null (id to))   (error "この vertex(from)、id 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。"))
-        ((null type)          (error "type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")))
+  (cond ((null (id from)) (error* :bad-id-is-null "vertex(from)"))
+        ((null (id to))   (error* :bad-id-is-null "vertex(to)"))
+        ((null type)      (error* :edge-type-is-null)))
   (unless (edgep class-symbol)
-    (error "このクラスは edge のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
+    (error* :bad-class 'edge class-symbol))
   (let ((param `((from-id    ,(id from))
                  (from-class ,(class-name (class-of from)))
                  (to-id      ,(id to))
@@ -111,7 +110,7 @@
 (defun get-edge-vertex-slot (type)
   (cond ((eq :from type) (values 'from-id 'from-class))
         ((eq :to type)   (values 'to-id   'to-class))
-        (t (error "こんとなん知らんけぇ。type=~a" type))))
+        (t (error* :understand-this-value "edge-slot" type))))
 
 
 (defmethod tx-change-vertex ((pool banshou) (edge edge) type (vertex vertex))
