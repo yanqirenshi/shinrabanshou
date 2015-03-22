@@ -27,11 +27,11 @@
                            (timestamp (get-universal-time)))
   (declare (ignore timestamp))
   (cond ((null code)
-         (error "code が空(nil)なんじゃけど。code=~a, name=~a" code name))
+         (error* :bad-code-is-null name))
         ((and (stringp code) (string= "" (trim-string code)))
-         (error "code が文字列の場合、0バイトの文字列は許しとらんのんよ。code=~a, name=~a" code name))
+         (error* :bad-code-str-len-is-zero code name))
         ((get-user sys code)
-         (error "このユーザーはもう存在するけぇ。作れるわけがなかろぉ。user-code=~a" code)))
+         (error :create-failed-exis-user code)))
   (let ((takajin (takajin:make-password password)))
     (values (tx-make-vertex sys 'user
                             `(((code ,code))
@@ -70,7 +70,7 @@
                                                 (timestamp (get-universal-time)))
   (declare (ignore timestamp))
   (when (master-user sys)
-    (error "このユーザーはもう存在するけぇ。user-code=~a" code))
+    (error* :create-failed-exis-user code))
   (tx-make-vertex sys 'user
                   `((code ,code)
                     (password ,password)

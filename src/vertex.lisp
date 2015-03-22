@@ -28,7 +28,7 @@
 ;;;;;
 (defmethod tx-make-vertex ((system banshou) (class-symbol symbol) &optional slots-and-values)
   (unless (vertexp class-symbol)
-    (error "このクラスは vertex のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a" class-symbol))
+    (error* :bad-class 'vertex class-symbol))
   (tx-make-shinra system class-symbol slots-and-values))
 
 
@@ -48,7 +48,7 @@
         (edge-class 'edge))
     (when (or (find-r-edge pool edge-class :from vertex)
               (find-r-edge pool edge-class :to   vertex))
-      (error "関係を持っている Vertex は削除できません。"))
+      (error* :delete-failed-have-some-edge vertex-class))
     (execute-transaction
      (tx-delete-object pool vertex-class (id vertex)))))
 
