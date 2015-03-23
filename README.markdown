@@ -1,15 +1,7 @@
 # 森羅万象(shinrabanshou)
 
 Common Lisp On-Memory Objective Graph Database.  
-Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase を目指しています。  
-外部のDBを利用すれば良いのでしょうが、セットアップや利用方法などに悩まされます。(特にWindowsでは)
-- とりあえず使えること。
-- シンプルであること。
-- AICD(?) とか難しいことは考えないこと。
-- セットアップにストレスを覚えないこと。
-- 利用するこにストレスを覚えないこと。
-
-永続化ライブラリは [upanishad](https://github.com/yanqirenshi/upanishad) を利用します。
+Common Lisp ネイティブでセットアップ/利用にストレス感じさせないシンプルな GraphDatabase を目指しています。
 
 詳細な情報は [Wiki](https://github.com/yanqirenshi/shinrabanshou/wiki) を参照してください。
 
