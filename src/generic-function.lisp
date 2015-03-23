@@ -167,6 +167,10 @@ type に fromノードか toノードかを指定します。"))
   (:documentation ""))
 
 
+;; 次数
+(defgeneric deg (graph vertex)
+  (:documentation ""))
+
 
 ;;;;;
 ;;;;; 5. User

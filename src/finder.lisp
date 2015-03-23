@@ -1,11 +1,32 @@
 ;;;;;
 ;;;;; Contents
-;;;;;   none....
+;;;;;   1. New operator
+;;;;;      1.1. 次数
+;;;;;
+;;;;;   2. Old operator
 ;;;;;
 
 (in-package :shinrabanshou)
 
+;;;;;
+;;;;; 1. New operator
+;;;;;
 
+;;;
+;;; 1.1. 次数
+;;;
+(defmethod deg ((graph banshou) (vertex shin))
+  ;; TODO
+  (list graph vertex))
+
+
+;;;;;
+;;;;; 2. Old operator
+;;;;;
+
+;;;
+;;;
+;;;
 (defmethod get-r ((graph banshou) (edge-class-symbol symbol)
                   start
                   (start-vertex shin) (end-vertex shin) rtype)
@@ -54,6 +75,7 @@
   (mapcar #'(lambda (data)
               (getf data :vertex))
           (find-r graph edge-class-symbol start vertex)))
+
 
 
 
