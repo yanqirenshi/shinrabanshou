@@ -13,15 +13,53 @@
 ;;;;;
 ;;;;; 1. 万象
 ;;;;;
-(defmethod make-banshou ((class-symbol symbol) data-stor)
-  (let ((pool (make-pool data-stor :pool-class class-symbol)))
-    (when (null (get-root-object pool :id-counter))
-      (execute-transaction (tx-create-id-counter pool)))
-    (when (null (master-user pool))
-      (execute-transaction (tx-make-master-user pool)))
-    (index-on pool 'ra '(from-id to-id edge-type))
-    pool))
+;;;
+;;; shin
+;;;
+(defun init-shin-classes (banshou)
+  (setf (get-root-object banshou :@vertex-classes) nil))
 
+(defun get-shin-classes (banshou)
+  (get-root-object banshou :@vertex-classes))
+
+(defun add-shin-class (banshou symbol)
+  (let ((lst (get-shin-classes banshou)))
+    (unless (member symbol lst)
+      (setf (get-root-object banshou :@vertex-classes) (cons symbol lst)))))
+
+
+;;;
+;;; ra
+;;;
+(defun init-ra-classes (banshou)
+  (setf (get-root-object banshou :@vertex-classes) nil))
+
+(defun get-ra-classes (banshou)
+  (get-root-object banshou :@edge-classes))
+
+(defun add-ra-class (banshou symbol)
+  (let ((lst (get-ra-classes banshou)))
+    (unless (member symbol lst)
+      (setf (get-root-object banshou :@edge-classes) (cons symbol lst)))))
+
+
+;; (up::get-objects-slot-index-name cls slot)
+
+;;;
+;;; make banshou
+;;;
+(defmethod make-banshou ((class-symbol symbol) data-stor)
+  (let ((banshou (make-pool data-stor :pool-class class-symbol)))
+    ;; init id counter
+    (when (null (get-root-object banshou :id-counter))
+      (execute-transaction (tx-create-id-counter banshou)))
+    ;; init class list
+    (init-shin-classes banshou)
+    (init-ra-classes banshou)
+    ;; make master user
+    (when (null (master-user banshou))
+      (execute-transaction (tx-make-master-user banshou)))
+    banshou))
 
 
 ;;;;;

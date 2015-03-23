@@ -19,22 +19,37 @@ Common Lisp ネイティブでポータブルかつシンプルな GraphDatabase
 (qlot:quickload :shinrabanshou)
 (in-package :shinrabanshou)
 
-;; Poolの作成
-(defvar *pool* nil)
-(setf *pool* (make-banshou 'banshou pool-stor))
+;;; グラフを生成
+SHINRA> (defvar *graph* (make-banshou 'banshou "/input/your/path/"))
 
-;; Vertex の作成
-    ：
-   ※執筆待ち
-    ：
-;; Edge の作成
-    ：
-   ※執筆待ち
-    ：
-;; Vertex / Edge の取得
-    ：
-   ※執筆待ち
-    ：
+*GRAPH*
+
+;;; vertex と edge クラスを定義。
+SHINRA> (defclass vertex (shin naming) ()) 
+#<STANDARD-CLASS VERTEX>
+
+SHINRA> (defclass edge (ra naming) ()) 
+#<STANDARD-CLASS EDGE>
+
+
+;;; ロボットの制作/組み立て。
+SHINRA> 
+(let ((head       (make-vertex *graph* 'vertex '((name "head"))))
+      (breast     (make-vertex *graph* 'vertex '((name "breast"))))
+      (waist      (make-vertex *graph* 'vertex '((name "waist"))))
+      (left-arm   (make-vertex *graph* 'vertex '((name "left-arm"))))
+      (right-arm  (make-vertex *graph* 'vertex '((name "right-arm"))))
+      (left-foot  (make-vertex *graph* 'vertex '((name "left-foot"))))
+      (right-foot (make-vertex *graph* 'vertex '((name "right-foot")))))
+  (make-edge *graph* 'edge head   breast     :docking)
+  (make-edge *graph* 'edge breast waist      :docking)
+  (make-edge *graph* 'edge breast left-arm   :docking)
+  (make-edge *graph* 'edge breast right-arm  :docking)
+  (make-edge *graph* 'edge waist  left-foot  :docking)
+  (make-edge *graph* 'edge waist  right-foot :docking))
+
+
+#<EDGE {1006D78EE3}>
 ```
 
 # Installation

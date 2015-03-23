@@ -70,6 +70,25 @@
 ;;;;;
 ;;;;; 3. 作成
 ;;;;;
+(defun indexp (graph class slot)
+  (let ((name (up::get-objects-slot-index-name class slot)))
+    (not (null (up:get-root-object graph name)))))
+
+
+(defmethod check-exist-edge-indexes ((graph banshou) (class-symbol symbol) slots)
+  (let ((slot-length (length slots))
+        (exist (remove-if-not #'(lambda (slot) (indexp graph class-symbol slot))
+                              slots)))
+    (cond ((= (length exist) 0) t)
+          ((= (length exist) slot-length) nil)
+          (t (error "なんか中途半端に Edge のインデックスが存在するよ。edge=~a" class-symbol)))))
+
+
+(defmethod make-edge-indexes ((graph banshou) (class-symbol symbol) &optional (slots '(from-id to-id edge-type)))
+  (when (check-exist-edge-indexes graph class-symbol slots)
+    (index-on graph class-symbol slots)))
+
+
 (defmethod tx-make-edge ((graph banshou) (class-symbol symbol) (from shin) (to shin) type
                          &optional slots)
   (cond ((null (id from)) (error* :bad-id-is-null "vertex(from)"))
@@ -77,6 +96,8 @@
         ((null type)      (error* :edge-type-is-null)))
   (unless (edgep class-symbol)
     (error* :bad-class 'ra class-symbol))
+  (add-ra-class graph class-symbol)
+  (make-edge-indexes graph class-symbol)
   (let ((param `((from-id    ,(id from))
                  (from-class ,(class-name (class-of from)))
                  (to-id      ,(id to))
