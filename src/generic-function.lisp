@@ -155,15 +155,15 @@ type に fromノードか toノードかを指定します。"))
   (:documentation ""))
 
 
-(defgeneric find-r-edge (graph edge-class-symbol start vertex)
+(defgeneric find-r-edge (graph edge-class-symbol start vertex &key edge-type vertex-class)
   (:documentation ""))
 
 
-(defgeneric find-r (graph edge-class-symbol start vertex)
+(defgeneric find-r (graph edge-class-symbol start vertex &key edge-type vertex-class)
   (:documentation ""))
 
 
-(defgeneric find-r-vertex (graph edge-class-symbol start vertex)
+(defgeneric find-r-vertex (graph edge-class-symbol start vertex &key edge-type vertex-class)
   (:documentation ""))
 
 
