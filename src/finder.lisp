@@ -33,13 +33,27 @@
     (when r (getf r :vertex))))
 
 
-(defmethod find-r-edge ((graph banshou) (edge-class-symbol symbol) start (vertex shin))
+(defmethod find-r-edge ((graph banshou) (edge-class-symbol symbol)
+                        start (vertex shin)
+                        &key edge-type vertex-class)
   (let ((start-slot (cond ((eq start :from) 'from-id)
-                          ((eq start :to  ) 'to-id))))
-    (find-object-with-slot graph edge-class-symbol
-                           start-slot (id vertex))))
+                          ((eq start :to  ) 'to-id)))
+        (stop-class (cond ((eq start :from) 'to-class)
+                          ((eq start :to  ) 'from-class))))
+    (remove-if-not #'(lambda (x)
+                       (and (if (null edge-type)
+                                t
+                                (eq (edge-type x) edge-type))
+                            (if (null vertex-class)
+                                t
+                                (eq vertex-class (funcall stop-class x)))))
+                   (find-object-with-slot graph edge-class-symbol
+                                          start-slot (id vertex)))))
 
-(defmethod find-r ((graph banshou) (edge-class-symbol symbol) start (vertex shin))
+
+(defmethod find-r ((graph banshou) (edge-class-symbol symbol)
+                   start (vertex shin)
+                   &key edge-type vertex-class)
   (let ((start-symbol (cond ((eq start :from) '(to-class   to-id))
                             ((eq start :to  ) '(from-class from-id)))))
     (mapcar #'(lambda (edge)
@@ -47,13 +61,19 @@
                       :vertex (find-object-with-id graph
                                                    (funcall (first  start-symbol) edge)
                                                    (funcall (second start-symbol) edge))))
-            (find-r-edge graph edge-class-symbol start vertex))))
+            (find-r-edge graph edge-class-symbol
+                         start vertex
+                         :edge-type edge-type :vertex-class vertex-class))))
 
 
-(defmethod find-r-vertex ((graph banshou) (edge-class-symbol symbol) start (vertex shin))
+(defmethod find-r-vertex ((graph banshou) (edge-class-symbol symbol)
+                          start (vertex shin)
+                          &key edge-type vertex-class)
   (mapcar #'(lambda (data)
               (getf data :vertex))
-          (find-r graph edge-class-symbol start vertex)))
+          (find-r graph edge-class-symbol
+                  start vertex
+                  :edge-type edge-type :vertex-class vertex-class)))
 
 
 
