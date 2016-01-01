@@ -20,7 +20,7 @@
 
 
 (defmethod existp ((graph banshou) (vertex shin))
-  (not (null (get-object-with-id graph (class-name (class-of vertex)) (id vertex)))))
+  (not (null (get-object-with-%id graph (class-name (class-of vertex)) (%id vertex)))))
 
 
 (defun existp-relationship (graph shin &optional (ra-list nil))
@@ -29,7 +29,7 @@
   (labels ((core (graph shin ra-list)
              (when ra-list
                (let ((ra (car ra-list))
-                     (id (id shin)))
+                     (id (%id shin)))
                  (if (or (gethash id (get-root-object graph (up::get-objects-slot-index-name ra 'from-id)))
                          (gethash id (get-root-object graph (up::get-objects-slot-index-name ra 'to-id))))
                      t
@@ -60,7 +60,7 @@
     (when (existp-relationship graph vertex)
       (error* :delete-failed-have-some-edge vertex-class))
     (execute-transaction
-     (tx-delete-object graph vertex-class (id vertex)))))
+     (tx-delete-object graph vertex-class (%id vertex)))))
 
 (defmethod delete-vertex ((graph banshou) (vertex shin))
   (execute-transaction

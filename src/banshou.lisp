@@ -52,7 +52,7 @@
   (let ((banshou (make-pool data-stor :pool-class class-symbol)))
     ;; init id counter
     (when (null (get-root-object banshou :id-counter))
-      (execute-transaction (tx-create-id-counter banshou)))
+      (execute-transaction (tx-create-%id-counter banshou)))
     ;; init class list
     (init-shin-classes banshou)
     (init-ra-classes banshou)

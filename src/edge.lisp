@@ -22,7 +22,7 @@
 
 
 (defmethod existp ((graph banshou) (edge ra))
-  (let ((exist (get-object-with-id graph (class-name (class-of edge)) (id edge))))
+  (let ((exist (get-object-with-%id graph (class-name (class-of edge)) (%id edge))))
     (when (not (null exist))
       (if
        ;; これ以降は不要なチェックみたいになっとるけど。。。。
@@ -33,36 +33,36 @@
             (eq (to-class   edge) (to-class   exist))
             (eq (edge-type  edge) (edge-type  exist)))
        t
-       (error* :edge-bad-contents (id edge))))))
+       (error* :edge-bad-contents (%id edge))))))
 
 
 ;;;;;
 ;;;;; 2. Accsessor
 ;;;;;
 (defmethod get-from-vertex ((system banshou) (edge ra))
-  (up:get-at-id system (from-id edge)))
+  (up:get-at-%id system (from-id edge)))
 
 
 (defmethod get-to-vertex ((system banshou) (edge ra))
-  (up:get-at-id system (to-id edge)))
+  (up:get-at-%id system (to-id edge)))
 
 
 (defun tx-change-from-vertex (graph edge vertex)
   (let ((class (class-name (class-of vertex)))
-        (id    (id vertex)))
+        (id    (%id vertex)))
     (tx-change-object-slots graph
                             class
-                            (id edge)
+                            (%id edge)
                             `((from-id    ,id)
                               (from-class ,class)))))
 
 
 (defun tx-change-from-vertex (graph edge vertex)
   (let ((class (class-name (class-of vertex)))
-        (id    (id vertex)))
+        (id    (%id vertex)))
     (tx-change-object-slots graph
                             class
-                            (id edge)
+                            (%id edge)
                             `((from-id    ,id)
                               (from-class ,class)))))
 
@@ -91,16 +91,16 @@
 
 (defmethod tx-make-edge ((graph banshou) (class-symbol symbol) (from shin) (to shin) type
                          &optional slots)
-  (cond ((null (id from)) (error* :bad-id-is-null "vertex(from)"))
-        ((null (id to))   (error* :bad-id-is-null "vertex(to)"))
+  (cond ((null (%id from)) (error* :bad-id-is-null "vertex(from)"))
+        ((null (%id to))   (error* :bad-id-is-null "vertex(to)"))
         ((null type)      (error* :edge-type-is-null)))
   (unless (edgep class-symbol)
     (error* :bad-class 'ra class-symbol))
   (add-ra-class graph class-symbol)
   (make-edge-indexes graph class-symbol)
-  (let ((param `((from-id    ,(id from))
+  (let ((param `((from-id    ,(%id from))
                  (from-class ,(class-name (class-of from)))
-                 (to-id      ,(id to))
+                 (to-id      ,(%id to))
                  (to-class   ,(class-name (class-of to)))
                  (edge-type  ,type))))
     (tx-create-object graph class-symbol (if slots
@@ -124,7 +124,7 @@
               (up:tx-remove-object-on-slot-index graph edge slot))
           '(from-id to-id edge-type))
   ;; remove edge object
-  (tx-delete-object graph (class-name (class-of edge)) (id edge)))
+  (tx-delete-object graph (class-name (class-of edge)) (%id edge)))
 
 (defmethod delete-edge ((graph banshou) (edge ra))
   (execute-transaction (tx-delete-edge graph edge)))
@@ -150,8 +150,8 @@
       (get-edge-vertex-slot type)
     (tx-change-object-slots graph
                             (class@ edge)
-                            (id edge)
-                            `((,cls-id    ,(id vertex))
+                            (%id edge)
+                            `((,cls-id    ,(%id vertex))
                               (,cls-class ,(class@ vertex)))))
   (values edge vertex))
 
@@ -159,7 +159,7 @@
 (defmethod tx-change-type ((graph banshou) (edge ra) type)
   (tx-change-object-slots graph
                           (class@ edge)
-                          (id edge)
+                          (%id edge)
                           `((edge-type ,type)))
   edge)
 

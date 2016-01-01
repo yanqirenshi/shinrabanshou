@@ -13,8 +13,8 @@
    (remove-if #'(lambda (r)
                   (let ((vertex (getf r :vertex))
                         (edge   (getf r :edge)))
-                    (not (and (= (id end-vertex)
-                                 (id vertex))
+                    (not (and (= (%id end-vertex)
+                                 (%id vertex))
                               (eq rtype (edge-type edge))))))
               (find-r graph edge-class-symbol start start-vertex))))
 
@@ -48,7 +48,7 @@
                                 t
                                 (eq vertex-class (funcall stop-class x)))))
                    (find-object-with-slot graph edge-class-symbol
-                                          start-slot (id vertex)))))
+                                          start-slot (%id vertex)))))
 
 
 (defmethod find-r ((graph banshou) (edge-class-symbol symbol)
@@ -58,7 +58,7 @@
                             ((eq start :to  ) '(from-class from-id)))))
     (mapcar #'(lambda (edge)
                 (list :edge edge
-                      :vertex (find-object-with-id graph
+                      :vertex (find-object-with-%id graph
                                                    (funcall (first  start-symbol) edge)
                                                    (funcall (second start-symbol) edge))))
             (find-r-edge graph edge-class-symbol
