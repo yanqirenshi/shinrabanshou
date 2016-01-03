@@ -6,22 +6,6 @@
    :prove)
   (:nicknames :shinra-test))
 
-;;;;;
-;;;;; Contents
-;;;;;   1. Variable
-;;;;;   2. Class
-;;;;;   3. Plan
-;;;;;       Plan 1 : Basic
-;;;;;       Plan 2 : Predicates
-;;;;;       Plan 3 : Find-r-xxx
-;;;;;       Plan 4 : Slot-index
-;;;;;       Plan 5 : remove-object-on-slot-index
-;;;;;       Plan 6 : delete-vertex
-;;;;;       Plan 7 : delete-edge
-;;;;;       Plan 8 : tx-change-vertex
-;;;;;       Plan 9 : tx-change-type
-;;;;;
-
 (in-package :shinrabanshou-test)
 
 ;;;
@@ -33,14 +17,6 @@
                                  "tmp/shinra/")
   "TODO: ディレクトリがなかったら作ろうか。。。。")
 
-(defun clean-data-sotr (data-stor)
-  (when (probe-file data-stor)
-    (dolist (pathname (directory (merge-pathnames "*.xml" data-stor)))
-      (delete-file pathname))))
-
-(defun diag! (plan-num text)
-  (diag (format nil "Plan ~a : ~a" plan-num text)))
-
 ;;;
 ;;; Class
 ;;;
@@ -51,6 +27,22 @@
          :initform nil)))
 
 (defclass edge (ra) ())
+
+;;;
+;;; utility
+;;;
+(defun clean-data-sotr (data-stor)
+  (when (probe-file data-stor)
+    (dolist (pathname (directory (merge-pathnames "*.xml" data-stor)))
+      (delete-file pathname))))
+
+(defun diag! (plan-num text)
+  (diag (format nil "Plan ~a : ~a" plan-num text)))
+
+(defun make-test-pool (&optional (pool-stor *pool-stor*))
+  (unless pool-stor (error "*pool-stor*がnilのままです。"))
+  (clean-data-sotr pool-stor)
+  (make-banshou 'banshou pool-stor))
 
 (plan 9)
 
@@ -117,25 +109,15 @@
         (clean-data-sotr pool-stor)))))
 
 
-
 ;;;
 ;;; Predicates
 ;;;
 (subtest "Predicates Test"
-  (let ((vertex-note-1 "n-note-1")
-
+  (let ((pool (make-test-pool))
+        (vertex-note-1 "n-note-1")
         (vertex-note-2 "n-note-2")
-        (edge-type :test-r)
-        (pool-stor *pool-stor*)
-        (pool nil))
-    ;; こりゃなんで？
-    (unless pool-stor (error "*pool-stor*がnilのままです。"))
-    ;; delete file
-    (clean-data-sotr pool-stor)
-    ;; create system
-    (setf pool (make-banshou 'banshou pool-stor))
-    (ok pool)
-    ;; object を生成
+        (edge-type :test-r))
+
     (let* ((vertex1 (tx-make-vertex pool 'vertex `((note ,vertex-note-1))))
            (vertex2 (tx-make-vertex pool 'vertex `((note ,vertex-note-2))))
            (vertex3 (make-instance 'vertex :%id -999))
@@ -156,25 +138,16 @@
       (up:snapshot pool))))
 
 
-
 ;;;
 ;;; Find-r-xxx
 ;;;
 (subtest "Find-r-xxx"
-  (let ((vertex-note-1 "n-note-1")
+  (let ((pool (make-test-pool))
+        (vertex-note-1 "n-note-1")
         (vertex-note-2 "n-note-2")
         (vertex-note-3 "n-note-3")
-        (edge-type   :test-r)
-        (pool-stor *pool-stor*)
-        (pool nil))
-    ;; こりゃなんで？
-    (unless pool-stor (error "*pool-stor*がnilのままです。"))
-    ;; delete file
-    (clean-data-sotr pool-stor)
-    ;; create system
-    (setf pool (make-banshou 'banshou pool-stor))
-    (ok pool)
-    ;;
+        (edge-type   :test-r))
+
     (let* ((vertex1 (tx-make-vertex pool 'vertex `((note ,vertex-note-1))))
            (vertex2 (tx-make-vertex pool 'vertex `((note ,vertex-note-2))))
            (vertex3 (tx-make-vertex pool 'vertex `((note ,vertex-note-3))))
@@ -210,30 +183,20 @@
     (up:snapshot pool)))
 
 
-
-
 ;;;
 ;;; Slot-index
 ;;;
 (subtest "Slot-index"
   (labels ((index-name (cls slot)
              (up::get-objects-slot-index-name cls slot)))
-    (let ((vertex-note-1 "n-note-1")
+    (let ((pool (make-test-pool))
+          (vertex-note-1 "n-note-1")
           (vertex-note-2 "n-note-2")
           (rsc-class   'vertex)
           (vertex-class  'shin)
           (edge-class  'edge)
-          (edge-type   :test-r)
-          (pool-stor *pool-stor*)
-          (pool nil))
-      ;; こりゃなんで？
-      (unless pool-stor (error "*pool-stor*がnilのままです。"))
-      ;; delete file
-      (clean-data-sotr pool-stor)
-      ;; create system
-      (setf pool (make-banshou 'banshou pool-stor))
-      (ok pool)
-      ;; object を生成
+          (edge-type   :test-r))
+
       (let* ((vertex1 (tx-make-vertex pool rsc-class `((note ,vertex-note-1))))
              (vertex2 (tx-make-vertex pool rsc-class `((note ,vertex-note-2))))
              (vertex3 (make-instance  vertex-class :%id -999))
@@ -241,7 +204,7 @@
              (edge2 (tx-make-edge pool edge-class vertex1 vertex3 edge-type))
              (edge3 (make-instance  edge-class :%id -999)))
         (declare (ignore edge1 edge2 edge3))
-        ;; テスト開始
+
         (ok (get-root-object pool (index-name edge-class 'from-id)))
         (ok (get-root-object pool (index-name edge-class 'to-id)))
         (ok (get-root-object pool (index-name edge-class 'edge-type)))
@@ -253,9 +216,8 @@
         (ok (get-root-object pool (index-name edge-class 'from-id)))
         (ok (get-root-object pool (index-name edge-class 'to-id)))
         (ok (get-root-object pool (index-name edge-class 'edge-type)))
-        ;;
-        (up:snapshot pool)))))
 
+        (up:snapshot pool)))))
 
 
 ;;;
@@ -264,142 +226,120 @@
 (subtest "remove-object-on-slot-index"
   (labels ((index-name (cls slot)
              (up::get-objects-slot-index-name cls slot)))
-    (let ((vertex-note-1 "n-note-1")
-          (vertex-note-2 "n-note-2")
-          (rsc-class   'vertex)
-          (vertex-class  'shin)
-          (edge-class  'edge)
-          (edge-type   :test-r)
-          (pool-stor *pool-stor*)
-          (pool nil))
-      ;; こりゃなんで？
-      (unless pool-stor (error "*pool-stor*がnilのままです。"))
-      ;; delete file
-      (clean-data-sotr pool-stor)
-      ;; create system
-      (setf pool (make-banshou 'banshou pool-stor))
-      (ok pool)
-      ;; object を生成
-      (let* ((vertex1 (tx-make-vertex pool rsc-class `((note ,vertex-note-1))))
-             (vertex2 (tx-make-vertex pool rsc-class `((note ,vertex-note-2))))
-             (vertex3 (make-instance  vertex-class :%id -999))
-             (edge1 (tx-make-edge pool edge-class vertex1 vertex2 edge-type))
-             (edge2 (tx-make-edge pool edge-class vertex1 vertex3 edge-type)))
-        (declare (ignore edge2))
-        ;; テスト開始
-        (ok (get-root-object pool (index-name edge-class 'from-id)))
-        (ok (get-root-object pool (index-name edge-class 'to-id)))
-        (ok (get-root-object pool (index-name edge-class 'edge-type)))
-        (up:drop-index-on pool edge-class '(from-id to-id edge-type))
-        (is nil (get-root-object pool (index-name edge-class 'from-id)))
-        (is nil (get-root-object pool (index-name edge-class 'to-id)))
-        (is nil (get-root-object pool (index-name edge-class 'edge-type)))
-        (up:index-on pool edge-class '(from-id to-id edge-type))
-        (ok (get-root-object pool (index-name edge-class 'from-id)))
-        (ok (get-root-object pool (index-name edge-class 'to-id)))
-        (ok (get-root-object pool (index-name edge-class 'edge-type)))
-        ;;
-        (let ((i-from (get-root-object pool
-                                       (up::get-objects-slot-index-name edge-class 'from-id)))
-              (i-to   (get-root-object pool
-                                       (up::get-objects-slot-index-name edge-class 'to-id)))
-              (i-type (get-root-object pool
-                                       (up::get-objects-slot-index-name edge-class 'edge-type))))
+    (let* ((pool (make-test-pool))
+           (vertex-note-1 "n-note-1")
+           (vertex-note-2 "n-note-2")
+           (rsc-class   'vertex)
+           (vertex-class  'shin)
+           (edge-class  'edge)
+           (edge-type   :test-r)
+           (vertex1 (tx-make-vertex pool rsc-class `((note ,vertex-note-1))))
+           (vertex2 (tx-make-vertex pool rsc-class `((note ,vertex-note-2))))
+           (vertex3 (make-instance  vertex-class :%id -999))
+           (edge1 (tx-make-edge pool edge-class vertex1 vertex2 edge-type)))
+      (tx-make-edge pool edge-class vertex1 vertex3 edge-type)
+
+      (ok (get-root-object pool (index-name edge-class 'from-id)))
+      (ok (get-root-object pool (index-name edge-class 'to-id)))
+      (ok (get-root-object pool (index-name edge-class 'edge-type)))
+      (up:drop-index-on pool edge-class '(from-id to-id edge-type))
+      (is nil (get-root-object pool (index-name edge-class 'from-id)))
+      (is nil (get-root-object pool (index-name edge-class 'to-id)))
+      (is nil (get-root-object pool (index-name edge-class 'edge-type)))
+      (up:index-on pool edge-class '(from-id to-id edge-type))
+      (ok (get-root-object pool (index-name edge-class 'from-id)))
+      (ok (get-root-object pool (index-name edge-class 'to-id)))
+      (ok (get-root-object pool (index-name edge-class 'edge-type)))
+      ;;
+      (let ((i-from (get-root-object pool
+                                     (up::get-objects-slot-index-name edge-class 'from-id)))
+            (i-to   (get-root-object pool
+                                     (up::get-objects-slot-index-name edge-class 'to-id)))
+            (i-type (get-root-object pool
+                                     (up::get-objects-slot-index-name edge-class 'edge-type))))
+        (is 1 (hash-table-count i-from))
+        (is 2 (hash-table-count i-to))
+        (is 1 (hash-table-count i-type))
+
+        (subtest "from"
+          (is 2 (hash-table-count (gethash (from-id edge1) i-from)))
+          (up:tx-remove-object-on-slot-index pool edge1 'from-id)
+          (is 1 (hash-table-count (gethash (from-id edge1) i-from)))
           (is 1 (hash-table-count i-from))
           (is 2 (hash-table-count i-to))
-          (is 1 (hash-table-count i-type))
+          (is 1 (hash-table-count i-type)))
 
-          (subtest "from"
-            (is 2 (hash-table-count (gethash (from-id edge1) i-from)))
-            (up:tx-remove-object-on-slot-index pool edge1 'from-id)
-            (is 1 (hash-table-count (gethash (from-id edge1) i-from)))
-            (is 1 (hash-table-count i-from))
-            (is 2 (hash-table-count i-to))
-            (is 1 (hash-table-count i-type)))
+        (subtest "to"
+          (is 1 (hash-table-count (gethash (to-id edge1) i-to)))
+          (up:tx-remove-object-on-slot-index pool edge1 'to-id)
+          (is 0 (hash-table-count (gethash (to-id edge1) i-to)))
+          (is 1 (hash-table-count i-from))
+          (is 2 (hash-table-count i-to))
+          (is 1 (hash-table-count i-type)))
 
-          (subtest "to"
-            (is 1 (hash-table-count (gethash (to-id edge1) i-to)))
-            (up:tx-remove-object-on-slot-index pool edge1 'to-id)
-            (is 0 (hash-table-count (gethash (to-id edge1) i-to)))
-            (is 1 (hash-table-count i-from))
-            (is 2 (hash-table-count i-to))
-            (is 1 (hash-table-count i-type)))
+        (subtest "type"
+          (is 2 (hash-table-count (gethash (edge-type edge1) i-type)))
+          (up:tx-remove-object-on-slot-index pool edge1 'edge-type)
+          (is 1 (hash-table-count (gethash (edge-type edge1) i-type)))
+          (is 1 (hash-table-count i-from))
+          (is 2 (hash-table-count i-to))
+          (is 1 (hash-table-count i-type))))
 
-          (subtest "type"
-            (is 2 (hash-table-count (gethash (edge-type edge1) i-type)))
-            (up:tx-remove-object-on-slot-index pool edge1 'edge-type)
-            (is 1 (hash-table-count (gethash (edge-type edge1) i-type)))
-            (is 1 (hash-table-count i-from))
-            (is 2 (hash-table-count i-to))
-            (is 1 (hash-table-count i-type))))
-
-        (up:snapshot pool)))))
+      (up:snapshot pool))))
 
 
 ;;;
 ;;; delete-vertex
 ;;;
 (subtest "delete-vertex"
-  (let ((vertex-note-1 "n-note-1")
-        (vertex-note-2 "n-note-2")
-        (rsc-class     'vertex)
-        ;; (vertex-class  'vertex)
-        (edge-class    'edge)
-        (edge-type     :test-r)
-        (pool-stor     *pool-stor*)
-        (pool nil))
-    (unless pool-stor (error "*pool-stor*がnilのままです。"))
-    (clean-data-sotr pool-stor)
-    (setf pool (make-banshou 'banshou pool-stor))
-    (ok pool)
-    (let* ((vertex1 (tx-make-vertex pool rsc-class `((note ,vertex-note-1))))
-           (vertex2 (tx-make-vertex pool rsc-class `((note ,vertex-note-2))))
-           (vertex3 (tx-make-vertex pool rsc-class))
-           (vertex4 (tx-make-vertex pool rsc-class)))
-      (tx-make-edge pool edge-class vertex1 vertex2 edge-type)
+  (let* ((pool (make-test-pool))
+         (vertex-note-1 "n-note-1")
+         (vertex-note-2 "n-note-2")
+         (rsc-class     'vertex)
+         (edge-class    'edge)
+         (edge-type     :test-r)
+         (vertex1 (tx-make-vertex pool rsc-class `((note ,vertex-note-1))))
+         (vertex2 (tx-make-vertex pool rsc-class `((note ,vertex-note-2))))
+         (vertex3 (tx-make-vertex pool rsc-class))
+         (vertex4 (tx-make-vertex pool rsc-class)))
+    (tx-make-edge pool edge-class vertex1 vertex2 edge-type)
 
-      (subtest "can not delete, exist edge"
-        (ok (existp pool vertex1))
-        (is-error (tx-delete-vertex pool vertex1) 'error)
-        (is-error (delete-vertex pool vertex1) 'error)
-        (ok (existp pool vertex1)))
+    (subtest "can not delete, exist edge"
+      (ok (existp pool vertex1))
+      (is-error (tx-delete-vertex pool vertex1) 'error)
+      (is-error (delete-vertex pool vertex1) 'error)
+      (ok (existp pool vertex1)))
 
-      (subtest "can not delete, exist edge"
-        (ok (existp pool vertex2))
-        (is-error (tx-delete-vertex pool vertex2) 'error)
-        (is-error (delete-vertex pool vertex2) 'error)
-        (ok (existp pool vertex2)))
+    (subtest "can not delete, exist edge"
+      (ok (existp pool vertex2))
+      (is-error (tx-delete-vertex pool vertex2) 'error)
+      (is-error (delete-vertex pool vertex2) 'error)
+      (ok (existp pool vertex2)))
 
-      (subtest "can delete"
-        (subtest "vertex3"
-          (ok (existp pool vertex3))
-          (ok (tx-delete-vertex pool vertex3))
-          (is nil (existp pool vertex3)))
-        (subtest "vertex4"
-          (ok (existp pool vertex4))
-          (ok (delete-vertex pool vertex4))
-          (is nil (existp pool vertex4)))))
+    (subtest "can delete"
+      (subtest "vertex3"
+        (ok (existp pool vertex3))
+        (ok (tx-delete-vertex pool vertex3))
+        (is nil (existp pool vertex3)))
+      (subtest "vertex4"
+        (ok (existp pool vertex4))
+        (ok (delete-vertex pool vertex4))
+        (is nil (existp pool vertex4))))
 
     (up:snapshot pool)))
-
 
 ;;;
 ;;; delete-edge
 ;;;
 (subtest "delete-edge"
-  (let ((vertex-note-1 "n-note-1")
+  (let ((pool (make-test-pool))
+        (vertex-note-1 "n-note-1")
         (vertex-note-2 "n-note-2")
         (rsc-class     'vertex)
         (vertex-class  'shin)
         (edge-class    'edge)
-        (edge-type     :test-r)
-        (pool-stor     *pool-stor*)
-        (pool nil))
-    (unless pool-stor (error "*pool-stor*がnilのままです。"))
-    (clean-data-sotr pool-stor)
-    (setf pool (make-banshou 'banshou pool-stor))
-    (ok pool)
-    ;; object を生成
+        (edge-type     :test-r))
+
     (let* ((vertex1 (tx-make-vertex pool rsc-class `((note ,vertex-note-1))))
            (vertex2 (tx-make-vertex pool rsc-class `((note ,vertex-note-2))))
            (vertex3 (make-instance  vertex-class :%id -999))
@@ -448,20 +388,12 @@
 ;;; tx-change-vertex
 ;;;
 (subtest "tx-change-vertex"
-  (let ((vertex-note-1 "n-note-1")
+  (let ((pool (make-test-pool))
+        (vertex-note-1 "n-note-1")
         (vertex-note-2 "n-note-2")
         (vertex-note-3 "n-note-3")
-        (edge-type   :test-r)
-        (pool-stor *pool-stor*)
-        (pool nil))
-    ;; こりゃなんで？
-    (unless pool-stor (error "*pool-stor*がnilのままです。"))
-    ;; delete file
-    (clean-data-sotr pool-stor)
-    ;; create system
-    (setf pool (make-banshou 'banshou pool-stor))
-    (ok pool)
-    ;;
+        (edge-type   :test-r))
+
     (let* ((vertex1 (tx-make-vertex pool 'vertex `((note ,vertex-note-1))))
            (vertex2 (tx-make-vertex pool 'vertex `((note ,vertex-note-2))))
            (vertex3 (tx-make-vertex pool 'vertex `((note ,vertex-note-3))))
@@ -474,6 +406,7 @@
       (is edge1 (tx-change-vertex pool edge1 :to vertex1))
       (is (%id vertex3) (from-id edge1))
       (is (%id vertex1) (to-id   edge1))
+
       (up:snapshot pool))))
 
 
@@ -481,30 +414,22 @@
 ;;; tx-change-type
 ;;;
 (subtest "tx-change-type"
-  (let ((vertex-note-1 "n-note-1")
-        (vertex-note-2 "n-note-2")
-        (edge-type-befor :test-b)
-        (edge-type-after :test-a)
-        (pool-stor *pool-stor*)
-        (pool nil))
-    ;; こりゃなんで？
-    (unless pool-stor (error "*pool-stor*がnilのままです。"))
-    ;; delete file
-    (clean-data-sotr pool-stor)
-    ;; create system
-    (setf pool (make-banshou 'banshou pool-stor))
-    (ok pool)
-    ;;
-    (let* ((vertex1 (tx-make-vertex pool 'vertex `((note ,vertex-note-1))))
-           (vertex2 (tx-make-vertex pool 'vertex `((note ,vertex-note-2))))
-           (edge1 (tx-make-edge pool 'edge vertex1 vertex2 edge-type-befor)))
-      (is (%id vertex1)   (from-id edge1))
-      (is (%id vertex2)   (to-id edge1))
-      (is edge-type-befor (edge-type edge1))
-      (is edge1 (tx-change-type pool edge1 edge-type-after))
-      (is edge-type-after (edge-type edge1))
-      ;;
-      (up:snapshot pool))))
+  (let* ((pool (make-test-pool))
+         (vertex-note-1 "n-note-1")
+         (vertex-note-2 "n-note-2")
+         (edge-type-befor :test-b)
+         (edge-type-after :test-a)
+         (vertex1 (tx-make-vertex pool 'vertex `((note ,vertex-note-1))))
+         (vertex2 (tx-make-vertex pool 'vertex `((note ,vertex-note-2))))
+         (edge1 (tx-make-edge pool 'edge vertex1 vertex2 edge-type-befor)))
+
+    (is (%id vertex1)   (from-id edge1))
+    (is (%id vertex2)   (to-id edge1))
+    (is edge-type-befor (edge-type edge1))
+    (is edge1 (tx-change-type pool edge1 edge-type-after))
+    (is edge-type-after (edge-type edge1))
+
+    (up:snapshot pool)))
 
 
 (finalize)
