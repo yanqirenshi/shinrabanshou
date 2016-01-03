@@ -39,12 +39,12 @@
 ;;;;;
 ;;;;; 2. Accsessor
 ;;;;;
-(defmethod get-from-vertex ((system banshou) (edge ra))
-  (up:get-at-%id system (from-id edge)))
+(defmethod get-from-vertex ((pool banshou) (edge ra))
+  (get-object-at-%id pool :all (from-id edge)))
 
 
-(defmethod get-to-vertex ((system banshou) (edge ra))
-  (up:get-at-%id system (to-id edge)))
+(defmethod get-to-vertex ((pool banshou) (edge ra))
+  (get-object-at-%id pool :all (to-id edge)))
 
 
 (defun tx-change-from-vertex (graph edge vertex)
