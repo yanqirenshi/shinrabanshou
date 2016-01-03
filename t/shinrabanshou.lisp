@@ -331,7 +331,7 @@
         (is 1 (hash-table-count i-type))
 
         (subtest "befor check"
-          (ok (not (null (member edge1 (find-all-objects pool edge-class)))))
+          (ok (not (null (member edge1 (find-object pool edge-class)))))
           (is edge1 (get-object-at-%id pool edge-class (%id edge1)))
           (is 2 (length (find-object pool edge-class :slot 'from-id   :value (from-id   edge1))))
           (is 1 (length (find-object pool edge-class :slot 'to-id     :value (to-id     edge1))))
@@ -339,7 +339,7 @@
 
         (subtest "tx-delete-edge edge1"
           (shinra::tx-delete-edge pool edge1)
-          (is nil (not (null (member edge1 (find-all-objects pool edge-class)))))
+          (is nil (not (null (member edge1 (find-object pool edge-class)))))
           (is nil (eq edge1 (get-object-at-%id pool edge-class (%id edge1))))
           (is 1 (length (find-object pool edge-class :slot 'from-id   :value (from-id   edge1))))
           (is 0 (length (find-object pool edge-class :slot 'to-id     :value (to-id     edge1))))
@@ -347,7 +347,7 @@
 
         (subtest "delete-edge edge2"
           (shinra::delete-edge pool edge2)
-          (is nil (not (null (member edge1 (find-all-objects pool edge-class)))))
+          (is nil (not (null (member edge1 (find-object pool edge-class)))))
           (is nil (eq edge1 (get-object-at-%id pool edge-class (%id edge1))))
           (is 0 (length (find-object pool edge-class :slot 'from-id   :value (from-id   edge1))))
           (is 0 (length (find-object pool edge-class :slot 'to-id     :value (to-id     edge1))))
