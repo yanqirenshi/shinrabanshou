@@ -79,11 +79,11 @@
         (let ((tmp-edge-1 (find-object-with-%id pool 'edge (%id edge1)))
               (tmp-edge-2 (find-object-with-%id pool 'edge (%id edge2))))
 
-          (subtet "check id. from and to vertex"
-                  (is (%id vertex1) (from-id tmp-edge-1))
-                  (is (%id vertex2) (to-id   tmp-edge-1))
-                  (is (%id vertex1) (from-id tmp-edge-2))
-                  (is (%id vertex3) (to-id   tmp-edge-2)))
+          (subtest "check id. from and to vertex"
+            (is (%id vertex1) (from-id tmp-edge-1))
+            (is (%id vertex2) (to-id   tmp-edge-1))
+            (is (%id vertex1) (from-id tmp-edge-2))
+            (is (%id vertex3) (to-id   tmp-edge-2)))
 
           (subtest "check class. from and to vertex."
             (is (class-name (class-of vertex1))
@@ -100,7 +100,7 @@
             (is vertex3 (find-object-with-%id pool (to-class tmp-edge-2)   (%id vertex3)))))
 
         (up:snapshot pool)
-        (clean-data-sotr pool-stor)))))
+        (clean-data-sotr *pool-stor*)))))
 
 
 (subtest "Predicates Test"
@@ -298,14 +298,15 @@
     (subtest "can delete"
       (subtest "vertex3"
         (ok (existp pool vertex3))
-        (ok (tx-delete-vertex pool vertex3))
+        (is (tx-delete-vertex pool vertex3) t)
         (is nil (existp pool vertex3)))
       (subtest "vertex4"
         (ok (existp pool vertex4))
-        (ok (delete-vertex pool vertex4))
+        (is (delete-vertex pool vertex4) t)
         (is nil (existp pool vertex4))))
 
     (up:snapshot pool)))
+
 
 (subtest "delete-edge"
   (let ((pool (make-test-pool))
