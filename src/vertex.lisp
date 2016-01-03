@@ -59,8 +59,7 @@
   (let ((vertex-class (class-name (class-of vertex))))
     (when (existp-relationship graph vertex)
       (error* :delete-failed-have-some-edge vertex-class))
-    (execute-transaction
-     (tx-delete-object graph vertex-class (%id vertex)))))
+    (tx-delete-object graph vertex-class (%id vertex))))
 
 (defmethod delete-vertex ((graph banshou) (vertex shin))
   (execute-transaction
