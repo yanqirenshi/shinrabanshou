@@ -36,9 +36,6 @@
     (dolist (pathname (directory (merge-pathnames "*.xml" data-stor)))
       (delete-file pathname))))
 
-(defun diag! (plan-num text)
-  (diag (format nil "Plan ~a : ~a" plan-num text)))
-
 (defun make-test-pool (&optional (pool-stor *pool-stor*))
   (unless pool-stor (error "*pool-stor*がnilのままです。"))
   (clean-data-sotr pool-stor)
