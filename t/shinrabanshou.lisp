@@ -1,12 +1,14 @@
 (in-package :cl-user)
 (defpackage shinrabanshou-test
-  (:use :cl
-   :upanishad
-        :shinrabanshou
-   :prove)
+  (:use #:cl
+        #:upanishad
+        #:shinrabanshou
+        #:prove)
   (:nicknames :shinra-test))
 
 (in-package :shinrabanshou-test)
+
+(setf prove:*default-reporter* :dot)
 
 ;;;
 ;;; Variable
