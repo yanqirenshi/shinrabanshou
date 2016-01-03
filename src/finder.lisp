@@ -47,9 +47,9 @@
                             (if (null vertex-class)
                                 t
                                 (eq vertex-class (funcall stop-class x)))))
-                   (find-object graph edge-class-symbol
-                                :slot start-slot
-                                :value (%id vertex)))))
+                   (find-objects graph edge-class-symbol
+                                 :slot start-slot
+                                 :value (%id vertex)))))
 
 
 (defmethod find-r ((graph banshou) (edge-class-symbol symbol)

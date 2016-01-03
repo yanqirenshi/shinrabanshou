@@ -66,13 +66,13 @@
       (subtest "can make vertex"
         (is vertex1 (get-object-at-%id pool 'vertex (%id vertex1)) "vertex %id is 1")
         (is vertex2 (get-object-at-%id pool 'vertex (%id vertex2)) "vertex %id is 2")
-        (ok (find-object pool 'vertex :slot 'note :value vertex-note-1) "can finde vertex1 at note")
-        (ok (find-object pool 'vertex :slot 'note :value vertex-note-2) "can finde vertex2 at note"))
+        (ok (find-objects pool 'vertex :slot 'note :value vertex-note-1) "can finde vertex1 at note")
+        (ok (find-objects pool 'vertex :slot 'note :value vertex-note-2) "can finde vertex2 at note"))
 
       (subtest "can make edge"
         (is 2 (length (get-root-object pool :EDGE-ROOT)) "maked two edges")
-        (is 2 (length (find-object pool 'edge :slot 'shinra::edge-type :value :test-r)) "edge type is :test-r")
-        (is 2 (length (find-object pool 'edge :slot 'shinra::from-id :value (%id vertex1))))
+        (is 2 (length (find-objects pool 'edge :slot 'shinra::edge-type :value :test-r)) "edge type is :test-r")
+        (is 2 (length (find-objects pool 'edge :slot 'shinra::from-id :value (%id vertex1))))
         (is edge1 (get-object-at-%id pool 'edge (%id edge1)))
         (is edge2 (get-object-at-%id pool 'edge (%id edge2)))
 
@@ -331,27 +331,27 @@
         (is 1 (hash-table-count i-type))
 
         (subtest "befor check"
-          (ok (not (null (member edge1 (find-object pool edge-class)))))
+          (ok (not (null (member edge1 (find-objects pool edge-class)))))
           (is edge1 (get-object-at-%id pool edge-class (%id edge1)))
-          (is 2 (length (find-object pool edge-class :slot 'from-id   :value (from-id   edge1))))
-          (is 1 (length (find-object pool edge-class :slot 'to-id     :value (to-id     edge1))))
-          (is 2 (length (find-object pool edge-class :slot 'edge-type :value (edge-type edge1)))))
+          (is 2 (length (find-objects pool edge-class :slot 'from-id   :value (from-id   edge1))))
+          (is 1 (length (find-objects pool edge-class :slot 'to-id     :value (to-id     edge1))))
+          (is 2 (length (find-objects pool edge-class :slot 'edge-type :value (edge-type edge1)))))
 
         (subtest "tx-delete-edge edge1"
           (shinra::tx-delete-edge pool edge1)
-          (is nil (not (null (member edge1 (find-object pool edge-class)))))
+          (is nil (not (null (member edge1 (find-objects pool edge-class)))))
           (is nil (eq edge1 (get-object-at-%id pool edge-class (%id edge1))))
-          (is 1 (length (find-object pool edge-class :slot 'from-id   :value (from-id   edge1))))
-          (is 0 (length (find-object pool edge-class :slot 'to-id     :value (to-id     edge1))))
-          (is 1 (length (find-object pool edge-class :slot 'edge-type :value (edge-type edge1)))))
+          (is 1 (length (find-objects pool edge-class :slot 'from-id   :value (from-id   edge1))))
+          (is 0 (length (find-objects pool edge-class :slot 'to-id     :value (to-id     edge1))))
+          (is 1 (length (find-objects pool edge-class :slot 'edge-type :value (edge-type edge1)))))
 
         (subtest "delete-edge edge2"
           (shinra::delete-edge pool edge2)
-          (is nil (not (null (member edge1 (find-object pool edge-class)))))
+          (is nil (not (null (member edge1 (find-objects pool edge-class)))))
           (is nil (eq edge1 (get-object-at-%id pool edge-class (%id edge1))))
-          (is 0 (length (find-object pool edge-class :slot 'from-id   :value (from-id   edge1))))
-          (is 0 (length (find-object pool edge-class :slot 'to-id     :value (to-id     edge1))))
-          (is 0 (length (find-object pool edge-class :slot 'edge-type :value (edge-type edge1)))))
+          (is 0 (length (find-objects pool edge-class :slot 'from-id   :value (from-id   edge1))))
+          (is 0 (length (find-objects pool edge-class :slot 'to-id     :value (to-id     edge1))))
+          (is 0 (length (find-objects pool edge-class :slot 'edge-type :value (edge-type edge1)))))
 
         (subtest "hash-table-count"
           (is 1 (hash-table-count i-from))

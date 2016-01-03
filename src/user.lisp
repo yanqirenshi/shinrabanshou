@@ -12,7 +12,7 @@
 ;;;;; 1. Get User
 ;;;;;
 (defmethod get-user ((sys banshou) code)
-  (first (find-object sys 'user :slot 'code :value code)))
+  (first (find-objects sys 'user :slot 'code :value code)))
 
 
 ;;;;;
