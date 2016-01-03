@@ -75,12 +75,3 @@
           (find-r graph edge-class-symbol
                   start vertex
                   :edge-type edge-type :vertex-class vertex-class)))
-
-
-
-
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-
-|#

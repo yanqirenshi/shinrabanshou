@@ -24,10 +24,3 @@
           (:bad-id-is-null :ja "この ~a、ID 空なんじゃけど、作りかた間違ごぉとらんか？ きちんとしぃや。")
           (:edge-type-is-null :ja "Edge type が空っちゅうのはイケんよ。なんか適当でエエけぇ決めんさいや。")
           (:understand-this-value :ja "こんとなん知らんけぇ。~a=~a")))
-
-
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2015 Satoshi Iwasaki (yanqirenshi@gmail.com)
-|#
-

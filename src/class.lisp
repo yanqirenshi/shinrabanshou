@@ -122,12 +122,3 @@ upanishad の pool を継承しています。
 (defclass force (shin naming)
   ()
   (:documentation "権限のクラスです。"))
-
-
-
-
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-|#
-

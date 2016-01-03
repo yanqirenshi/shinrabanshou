@@ -193,14 +193,3 @@ type に fromノードか toノードかを指定します。"))
 
 (defgeneric tx-make-master-user (banshou &key code name password timestamp)
   (:documentation ""))
-
-
-
-
-
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-
-|#
-

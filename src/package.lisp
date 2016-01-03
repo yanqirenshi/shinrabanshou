@@ -75,11 +75,3 @@ char-bag を指定するのが面倒なのでデフォルトでセットする�
 "
   (when seq
     (string-trim char-bag seq)))
-
-
-
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-
-|#

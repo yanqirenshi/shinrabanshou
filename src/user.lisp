@@ -84,14 +84,3 @@
                                              (timestamp (get-universal-time)))
   (up:execute-transaction
    (make-master-user sys :code code :name name :password password :timestamp timestamp)))
-
-
-
-
-
-#|
-This file is a part of shinrabanshou project.
-Copyright (c) 2014 Satoshi Iwasaki (yanqirenshi@gmail.com)
-
-|#
-
