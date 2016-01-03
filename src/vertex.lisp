@@ -20,7 +20,7 @@
 
 
 (defmethod existp ((graph banshou) (vertex shin))
-  (not (null (get-object-with-%id graph (class-name (class-of vertex)) (%id vertex)))))
+  (not (null (get-object-at-%id graph (class-name (class-of vertex)) (%id vertex)))))
 
 
 (defun existp-relationship (graph shin &optional (ra-list nil))

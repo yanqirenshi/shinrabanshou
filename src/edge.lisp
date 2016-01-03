@@ -22,7 +22,7 @@
 
 
 (defmethod existp ((graph banshou) (edge ra))
-  (let ((exist (get-object-with-%id graph (class-name (class-of edge)) (%id edge))))
+  (let ((exist (get-object-at-%id graph (class-name (class-of edge)) (%id edge))))
     (when (not (null exist))
       (if
        ;; これ以降は不要なチェックみたいになっとるけど。。。。

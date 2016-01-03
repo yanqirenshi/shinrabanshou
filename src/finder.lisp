@@ -58,9 +58,9 @@
                             ((eq start :to  ) '(from-class from-id)))))
     (mapcar #'(lambda (edge)
                 (list :edge edge
-                      :vertex (find-object-with-%id graph
-                                                   (funcall (first  start-symbol) edge)
-                                                   (funcall (second start-symbol) edge))))
+                      :vertex (get-object-at-%id graph
+                                                 (funcall (first  start-symbol) edge)
+                                                 (funcall (second start-symbol) edge))))
             (find-r-edge graph edge-class-symbol
                          start vertex
                          :edge-type edge-type :vertex-class vertex-class))))

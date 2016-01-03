@@ -64,8 +64,8 @@
            (edge2 (tx-make-edge pool 'edge vertex1 vertex3 edge-type)))
 
       (subtest "can make vertex"
-        (is vertex1 (find-object-with-%id pool 'vertex (%id vertex1)) "vertex %id is 1")
-        (is vertex2 (find-object-with-%id pool 'vertex (%id vertex2)) "vertex %id is 2")
+        (is vertex1 (get-object-at-%id pool 'vertex (%id vertex1)) "vertex %id is 1")
+        (is vertex2 (get-object-at-%id pool 'vertex (%id vertex2)) "vertex %id is 2")
         (ok (find-object-with-slot pool 'vertex 'note vertex-note-1) "can finde vertex1 at note")
         (ok (find-object-with-slot pool 'vertex 'note vertex-note-2) "can finde vertex2 at note"))
 
@@ -73,11 +73,11 @@
         (is 2 (length (get-root-object pool :EDGE-ROOT)) "maked two edges")
         (is 2 (length (find-object-with-slot pool 'edge 'shinra::edge-type :test-r)) "edge type is :test-r")
         (is 2 (length (find-object-with-slot pool 'edge 'shinra::from-id (%id vertex1))))
-        (is edge1 (find-object-with-%id pool 'edge (%id edge1)))
-        (is edge2 (find-object-with-%id pool 'edge (%id edge2)))
+        (is edge1 (get-object-at-%id pool 'edge (%id edge1)))
+        (is edge2 (get-object-at-%id pool 'edge (%id edge2)))
 
-        (let ((tmp-edge-1 (find-object-with-%id pool 'edge (%id edge1)))
-              (tmp-edge-2 (find-object-with-%id pool 'edge (%id edge2))))
+        (let ((tmp-edge-1 (get-object-at-%id pool 'edge (%id edge1)))
+              (tmp-edge-2 (get-object-at-%id pool 'edge (%id edge2))))
 
           (subtest "check id. from and to vertex"
             (is (%id vertex1) (from-id tmp-edge-1))
@@ -94,10 +94,10 @@
                 (from-class tmp-edge-2))
             (is (class-name (class-of vertex3))
                 (to-class tmp-edge-2))
-            (is vertex1 (find-object-with-%id pool (from-class tmp-edge-1) (%id vertex1)))
-            (is vertex2 (find-object-with-%id pool (to-class tmp-edge-1)   (%id vertex2)))
-            (is vertex1 (find-object-with-%id pool (from-class tmp-edge-2) (%id vertex1)))
-            (is vertex3 (find-object-with-%id pool (to-class tmp-edge-2)   (%id vertex3)))))
+            (is vertex1 (get-object-at-%id pool (from-class tmp-edge-1) (%id vertex1)))
+            (is vertex2 (get-object-at-%id pool (to-class tmp-edge-1)   (%id vertex2)))
+            (is vertex1 (get-object-at-%id pool (from-class tmp-edge-2) (%id vertex1)))
+            (is vertex3 (get-object-at-%id pool (to-class tmp-edge-2)   (%id vertex3)))))
 
         (up:snapshot pool)
         (clean-data-sotr *pool-stor*)))))
@@ -332,7 +332,7 @@
 
         (subtest "befor check"
           (ok (not (null (member edge1 (find-all-objects pool edge-class)))))
-          (is edge1 (get-object-with-%id pool edge-class (%id edge1)))
+          (is edge1 (get-object-at-%id pool edge-class (%id edge1)))
           (is 2 (length (find-object-with-slot pool edge-class 'from-id   (from-id   edge1))))
           (is 1 (length (find-object-with-slot pool edge-class 'to-id     (to-id     edge1))))
           (is 2 (length (find-object-with-slot pool edge-class 'edge-type (edge-type edge1)))))
@@ -340,7 +340,7 @@
         (subtest "tx-delete-edge edge1"
           (shinra::tx-delete-edge pool edge1)
           (is nil (not (null (member edge1 (find-all-objects pool edge-class)))))
-          (is nil (eq edge1 (get-object-with-%id pool edge-class (%id edge1))))
+          (is nil (eq edge1 (get-object-at-%id pool edge-class (%id edge1))))
           (is 1 (length (find-object-with-slot pool edge-class 'from-id   (from-id   edge1))))
           (is 0 (length (find-object-with-slot pool edge-class 'to-id     (to-id     edge1))))
           (is 1 (length (find-object-with-slot pool edge-class 'edge-type (edge-type edge1)))))
@@ -348,7 +348,7 @@
         (subtest "delete-edge edge2"
           (shinra::delete-edge pool edge2)
           (is nil (not (null (member edge1 (find-all-objects pool edge-class)))))
-          (is nil (eq edge1 (get-object-with-%id pool edge-class (%id edge1))))
+          (is nil (eq edge1 (get-object-at-%id pool edge-class (%id edge1))))
           (is 0 (length (find-object-with-slot pool edge-class 'from-id   (from-id   edge1))))
           (is 0 (length (find-object-with-slot pool edge-class 'to-id     (to-id     edge1))))
           (is 0 (length (find-object-with-slot pool edge-class 'edge-type (edge-type edge1)))))
