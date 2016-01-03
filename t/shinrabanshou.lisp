@@ -48,19 +48,15 @@
 ;;;
 
 (subtest "Basic Test"
-  (let ((vertex-note-1 "n-note-1")
+  (let ((pool (make-test-pool))
+        (vertex-note-1 "n-note-1")
         (vertex-note-2 "n-note-2")
         (vertex-note-3 "n-note-3")
-        (edge-type   :test-r)
-        (pool-stor *pool-stor*)
-        (pool nil))
-    ;; こりゃなんで？
-    (unless pool-stor (error "*pool-stor*がnilのままです。"))
-    ;; delete file
-    (clean-data-sotr pool-stor)
-    ;; create system
-    (setf pool (make-banshou 'banshou pool-stor))
-    (ok pool)
+        (edge-type   :test-r))
+
+    (subtest "can make pool"
+      (ok pool))
+
     (let* ((vertex1 (tx-make-vertex pool 'vertex `((note ,vertex-note-1))))
            (vertex2 (tx-make-vertex pool 'vertex `((note ,vertex-note-2))))
            (vertex3 (tx-make-vertex pool 'vertex `((note ,vertex-note-3))))
@@ -79,36 +75,34 @@
         (is 2 (length (find-object-with-slot pool 'edge 'shinra::from-id (%id vertex1))))
         (is edge1 (find-object-with-%id pool 'edge (%id edge1)))
         (is edge2 (find-object-with-%id pool 'edge (%id edge2)))
-        ;;
+
         (let ((tmp-edge-1 (find-object-with-%id pool 'edge (%id edge1)))
               (tmp-edge-2 (find-object-with-%id pool 'edge (%id edge2))))
-          ;; check id. from and to vertex.
-          (is (%id vertex1) (from-id tmp-edge-1))
-          (is (%id vertex2) (to-id   tmp-edge-1))
-          (is (%id vertex1) (from-id tmp-edge-2))
-          (is (%id vertex3) (to-id   tmp-edge-2))
-          ;; check class. from and to vertex.
-          (is (class-name (class-of vertex1))
-              (from-class tmp-edge-1))
-          (is (class-name (class-of vertex2))
-              (to-class tmp-edge-1))
-          (is (class-name (class-of vertex1))
-              (from-class tmp-edge-2))
-          (is (class-name (class-of vertex3))
-              (to-class tmp-edge-2))
-          (is vertex1 (find-object-with-%id pool (from-class tmp-edge-1) (%id vertex1)))
-          (is vertex2 (find-object-with-%id pool (to-class tmp-edge-1)   (%id vertex2)))
-          (is vertex1 (find-object-with-%id pool (from-class tmp-edge-2) (%id vertex1)))
-          (is vertex3 (find-object-with-%id pool (to-class tmp-edge-2)   (%id vertex3))))
-       ;;;
-       ;;;
+
+          (subtet "check id. from and to vertex"
+                  (is (%id vertex1) (from-id tmp-edge-1))
+                  (is (%id vertex2) (to-id   tmp-edge-1))
+                  (is (%id vertex1) (from-id tmp-edge-2))
+                  (is (%id vertex3) (to-id   tmp-edge-2)))
+
+          (subtest "check class. from and to vertex."
+            (is (class-name (class-of vertex1))
+                (from-class tmp-edge-1))
+            (is (class-name (class-of vertex2))
+                (to-class tmp-edge-1))
+            (is (class-name (class-of vertex1))
+                (from-class tmp-edge-2))
+            (is (class-name (class-of vertex3))
+                (to-class tmp-edge-2))
+            (is vertex1 (find-object-with-%id pool (from-class tmp-edge-1) (%id vertex1)))
+            (is vertex2 (find-object-with-%id pool (to-class tmp-edge-1)   (%id vertex2)))
+            (is vertex1 (find-object-with-%id pool (from-class tmp-edge-2) (%id vertex1)))
+            (is vertex3 (find-object-with-%id pool (to-class tmp-edge-2)   (%id vertex3)))))
+
         (up:snapshot pool)
         (clean-data-sotr pool-stor)))))
 
 
-;;;
-;;; Predicates
-;;;
 (subtest "Predicates Test"
   (let ((pool (make-test-pool))
         (vertex-note-1 "n-note-1")
@@ -135,9 +129,6 @@
       (up:snapshot pool))))
 
 
-;;;
-;;; Find-r-xxx
-;;;
 (subtest "Find-r-xxx"
   (let ((pool (make-test-pool))
         (vertex-note-1 "n-note-1")
@@ -180,9 +171,6 @@
     (up:snapshot pool)))
 
 
-;;;
-;;; Slot-index
-;;;
 (subtest "Slot-index"
   (labels ((index-name (cls slot)
              (up::get-objects-slot-index-name cls slot)))
@@ -217,9 +205,6 @@
         (up:snapshot pool)))))
 
 
-;;;
-;;; remove-object-on-slot-index
-;;;
 (subtest "remove-object-on-slot-index"
   (labels ((index-name (cls slot)
              (up::get-objects-slot-index-name cls slot)))
@@ -285,9 +270,6 @@
       (up:snapshot pool))))
 
 
-;;;
-;;; delete-vertex
-;;;
 (subtest "delete-vertex"
   (let* ((pool (make-test-pool))
          (vertex-note-1 "n-note-1")
@@ -325,9 +307,6 @@
 
     (up:snapshot pool)))
 
-;;;
-;;; delete-edge
-;;;
 (subtest "delete-edge"
   (let ((pool (make-test-pool))
         (vertex-note-1 "n-note-1")
@@ -381,9 +360,6 @@
     (up:snapshot pool)))
 
 
-;;;
-;;; tx-change-vertex
-;;;
 (subtest "tx-change-vertex"
   (let ((pool (make-test-pool))
         (vertex-note-1 "n-note-1")
@@ -407,9 +383,6 @@
       (up:snapshot pool))))
 
 
-;;;
-;;; tx-change-type
-;;;
 (subtest "tx-change-type"
   (let* ((pool (make-test-pool))
          (vertex-note-1 "n-note-1")
