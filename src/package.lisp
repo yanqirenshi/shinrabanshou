@@ -13,7 +13,11 @@
 ;;;;; 1. Package
 ;;;;;
 (defpackage shinrabanshou
-  (:use :cl :alexandria :cl-ppcre :upanishad)
+  (:use #:cl
+        #:alexandria
+        #:cl-ppcre
+        #:upanishad
+        #:shinrabanshou.conditions)
   (:nicknames :shinra)
   (:import-from :world2world
                 :error*
