@@ -1,8 +1,9 @@
 ;;;;;
 ;;;;; Contents
 ;;;;;    1. 述語
-;;;;;    2. 作成
-;;;;;    3. 削除
+;;;;;    2. 取得
+;;;;;    3. 作成
+;;;;;    4. 削除
 ;;;;;
 
 (in-package :shinrabanshou)
@@ -39,7 +40,21 @@
     (core graph shin ra-list)))
 
 ;;;;;
-;;;;; 2. 作成
+;;;;; 3. 取得
+;;;;;
+(defmethod find-vertex ((graph banshou) (class-symbol symbol) &key slot value)
+  (assert-graph graph)
+  (up:find-objects graph class-symbol))
+
+(defmethod get-vertex-at ((graph banshou) (class-symbol symbol)
+                          &key %id)
+  (assert-graph graph)
+  (cond (%id (up:get-object-at-%id graph class-symbol %id))
+        (t nil)))
+
+
+;;;;;
+;;;;; 4. 作成
 ;;;;;
 (defmethod tx-make-vertex ((graph banshou) (class-symbol symbol) &optional slots-and-values)
   (assert-graph graph)
@@ -53,9 +68,8 @@
    (tx-make-vertex graph class-symbol slots-and-values)))
 
 
-
 ;;;;;
-;;;;; 3. 削除
+;;;;; 5. 削除
 ;;;;;
 (defmethod tx-delete-vertex ((graph banshou) (vertex shin))
   (assert-graph graph)

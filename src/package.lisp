@@ -29,6 +29,7 @@
            #:make-banshou
            ;; vertex
            #:shin
+           #:find-vertex #:get-vertex-at
            #:tx-make-vertex   #:make-vertex
            #:tx-delete-vertex #:delete-vertex
            ;; edge

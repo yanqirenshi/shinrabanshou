@@ -67,6 +67,12 @@ TODO: 作成(停止)中です。
 TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマートな方法がありそうなんじゃけど。。。"))
 
 
+(defgeneric find-vertex (graph class-symbol &key slot value)
+  (:documentation ""))
+
+(defgeneric get-vertex-at (graph class-symbol &key %id)
+  (:documentation ""))
+
 ;; 作成
 (defgeneric tx-make-vertex (graph class-symbol &optional slots-and-values)
   (:documentation "")
