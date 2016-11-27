@@ -15,28 +15,8 @@
                :world2world)
   :components ((:module "src"
                         :components
-                        ;;
-                        ;; (start)
-                        ;;    |
-                        ;; package
-                        ;;    |
-                        ;; generic-function
-                        ;;    |
-                        ;; class
-                        ;;    |
-                        ;; vertex
-                        ;;    |
-                        ;;  edge
-                        ;;    |
-                        ;;  finder
-                        ;;    |
-                        ;;  user
-                        ;;    |
-                        ;;  banshou
-                        ;;    |
-                        ;;  (end)
-                        ;;
-                        ((:file "package")
+                        ((:file "conditions")
+                         (:file "package")
                          (:file "generic-function"   :depends-on ("package"))
                          (:file "class"              :depends-on ("generic-function"))
                          (:file "vertex"             :depends-on ("class"))
