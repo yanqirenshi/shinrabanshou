@@ -3,7 +3,8 @@
 (defpackage shinrabanshou.conditions
   (:use :cl)
   (:nicknames :shinra.conditions)
-  (:export #:graph-error))
+  (:export #:graph-error
+           #:assert-graph))
 
 (in-package :shinrabanshou.conditions)
 
@@ -12,3 +13,7 @@
 
 (defun graph-error (graph)
   (error 'graph-error :graph graph))
+
+(defun assert-graph (graph)
+  (unless graph
+    (graph-error graph)))
