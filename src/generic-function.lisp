@@ -69,7 +69,12 @@ TODO:でも、こんなんでエエんじゃろうか。。。。ほかにスマ
 
 ;; 作成
 (defgeneric tx-make-vertex (graph class-symbol &optional slots-and-values)
-  (:documentation ""))
+  (:documentation "")
+  (:method (graph class-symbol &optional slots-and-values)
+    (declare (ignore slots-and-values))
+    (unless graph (graph-error graph))
+    (when (null class-symbol)
+      (error class-symbol))))
 
 (defgeneric make-vertex (graph class-symbol &optional slots-and-values)
   (:documentation ""))
