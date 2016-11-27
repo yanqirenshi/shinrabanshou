@@ -20,12 +20,12 @@
 
 
 (defmethod existp ((graph banshou) (vertex shin))
-  (graph-error graph)
+  (assert-graph graph)
   (not (null (get-object-at-%id graph (class-name (class-of vertex)) (%id vertex)))))
 
 
 (defun existp-relationship (graph shin &optional (ra-list nil))
-  (graph-error graph)
+  (assert-graph graph)
   (when (null ra-list)
     (setf ra-list (get-ra-classes graph)))
   (labels ((core (graph shin ra-list)
@@ -42,7 +42,7 @@
 ;;;;; 2. 作成
 ;;;;;
 (defmethod tx-make-vertex ((graph banshou) (class-symbol symbol) &optional slots-and-values)
-  (graph-error graph)
+  (assert-graph graph)
   (unless (vertexp class-symbol)
     (error* :bad-class 'shin class-symbol))
   (add-shin-class graph class-symbol)
@@ -58,7 +58,7 @@
 ;;;;; 3. 削除
 ;;;;;
 (defmethod tx-delete-vertex ((graph banshou) (vertex shin))
-  (graph-error graph)
+  (assert-graph graph)
   ;; 現在関係があるものは削除できないようにしています。
   (let ((vertex-class (class-name (class-of vertex))))
     (when (existp-relationship graph vertex)

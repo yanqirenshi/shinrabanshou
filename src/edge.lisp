@@ -22,6 +22,7 @@
 
 
 (defmethod existp ((graph banshou) (edge ra))
+  (assert-graph graph)
   (let ((exist (get-object-at-%id graph (class-name (class-of edge)) (%id edge))))
     (when (not (null exist))
       (if
@@ -48,6 +49,7 @@
 
 
 (defun tx-change-from-vertex (graph edge vertex)
+  (assert-graph graph)
   (let ((class (class-name (class-of vertex)))
         (id    (%id vertex)))
     (tx-change-object-slots graph
@@ -58,6 +60,7 @@
 
 
 (defun tx-change-from-vertex (graph edge vertex)
+  (assert-graph graph)
   (let ((class (class-name (class-of vertex)))
         (id    (%id vertex)))
     (tx-change-object-slots graph
@@ -71,6 +74,7 @@
 ;;;;; 3. 作成
 ;;;;;
 (defun indexp (graph class slot)
+  (assert-graph graph)
   (let ((name (up::get-objects-slot-index-name class slot)))
     (not (null (up:get-root-object graph name)))))
 
@@ -91,6 +95,7 @@
 
 (defmethod tx-make-edge ((graph banshou) (class-symbol symbol) (from shin) (to shin) type
                          &optional slots)
+  (assert-graph graph)
   (cond ((null (%id from)) (error* :bad-id-is-null "vertex(from)"))
         ((null (%id to))   (error* :bad-id-is-null "vertex(to)"))
         ((null type)      (error* :edge-type-is-null)))
@@ -119,6 +124,7 @@
 ;;;;; 4. 削除
 ;;;;;
 (defmethod tx-delete-edge ((graph banshou) (edge ra))
+  (assert-graph graph)
   ;; remove edge on index
   (mapcar #'(lambda (slot)
               (up:tx-remove-object-on-slot-index graph edge slot))
@@ -146,6 +152,7 @@
 
 
 (defmethod tx-change-vertex ((graph banshou) (edge ra) type (vertex shin))
+  (assert-graph graph)
   (multiple-value-bind (cls-id cls-class)
       (get-edge-vertex-slot type)
     (tx-change-object-slots graph
@@ -157,6 +164,7 @@
 
 
 (defmethod tx-change-type ((graph banshou) (edge ra) type)
+  (assert-graph graph)
   (tx-change-object-slots graph
                           (class@ edge)
                           (%id edge)
