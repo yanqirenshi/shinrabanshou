@@ -44,7 +44,9 @@
 ;;;;;
 (defmethod find-vertex ((graph banshou) (class-symbol symbol) &key slot value)
   (assert-graph graph)
-  (up:find-objects graph class-symbol))
+  (up:find-objects graph class-symbol
+                   :slot slot
+                   :value value))
 
 (defmethod get-vertex-at ((graph banshou) (class-symbol symbol)
                           &key %id)
