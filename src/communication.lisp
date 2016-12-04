@@ -1,5 +1,8 @@
 (in-package :shinrabanshou)
 
+(defvar *message-pakage* (find-package :shinrabanshou))
+(defvar *message-world* (w2w::world-at :ja))
+
 (defvar *message-data-list*
   '((:bad-class .
      ((:ja . "このクラスは ~a のクラスじゃないね。こんとなん許せんけぇ。絶対だめよ。symbol=~a")))
@@ -35,3 +38,9 @@
                              (cdr message-data))))
 
 (init-messages *message-data-list*)
+
+(defun format* (stream message-code &rest values)
+  (apply #'w2w:%format*
+         *message-pakage*
+         *message-world*
+         stream message-code values))
