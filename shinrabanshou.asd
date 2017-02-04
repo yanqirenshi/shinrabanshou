@@ -15,9 +15,9 @@
                :world2world)
   :components ((:module "src"
                         :components
-                        ((:file "communication")
-                         (:file "conditions")
+                        ((:file "conditions")
                          (:file "package")
+                         (:file "communication")
                          (:file "generic-function"   :depends-on ("package"))
                          (:file "class"              :depends-on ("generic-function"))
                          (:file "vertex"             :depends-on ("class"))
