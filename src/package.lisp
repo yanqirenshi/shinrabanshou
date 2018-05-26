@@ -48,7 +48,7 @@
            #:tx-master-user #:master-user
            #:tx-make-user   #:make-user
            ;; paradicate
-           #:lifep #:vertexp #:edgep #:existp
+           #:vertexp #:edgep #:existp
            ;; Relation
            #:find-r #:find-r-edge #:find-r-vertex
            #:get-r  #:get-r-edge  #:get-r-vertex

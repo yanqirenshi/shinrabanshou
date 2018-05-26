@@ -1,25 +1,26 @@
 <page02>
-    <section class="hero">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title">
-                    CLASSES
-                </h1>
-                <h2 class="subtitle">subtitle ........</h2>
-            </div>
-        </div>
-    </section>
+    <section-header title="CLASSES">
+        <h2 class="subtitle">
+            SHINRABANSHOU のオペレータのクラスのマニュアルです。
+        </h2>
+    </section-header>
 
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Class List</h1>
-            <h2 class="subtitle">クラスの一覧</h2>
+    <section-3 title="Class List" data={classes()}>
+        <h2 class="subtitle">クラスの一覧</h2>
 
-            <div class="contents">
-                <class-list data={this.classes()}></class-list>
-            </div>
+        <div class="contents">
+            <class-list data={this.opts.data}></class-list>
         </div>
-    </section>
+    </section-3>
+
+    <section-3 title="クラス図">
+        <h2 class="subtitle"></h2>
+        <div class="contents">
+            <class-diagram>
+            </class-diagram>
+        </div>
+    </section-3>
+
 
     <shin></shin>
     <ra></ra>
@@ -28,13 +29,7 @@
     <user></user>
     <force></force>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="content has-text-centered">
-                Footer ........
-            </div>
-        </div>
-    </footer>
+    <section-footer></section-footer>
 
     <script>
      this.classes = ()=>{
