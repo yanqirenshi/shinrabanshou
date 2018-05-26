@@ -14,6 +14,10 @@
         <div class="container">
             <h1 class="title">Section</h1>
             <h2 class="subtitle">subtitle ........</h2>
+
+            <div class="contents">
+                <operator-list></operator-list>
+            </div>
         </div>
     </section>
 

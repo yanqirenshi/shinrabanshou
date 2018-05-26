@@ -24,6 +24,9 @@ riot.tag2('app', '<page01 class="page {this.hide(\'page01\')}"></page01> <page02
 riot.tag2('banshou', '<section class="section"> <div class="container"> <h1 class="title">Class: BANSHOU</h1> <h2 class="subtitle"> </h2> </div> </section>', '', '', function(opts) {
 });
 
+riot.tag2('class-list', '<table class="table is-bordered is-striped is-narrow is-hoverable"> <thead> <tr> <td>package</td> <td>name</td> <td>description</td> </tr> </thead> <tbody> <tr each="{opts.data}"> <td>{package}</td> <td>{name}</td> <td>{description}</td> </tr> </tbody> </table>', '', '', function(opts) {
+});
+
 riot.tag2('force', '<section class="section"> <div class="container"> <h1 class="title">Class: FORCE</h1> <h2 class="subtitle"> </h2> </div> </section>', '', '', function(opts) {
 });
 
@@ -53,7 +56,10 @@ riot.tag2('menu', '<div class="menu-item {active(\'page03\')}" code="page03" onc
      };
 });
 
-riot.tag2('class-list', '<table class="table is-bordered is-striped is-narrow is-hoverable"> <thead> <tr> <td>package</td> <td>name</td> <td>description</td> </tr> </thead> <tbody> <tr each="{opts.data}"> <td>{package}</td> <td>{name}</td> <td>{description}</td> </tr> </tbody> </table>', '', '', function(opts) {
+riot.tag2('find-r', '<section class="section"> <div class="container"> <h1 class="title">Function: FIND-R</h1> <h2 class="subtitle"> </h2> </div> </section>', '', '', function(opts) {
+});
+
+riot.tag2('operator-list', '<table class="table is-bordered is-striped is-narrow is-hoverable"> <thead> <tr> <td>name</td> <td>description</td> </tr> </thead> <tbody> <tr each="{opts.data}"> <td>{name}</td> <td>{description}</td> </tr> </tbody> </table>', '', '', function(opts) {
 });
 
 riot.tag2('page01', '<section class="hero"> <div class="hero-body"> <div class="container"> <h1 class="title"> 森羅万象 (SHINRABANSHOU) </h1> <h2 class="subtitle">subtitle ........</h2> </div> </div> </section> <section class="section"> <div class="container"> <h1 class="title">Section</h1> <h2 class="subtitle">subtitle ........</h2> </div> </section> <footer class="footer"> <div class="container"> <div class="content has-text-centered"> Footer ........ </div> </div> </footer>', '', '', function(opts) {
@@ -65,5 +71,5 @@ riot.tag2('page02', '<section class="hero"> <div class="hero-body"> <div class="
      };
 });
 
-riot.tag2('page03', '<section class="hero"> <div class="hero-body"> <div class="container"> <h1 class="title"> OPERATORS </h1> <h2 class="subtitle">subtitle ........</h2> </div> </div> </section> <section class="section"> <div class="container"> <h1 class="title">Section</h1> <h2 class="subtitle">subtitle ........</h2> </div> </section> <footer class="footer"> <div class="container"> <div class="content has-text-centered"> Footer ........ </div> </div> </footer>', '', '', function(opts) {
+riot.tag2('page03', '<section class="hero"> <div class="hero-body"> <div class="container"> <h1 class="title"> OPERATORS </h1> <h2 class="subtitle">subtitle ........</h2> </div> </div> </section> <section class="section"> <div class="container"> <h1 class="title">Section</h1> <h2 class="subtitle">subtitle ........</h2> <div class="contents"> <operator-list></operator-list> </div> </div> </section> <footer class="footer"> <div class="container"> <div class="content has-text-centered"> Footer ........ </div> </div> </footer>', '', '', function(opts) {
 });
