@@ -17,7 +17,9 @@ class Store extends Vanilla_Redux_Store {
                     name: 'Page 3',
                     active: false
                 }
-            }
+            },
+            classes: _CLASSES,
+            operators: _OPERATORS
         });
         return this;
     }
