@@ -1,73 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html style="overflow:hidden;">
     <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
         <meta charset="utf-8">
-        <meta name="description" content="">
-        <meta name="author" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <!--[if lt IE 9]>
-            <script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
-            <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-        <link rel="shortcut icon" href="">
+        <title>しんらばんしょう</title>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/shinrabanshou/css/bulma/bulma.css">
-        <link rel="stylesheet" href="/shinrabanshou/css/bulma/bulma.css.map">
+        <link rel="stylesheet" href="./libs/bulma.min.css">
+        <script defer src="./libs/fontawesome/v5.0.7-all.js"></script>
 
+        <script src="./config.js"></script>
+
+        <script src="./libs/d3.js"></script>
+        <script src="./libs/immutable.min.js"></script>
+        <script src="./libs/moment.js"></script>
+
+        <script src="./libs/riot.min.js"></script>
+        <script src="./libs/route.min.js"></script>
+
+        <script src="./libs/vanilla.js"></script>
     </head>
     <body>
-        <h2>Classes</h2>
-        <table class="table">
-            <tbody class="tbody">
-                <tr><td class="td">meme</td><td class="td"></td></tr>
-                <tr><td class="td">pool</td><td class="td"></td></tr>
-                <tr>shin<td class="td"></td><td class="td"></td></tr>
-                <tr>ra<td class="td"></td><td class="td"></td></tr>
-                <tr>banshou<td class="td"></td><td class="td"></td></tr>
-            </tbody>
-        </table>
 
-        <h2>Operators</h2>
-        <table class="table">
-            <thead class="thead">
-                <tr class="tr">
-                    <th class="th">Class</th>
-                    <th class="th">Get</th>
-                    <th class="th">Find</th>
-                    <th class="th">Make</th>
-                    <th class="th">Delete</th>
-                    <th class="th">Paradicate</th>
-                </tr>
-            </thead>
-            <tbody class="tbody">
-                <tr class="tr">
-                    <td class="td">shin</td>
-                    <td class="td">get-vertex-at</td>
-                    <td class="td">find-vertex</td>
-                    <td class="td">make-vertex</td>
-                    <td class="td">delete-vertex</td>
-                    <td class="td">vertexp</td>
-                </tr>
-                <tr class="tr">
-                    <td class="td">ra</td>
-                    <td class="td"></td>
-                    <td class="td"></td>
-                    <td class="td">make-edge</td>
-                    <td class="td">delete-edge</td>
-                    <td class="td">edgep</td>
-                </tr>
-                <tr class="tr">
-                    <td class="td">user</td>
-                    <td class="td"></td>
-                    <td class="td"></td>
-                    <td class="td">make-user</td>
-                    <td class="td"></td>
-                </tr>
-            </tbody>
-        </table>
+        <script src="./js/Actions.js"></script>
+        <script src="./js/Reducer.js"></script>
+        <script src="./js/Store.js"></script>
+
+        <script src="./js/tags.js"></script>
+
+        <script src="./js/routing.js"></script>
+        <script src="index.js"></script>
+
+        <app></app>
+
+        <script>riot.mount('app');</script>
     </body>
 </html>
