@@ -1,1 +1,1 @@
-/Users/satoshi.iwasaki/prj/fg/js/vanilla.js/dist/vanilla.js
+/home/shinrabanshou/prj/fg/js/vanilla.js/dist/vanilla.js

@@ -1,15 +1,24 @@
 class Store extends Vanilla_Redux_Store {
     constructor(reducer) {
-        super(reducer, {
-            pages: {
-                page01: {},
-                page02: {},
-                page03: {}
-            }
-        });
+        super(reducer, Immutable.Map({}));
     }
     init () {
-        this._contents = Immutable.Map({});
+        this._contents = Immutable.Map({
+            pages: {
+                page01: {
+                    name: 'Page 1',
+                    active: false
+                },
+                page02: {
+                    name: 'Page 2',
+                    active: false
+                },
+                page03: {
+                    name: 'Page 3',
+                    active: false
+                }
+            }
+        });
         return this;
     }
 }
